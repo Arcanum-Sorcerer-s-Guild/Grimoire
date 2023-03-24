@@ -2,20 +2,21 @@
 
 const {faker} = require('@faker-js/faker');
 
-let num_users = 10;
-let num_entries = 10;
-let num_tags = 10;
-let num_entry_tags = 30;
+let num_users = 50;
+let num_entries = 500;
+let num_tags = 15;
+let num_entry_tags = 1500;
 
 let seedString = ''
 
 function createRandomLog() {
+  
   return {
     title: faker.hacker.verb() + ' ' + faker.hacker.noun(),
     description: faker.hacker.phrase(),
     created: faker.date.between('2021-01-01T00:00:00.000Z','2023-01-01T00:00:00.000Z'),
     updated: null,
-    user_id: faker.datatype.number({min:1,max:10})
+    user_id: faker.datatype.number({min:1,max:num_users})
   }
 }
 
@@ -88,7 +89,7 @@ function generateEntryTagsSeed(numEntries = num_entries, numTags = num_tags,numS
   console.log('minTag', minTag);
   // console.log(seed_entries);
   return seed_entries;
-  }
+}
 
   // function generateEntriesSQL(numInsert) {
   //   insertString = "INSERT INTO public.entries (title,description,created,user_id) VALUES (" 

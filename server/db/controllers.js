@@ -21,19 +21,38 @@ const getTags = (name) => {
 // Controller: GET entry from the DB
 const getEntries = () => {
   return knex("entries")
+
+    // .select([
+    //     "users.username",
+    //     "entries.title",
+    //   //   "entries.description",
+    //   //   "entries.created",
+    //   //   "entries.updated",
+    //     // knex.raw('array_agg(DISTINCT tags.name) as tags'), 
+    //   //   ARRAY[tags.name],
+    //   knex
+    // ]
+
+        //  .select("*")
+        //  .from("movies")
+        //  .innerJoin("movie_actors", "movies.id", "movie_actors.movie_id")
+        //  .innerJoin("person", "movie_actors.person_id", "person.id")
+        //  .where("movies.id", req.params.id)
+
+   
     .select(
-      "users.username",
-      "entries.title",
-      "entries.description",
-      "entries.created",
-      "entries.updated",
-      knex.raw('array_agg(DISTINCT tags.name) as tags'), 
-    //   ARRAY[tags.name],
+       "users.username",
+        "entries.title",
+        "entries.description",
+        "entries.created",
+        "entries.updated",
+        // DISTINCT("tags.name") as tags,
     )
+    .from('entries')
     .join("entry_tag", "entries.id", "entry_tag.entry_id")
     .join("tags", "entry_tag.tag_id", "tags.id")
-    .join("users", "entries.user_id", "=", "users.id")
-    // .groupBy("entries.id", "tags.name");
+    .join("users", "entries.user_id", "users.id")
+    // .groupBy("entries.title");
 };
 
 // Controller: POST a new Tag to the DB
