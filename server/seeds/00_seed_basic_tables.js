@@ -37,7 +37,7 @@ function generateUsersSeed(numSeeds = num_users) {
       }
     )
   }
-  console.log(`Generated ${seed_entries.length} entries`);
+  console.log(`Generated ${seed_entries.length} users`);
   return seed_entries;
 } 
 
@@ -50,7 +50,7 @@ function generateTagsSeed(numSeeds = num_tags) {
       }
     )
   }
-  console.log(`Generated ${seed_entries.length} entries`);
+  console.log(`Generated ${seed_entries.length} tags`);
   return seed_entries;
 }
 
@@ -87,7 +87,7 @@ function generateEntryTagsSeed(numEntries = num_entries,
   // console.log('maxTag', maxTag);
   // console.log('minTag', minTag);
   // console.log(seed_entries);
-  console.log(`Generated ${seed_entries.length} entries`);
+  console.log(`Generated ${seed_entries.length} entry_tag relationships`);
   return seed_entries;
   }
 
@@ -102,20 +102,24 @@ exports.seed = async function(knex) {
     await knex("users").del();
     await knex("users")
       .insert(generateUsersSeed());
-  
+    console.log('Inserted users');
+    
     // Insert tags
     await knex("tags").del();
     await knex("tags")
-      .insert(generateTagsSeed());
+    .insert(generateTagsSeed());
+    console.log('Inserted tags');
     
     // Insert entries
     await knex("entries").del();
     await knex("entries")
-      .insert(generateEntriesSeed());
-
+    .insert(generateEntriesSeed());
+    console.log('Inserted entries');
+    
     // Insert entry_tags
     await knex("entry_tag").del()
     await knex("entry_tag")
-      .insert(generateEntryTagsSeed());
+    .insert(generateEntryTagsSeed());
+    console.log('Inserted entry_tag relationships');
 
 };
