@@ -1,3 +1,4 @@
-# SDI Blended Full Stack Project Scaffold
-
-Add any files you see fit for your application to work. Make sure to change this README to include a meaningful description of your application and how to get it started.
+[{title: "Title1" | description: "Description1" | tag: "Room 5"}
+{title: "Title2" | description: "Description2" | tag: "Fire"}
+{title: "Title3" | description: "Description3" | tag: "Broom"}
+{title: "Title4" | description: "Description4" | tag: "Hair Spray"}]
