@@ -3,7 +3,7 @@ import { mslContext } from '../App.js';
 
 const PostEntry = () => {
   const [inputs,setInputs] = useState({})
-  const { srvPort } = React.useContext(mslContext);
+  const { srvPort,databaseTags } = React.useContext(mslContext);
 
 
   const handleSubmit = () => {
@@ -31,6 +31,19 @@ const PostEntry = () => {
     <>
     <form onSubmit={handleSubmit}>
     <input placeholder="title" name="title" onChange={handleChange}/><br/>
+     <select name="tags">
+      {
+        databaseTags === undefined ?
+        <option>Loading...</option>
+        :
+        <>
+        <option disabled selected="selected">--Tags--</option>
+        {databaseTags.map( (tag) => {
+          return(<option  key={tag.id} value={tag.name}>{tag.name}</option>)})
+        }</>
+
+      }
+    </select><br/>
     <textarea placeholder="description" name="description" onChange={handleChange} rows="4" cols="50"/><br/>
     <button>Submit</button>
     </form>
@@ -40,6 +53,16 @@ const PostEntry = () => {
 
 export default PostEntry;
 
+
+//
+
+
+// <option value="choose" disabled selected="selected">
+//    -- Select country --
+// </option>
+// {this.getCountry()}
+
+
 // POST ENTRY TEMPLATE
 // {
 //   user_id : user_id
@@ -47,3 +70,6 @@ export default PostEntry;
 //   desc : desc
 //   tags : [tags]
 // }
+
+
+//return( <option value={tag.name}>{tag.name}</option>)

@@ -26,7 +26,7 @@ function App() {
   },[])
 
   return (
-    <mslContext.Provider value={ {srvPort} }>
+    <mslContext.Provider value={ {srvPort, databaseTags} }>
     {console.log('Tags:', databaseTags)}
       <div>
       <NavBar />
