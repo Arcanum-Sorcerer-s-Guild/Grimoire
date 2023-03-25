@@ -1,0 +1,14 @@
+import React from 'react'
+import { Link } from 'react-router-dom'
+
+const NavBar = () => {
+  return (
+      <>
+      <Link to="/home"><div>Home</div></Link>
+      <Link to="/login"><div>Login</div></Link>
+      </>
+    
+  )
+}
+;
+export default NavBar
