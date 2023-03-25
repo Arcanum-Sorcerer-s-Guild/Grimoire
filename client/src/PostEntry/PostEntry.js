@@ -31,7 +31,7 @@ const PostEntry = () => {
     <>
     <form onSubmit={handleSubmit}>
     <input placeholder="title" name="title" onChange={handleChange}/><br/>
-     <select name="tags">
+     <select name="tags" onChange={handleChange}>
       {
         databaseTags === undefined ?
         <option>Loading...</option>
