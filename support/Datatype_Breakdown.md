@@ -35,8 +35,8 @@
 ### POST TEMPLATES - POST /TEMPLATES
     {
       title : title
-      desc : desc
-      tags : [tags]
+      description : desc
+      tags : [{name: "ex tag1", name: "ex tag2", ...}]
     }
 
 ### RETRIEVE ENTRIES - GET /ENTRIES
