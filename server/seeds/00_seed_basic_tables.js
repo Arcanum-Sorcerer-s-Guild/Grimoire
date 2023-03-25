@@ -54,39 +54,8 @@ function generateTagsSeed(numSeeds = num_tags) {
   return seed_entries;
 }
 
-function generateEntryTagsSeed(numEntries = num_entries,
-    numTags = num_tags,
-    numSeeds = num_entry_tags) {
-  const seed_entries = []
-  for (let i=0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        entry_id: faker.datatype.number({min:1,max:num_users}),
-        tag_id: faker.datatype.number({min:1,max:num_users})
-      }
-    )
-  }
-  let maxEntry = 1;
-  let minEntry = 1;
-  let maxTag = 1;
-  let minTag = 1;
-  seed_entries.forEach(pair => {
-    if (pair.entry_id > maxEntry) {
-      maxEntry = pair.entry_id
-    } else if (pair.entry_id < minEntry) {
-      minEntry = pair.entry_id
-    }
-    if (pair.tag_id > maxTag) {
-      maxTag = pair.tag_id
-    } else if (pair.tag_id < minTag) {
-      minTag = pair.tag_id
-    }
-  })
-  // console.log('maxEntry', maxEntry);
-  // console.log('minEntry', minEntry);
-  // console.log('maxTag', maxTag);
-  // console.log('minTag', minTag);
-  // console.log(seed_entries);
+      entry_id: faker.datatype.number({ min: 1, max: countEntries }),
+      tag_id: faker.datatype.number({ min: 1, max: countTags }),
   console.log(`Generated ${seed_entries.length} entry_tag relationships`);
   return seed_entries;
   }
