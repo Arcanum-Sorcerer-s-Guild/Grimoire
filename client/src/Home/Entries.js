@@ -9,7 +9,7 @@ const Entries = () => {
     fetch(`http://localhost:${srvPort}/entries`)
     .then(res => res.json())
     .then(data => {
-      console.log(data)
+      // console.log(data)
       setEntries(data)
     })
   },[])

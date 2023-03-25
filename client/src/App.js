@@ -27,6 +27,7 @@ function App() {
 
   return (
     <mslContext.Provider value={ {srvPort} }>
+    {console.log('Tags:', databaseTags)}
       <div>
       <NavBar />
       <Routes>
