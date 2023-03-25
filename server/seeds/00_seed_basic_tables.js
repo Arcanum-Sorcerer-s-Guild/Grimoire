@@ -3,14 +3,13 @@ const knex = require("knex")(
 );
 
 
-let num_users = 100;
-let num_entries = 1500;
-let num_tags = 50;
-let num_entry_tags = 4000;
-// let num_users = 100;
-// let num_entries = 1500;
-// let num_tags = 25;
-// let num_entry_tags = 4000;
+const generateFakeParagraph = (numSentences) => {
+  const fakeParagraph = [];
+  for (let i = 0; i < numSentences; i++) {
+    fakeParagraph.push(faker.hacker.phrase());
+  }
+  return fakeParagraph.join(' ');
+};
 
 
 function generateEntriesSeed(numSeeds = num_entries) {
@@ -22,7 +21,7 @@ function generateEntriesSeed(numSeeds = num_entries) {
     );
     seed_entries.push({
       title: faker.hacker.verb() + " " + faker.hacker.noun(),
-      description: faker.hacker.phrase(),
+      description: generateFakeParagraph(sentencesInDescription),
       created: date,
       updated: date,
   }
@@ -76,6 +75,7 @@ const generateTemplatesSeed = async (
   }
 
 
+          description: generateFakeParagraph(sentencesInDescription),
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
