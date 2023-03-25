@@ -26,8 +26,8 @@ const PostEntry = () => {
   return(
     <>
     <form onSubmit={handleSubmit}>
-    <input placeholder="" name="title" onChange={handleChange}/>
-    <input placeholder="" name="description" onChange={handleChange}/>
+    <input placeholder="title" name="title" onChange={handleChange}/>
+    <input placeholder="description" name="description" onChange={handleChange}/>
     <button>Submit</button>
     </form>
     </>
