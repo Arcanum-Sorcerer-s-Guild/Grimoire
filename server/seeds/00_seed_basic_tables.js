@@ -14,15 +14,15 @@ let num_entry_tags = 4000;
 function generateEntriesSeed(numSeeds = num_entries) {
   const seed_entries = []
   for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        title: faker.hacker.verb() + ' ' + faker.hacker.noun(),
-        description: faker.hacker.phrase(),
-        created: faker.date.between('2021-01-01T00:00:00.000Z','2023-01-01T00:00:00.000Z'),
-        updated: null,
-        user_id: faker.datatype.number({min:1,max:num_users})
-      }
-    )
+    let date = faker.date.between(
+      "2021-01-01T00:00:00.000Z",
+      "2023-01-01T00:00:00.000Z"
+    );
+    seed_entries.push({
+      title: faker.hacker.verb() + " " + faker.hacker.noun(),
+      description: faker.hacker.phrase(),
+      created: date,
+      updated: date,
   }
   console.log(`Generated ${seed_entries.length} entries`);
   return seed_entries;
