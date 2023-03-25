@@ -1,7 +1,10 @@
 import React, {useState} from 'react'
+import { mslContext } from '../App.js';
 
 const PostEntry = () => {
   const [inputs,setInputs] = useState({})
+  const { srvPort } = React.useContext(mslContext);
+
 
   const handleSubmit = () => {
     const requestOptions = {
@@ -9,7 +12,8 @@ const PostEntry = () => {
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify(inputs)
   };
-  fetch('http://localhost:3001/entries', requestOptions)
+  fetch(`http://localhost:${srvPort}/entries`, requestOptions)
+  // fetch(`http://localhost:3001/entries`, requestOptions)
     .then(response => response.json())
     .then(data => {
       //TODO get/handle appropriate returning value from server

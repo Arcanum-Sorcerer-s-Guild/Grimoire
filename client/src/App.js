@@ -1,9 +1,11 @@
 import './App.css';
+import React, {useState, useEffect} from 'react'
 import Entries from "./Home/Entries.js";
 import Login from "./Login/Login.js"
 import NavBar from "./Common/NavBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import { Routes, Route } from "react-router-dom";
+//require("dotenv").config();
 
 export const mslContext = React.createContext();
 
@@ -11,11 +13,11 @@ export const mslContext = React.createContext();
 //const port = process.env.SERVER_PORT || 3000;
 
 function App() {
-  const [srvPort,setSrvPort] = useState()
-  setSrvPort(process.env.SERVER_PORT || 3000)
+  const [srvPort,setSrvPort] = useState(3001)
 
   return (
-    <mslContext.Provider value={{srvPort}}>
+    <mslContext.Provider value={ {srvPort} }>
+      <div>
       <NavBar />
       <Routes>
         <Route exact path = "/home" element={<Entries />} />
@@ -23,8 +25,9 @@ function App() {
         <Route path="/login" element={<Login />} />
         <Route path="/post" element={<PostEntry />} />
       </Routes>
+      </div>
     </mslContext.Provider>
-  );
+  )
 }
 
 export default App;
