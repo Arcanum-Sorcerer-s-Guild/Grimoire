@@ -11,9 +11,7 @@ const generateFakeParagraph = (numSentences) => {
   return fakeParagraph.join(' ');
 };
 
-
-function generateEntriesSeed(numSeeds = num_entries) {
-  const seed_entries = []
+  sentencesInDescription = 5,
   for (let i = 0; i < numSeeds; i++) {
     let date = faker.date.between(
       "2021-01-01T00:00:00.000Z",
@@ -73,9 +71,27 @@ const generateTemplatesSeed = async (
   for (let i = 0; i < numTagsToAttach; i++) {
     tagSelections.push(tagOptions.splice(randomInRange(0, tagOptions.length), 1)[0]);
   }
+  
 
-
+  const templates = []
+  for (let i = 0; i < numSeeds; i++) {
+    let genTitle = faker.hacker.verb() + ' ' + faker.hacker.noun()
+    templates.push(
+      {
+        name: `${genTitle} - Template`,
+        form_data: {
+          title: genTitle,
           description: generateFakeParagraph(sentencesInDescription),
+          tags: tagSelections,
+          // userId: faker.datatype.number({min:1,max:countUsers}),
+        },
+      }
+    )
+  }
+
+  return templates;
+};
+
 /**
  * @param { import("knex").Knex } knex
  * @returns { Promise<void> } 
