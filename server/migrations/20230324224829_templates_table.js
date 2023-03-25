@@ -7,7 +7,7 @@ exports.up = function(knex) {
     .createTable('templates', (table) => {
       table.increments('id').primary();
       table.string('name').notNullable();
-      table.json('json').nullable();
+      table.json('form_data').nullable();
     })
 };
 
