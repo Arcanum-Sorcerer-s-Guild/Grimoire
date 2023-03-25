@@ -3,9 +3,9 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -317.4999938408534,
-    "scrollLeft": -88.99999910593036,
-    "zoomLevel": 0.9,
+    "scrollTop": -4.699993840853439,
+    "scrollLeft": -84.19999910593044,
+    "zoomLevel": 1,
     "show": {
       "tableComment": true,
       "columnComment": true,
@@ -675,10 +675,10 @@
           }
         ],
         "ui": {
-          "active": true,
+          "active": false,
           "left": 380.775,
           "top": 584.6983,
-          "zIndex": 13,
+          "zIndex": 8,
           "widthName": 65.5908203125,
           "widthComment": 60,
           "color": "#000000"

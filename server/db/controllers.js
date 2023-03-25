@@ -14,8 +14,11 @@ const getUsers = (name) => {
 
 // Controller: GET tag from the DB
 const getTags = (name) => {
-  name = name ? name : "*";
-  return knex("tags").select("id").where({ name: name });
+  name ?
+  name = knex("tags").select("*").where({name: name})
+  :
+  name = knex("tags").select("*");
+  return name;
 };
 
 // Controller: GET entry from the DB
@@ -28,7 +31,7 @@ const getEntries = () => {
     //   //   "entries.description",
     //   //   "entries.created",
     //   //   "entries.updated",
-    //     // knex.raw('array_agg(DISTINCT tags.name) as tags'), 
+    //     // knex.raw('array_agg(DISTINCT tags.name) as tags'),
     //   //   ARRAY[tags.name],
     //   knex
     // ]
@@ -39,7 +42,7 @@ const getEntries = () => {
         //  .innerJoin("person", "movie_actors.person_id", "person.id")
         //  .where("movies.id", req.params.id)
 
-   
+
     .select(
        "users.username",
         "entries.title",
