@@ -20,21 +20,17 @@ const getTags = (name) => {
 
 // Controller: GET entry from the DB
 const getEntries = () => {
-  let test = knex("entries")
+  return knex("entries")
     .select(
       "entries.*",
       "users.*",
-   
       knex.raw("array_agg(DISTINCT tags.name) as tags")
     )
     .join("users", "users.id", "=", "entries.user_id")
     .join("entry_tag", "entries.id", "entry_tag.entry_id")
     .join("tags", "entry_tag.tag_id", "tags.id")
-    // .groupBy("entries.id")
+    .groupBy("entries.id", "users.id")
     .orderBy("entries.id", "desc")
-    .limit(5);
-  console.log(test);
-  return test;
 };
 
 // Controller: POST a new Tag to the DB
