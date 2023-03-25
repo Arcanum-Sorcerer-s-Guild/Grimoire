@@ -11,7 +11,7 @@ exports.up = function(knex) {
     .createTable('entries', (table) => {
       table.increments('id').primary();
       table.string('title').notNullable();
-      table.string('description').notNullable();
+      table.text('description').notNullable();
       table.datetime('created', { useTz: false, precision: 3 }).defaultTo(knex.fn.now());
       table.datetime('updated', { useTz: false, precision: 3 }).defaultTo(knex.fn.now());
       table.integer('user_id').unsigned().notNullable();
