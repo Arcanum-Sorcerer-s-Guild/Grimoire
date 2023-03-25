@@ -84,17 +84,20 @@ app.get("/users", (req, res) => {
 });
 
 //POST Requests
-// Post a new Entry to the DB
-// app.post("/entries", (req, res) => {
-//   getAllEntries()
-//     .then((data) => res.status(200).json(data))
-//     .catch((err) =>
-//       res.status(404).json({
-//         message:
-//           "The data you are looking for could not be found. Please try again",
-//       })
-//     );
-// });
+
+
+//Post a new Entry to the DB
+app.post("/entries", (req, res) => {
+  console.log(req.body)
+  // getAllEntries()
+  //   .then((data) => res.status(200).json(data))
+  //   .catch((err) =>
+  //     res.status(404).json({
+  //       message:
+  //         "The data you are looking for could not be found. Please try again",
+  //     })
+  //   );
+});
 
 // Post a new Template to the DB
 // app.post("/templates", (req, res) => {

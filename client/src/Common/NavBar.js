@@ -6,9 +6,11 @@ const NavBar = () => {
       <>
       <Link to="/home"><div>Home</div></Link>
       <Link to="/login"><div>Login</div></Link>
+      <Link to="/post"><div>Post</div></Link>
       </>
-    
+
   )
 }
 ;
 export default NavBar
+

@@ -5,6 +5,9 @@ import NavBar from "./Common/NavBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import { Routes, Route } from "react-router-dom";
 
+// TODO create environmental variable for the current server PORT
+//const port = process.env.SERVER_PORT || 3000;
+
 function App() {
   return (
     <div>
