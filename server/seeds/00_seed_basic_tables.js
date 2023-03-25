@@ -1,4 +1,6 @@
-const {faker} = require('@faker-js/faker');
+const knex = require("knex")(
+  require("../knexfile.js")["development"]
+);
 
 
 let num_users = 100;
@@ -58,6 +60,19 @@ function generateTagsSeed(numSeeds = num_tags) {
       tag_id: faker.datatype.number({ min: 1, max: countTags }),
   console.log(`Generated ${seed_entries.length} entry_tag relationships`);
   return seed_entries;
+const generateTemplatesSeed = async (
+  numSeeds = numTemplates,
+  // countUsers = numUsers,
+  numTagsToAttach = 3,
+  sentencesInDescription = 5,
+) => {
+  const randomInRange = (min, max) => Math.floor(Math.random() * (max - min) + min);
+
+  let tagOptions = await knex.select("name").from("tags");
+  
+  let tagSelections = [];
+  for (let i = 0; i < numTagsToAttach; i++) {
+    tagSelections.push(tagOptions.splice(randomInRange(0, tagOptions.length), 1)[0]);
   }
 
 
