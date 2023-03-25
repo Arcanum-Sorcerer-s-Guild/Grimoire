@@ -24,9 +24,9 @@ exports.up = function(knex) {
     .createTable('entry_tag', (table) => {
       table.increments('id').primary();
       table.integer('entry_id').unsigned().notNullable();
-      table.foreign('entry_id').references('id').inTable('users');
+      // table.foreign('entry_id').references('id').inTable('users');
       table.integer('tag_id').unsigned().notNullable();
-      table.foreign('tag_id').references('id').inTable('users');
+      // table.foreign('tag_id').references('id').inTable('users');
     })
 };
 
