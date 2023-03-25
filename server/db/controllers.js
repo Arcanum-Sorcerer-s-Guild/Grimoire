@@ -11,8 +11,11 @@ const getUsers = (name) => {
 
 // Controller: GET tag from the DB
 const getTags = (name) => {
-  name = name ? name : "*";
-  return knex("tags").select("id").where({ name: name });
+  name ?
+  name = knex("tags").select("*").where({name: name})
+  :
+  name = knex("tags").select("*");
+  return name;
 };
 
 // Controller: GET entry from the DB

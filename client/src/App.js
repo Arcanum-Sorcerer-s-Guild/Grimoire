@@ -1,25 +1,44 @@
-import logo from './logo.svg';
 import './App.css';
+import React, {useState, useEffect} from 'react'
+import Entries from "./Home/Entries.js";
+import Login from "./Login/Login.js"
+import NavBar from "./Common/NavBar.js"
+import PostEntry from "./PostEntry/PostEntry.js"
+import { Routes, Route } from "react-router-dom";
+
+//require("dotenv").config();
+
+export const mslContext = React.createContext();
+
+// TODO create environmental variable for the current server PORT
+//const port = process.env.SERVER_PORT || 3000;
 
 function App() {
+  const [srvPort,setSrvPort] = useState(3001)
+  const [databaseTags, setDatabaseTags] = useState();
+
+  useEffect(() => {
+    fetch(`http://localhost:${srvPort}/tags`)
+    .then(res => res.json())
+    .then(data => {
+      setDatabaseTags(data)
+    })
+  },[])
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    <mslContext.Provider value={ {srvPort, databaseTags} }>
+    {console.log('Tags:', databaseTags)}
+      <div>
+      <NavBar />
+      <Routes>
+        <Route exact path = "/home" element={<Entries />} />
+        {/* <Route path = "/templates" element={<Templates />} /> */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/post" element={<PostEntry />} />
+      </Routes>
+      </div>
+    </mslContext.Provider>
+  )
 }
 
 export default App;
