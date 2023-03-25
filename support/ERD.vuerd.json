@@ -3,8 +3,8 @@
     "version": "2.2.11",
     "width": 2000,
     "height": 2000,
-    "scrollTop": -154.9999938408534,
-    "scrollLeft": -22.499999105930364,
+    "scrollTop": -317.4999938408534,
+    "scrollLeft": -88.99999910593036,
     "zoomLevel": 0.9,
     "show": {
       "tableComment": true,
@@ -189,7 +189,7 @@
           "active": false,
           "left": 115.3331,
           "top": 41.6676,
-          "zIndex": 2,
+          "zIndex": 1,
           "widthName": 60,
           "widthComment": 60
         },
@@ -251,7 +251,7 @@
           "active": false,
           "left": 120.6662,
           "top": 342.8343,
-          "zIndex": 12,
+          "zIndex": 7,
           "widthName": 60,
           "widthComment": 60
         },
@@ -313,7 +313,7 @@
           "active": false,
           "left": 638.5895,
           "top": 314.1172,
-          "zIndex": 7,
+          "zIndex": 5,
           "widthName": 60,
           "widthComment": 60
         },
@@ -398,7 +398,7 @@
           "active": false,
           "left": 638.078,
           "top": 73.6381,
-          "zIndex": 8,
+          "zIndex": 6,
           "widthName": 60,
           "widthComment": 82.20263671875
         },
@@ -506,7 +506,7 @@
           "active": false,
           "left": 1319.5555,
           "top": 286.9662,
-          "zIndex": 5,
+          "zIndex": 3,
           "widthName": 60,
           "widthComment": 60,
           "color": "#FFEB3B"
@@ -592,7 +592,7 @@
           "active": false,
           "left": 1315.7188,
           "top": 58.781,
-          "zIndex": 4,
+          "zIndex": 2,
           "widthName": 77.16259765625,
           "widthComment": 82.20263671875,
           "color": "#ECFF00"
@@ -613,7 +613,7 @@
               "autoIncrement": false,
               "primaryKey": false,
               "unique": false,
-              "notNull": false
+              "notNull": true
             },
             "ui": {
               "active": false,
@@ -636,7 +636,7 @@
               "autoIncrement": false,
               "primaryKey": false,
               "unique": false,
-              "notNull": false
+              "notNull": true
             },
             "ui": {
               "active": false,
@@ -651,7 +651,7 @@
             "id": "f1801449-807c-492e-bdea-742dd7de6442"
           },
           {
-            "name": "JSON",
+            "name": "form_data",
             "comment": "",
             "dataType": "JSON",
             "default": "",
@@ -666,7 +666,7 @@
               "pk": false,
               "fk": false,
               "pfk": false,
-              "widthName": 60,
+              "widthName": 60.53173828125,
               "widthComment": 60,
               "widthDataType": 60,
               "widthDefault": 60
@@ -675,10 +675,10 @@
           }
         ],
         "ui": {
-          "active": false,
+          "active": true,
           "left": 380.775,
           "top": 584.6983,
-          "zIndex": 3,
+          "zIndex": 13,
           "widthName": 65.5908203125,
           "widthComment": 60,
           "color": "#000000"
@@ -810,7 +810,7 @@
           "active": false,
           "left": 1316.5996,
           "top": 555.7531,
-          "zIndex": 6,
+          "zIndex": 4,
           "widthName": 65.5908203125,
           "widthComment": 60,
           "color": "#8459FF"

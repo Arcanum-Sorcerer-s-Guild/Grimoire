@@ -1,121 +1,144 @@
-const {faker} = require('@faker-js/faker');
+const { faker } = require("@faker-js/faker");
+const knex = require("knex")(require("../knexfile.js")["development"]);
 
+const numUsers = 100;
+const numEntries = 1500;
+const numTags = 25;
+const numEntryTags = 4000;
+const numTemplates = 20;
 
-let num_users = 100;
-let num_entries = 1500;
-let num_tags = 50;
-let num_entry_tags = 4000;
-// let num_users = 100;
-// let num_entries = 1500;
-// let num_tags = 25;
-// let num_entry_tags = 4000;
-
-
-function generateEntriesSeed(numSeeds = num_entries) {
-  const seed_entries = []
-  for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        title: faker.hacker.verb() + ' ' + faker.hacker.noun(),
-        description: faker.hacker.phrase(),
-        created: faker.date.between('2021-01-01T00:00:00.000Z','2023-01-01T00:00:00.000Z'),
-        updated: null,
-        user_id: faker.datatype.number({min:1,max:num_users})
-      }
-    )
+const generateFakeParagraph = (numSentences) => {
+  const fakeParagraph = [];
+  for (let i = 0; i < numSentences; i++) {
+    fakeParagraph.push(faker.hacker.phrase());
   }
-  console.log(`Generated ${seed_entries.length} entries`);
-  return seed_entries;
-}
+  return fakeParagraph.join(" ");
+};
 
-function generateUsersSeed(numSeeds = num_users) {
+function generateEntriesSeed(
+  numSeeds = numEntries,
+  countUsers = numUsers,
+  sentencesInDescription = 5
+) {
   const seed_entries = [];
   for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        username : faker.internet.userName(),
-      }
-    )
+    let date = faker.date.between(
+      "2021-01-01T00:00:00.000Z",
+      "2023-01-01T00:00:00.000Z"
+    );
+    seed_entries.push({
+      title: faker.hacker.verb() + " " + faker.hacker.noun(),
+      description: generateFakeParagraph(sentencesInDescription),
+      created: date,
+      updated: date,
+      user_id: faker.datatype.number({ min: 1, max: countUsers }),
+    });
   }
-  console.log(`Generated ${seed_entries.length} entries`);
-  return seed_entries;
-} 
-
-function generateTagsSeed(numSeeds = num_tags) {
-  const seed_entries = []
-  for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        name : faker.hacker.noun(),
-      }
-    )
-  }
-  console.log(`Generated ${seed_entries.length} entries`);
   return seed_entries;
 }
 
-function generateEntryTagsSeed(numEntries = num_entries,
-    numTags = num_tags,
-    numSeeds = num_entry_tags) {
-  const seed_entries = []
-  for (let i=0; i < numSeeds; i++) {
-    seed_entries.push(
-      {
-        entry_id: faker.datatype.number({min:1,max:num_users}),
-        tag_id: faker.datatype.number({min:1,max:num_users})
-      }
-    )
+function generateUsersSeed(numSeeds = numUsers) {
+  const seed_entries = [];
+  for (let i = 0; i < numSeeds; i++) {
+    seed_entries.push({
+      username: faker.internet.userName(),
+    });
   }
-  let maxEntry = 1;
-  let minEntry = 1;
-  let maxTag = 1;
-  let minTag = 1;
-  seed_entries.forEach(pair => {
-    if (pair.entry_id > maxEntry) {
-      maxEntry = pair.entry_id
-    } else if (pair.entry_id < minEntry) {
-      minEntry = pair.entry_id
-    }
-    if (pair.tag_id > maxTag) {
-      maxTag = pair.tag_id
-    } else if (pair.tag_id < minTag) {
-      minTag = pair.tag_id
-    }
-  })
-  // console.log('maxEntry', maxEntry);
-  // console.log('minEntry', minEntry);
-  // console.log('maxTag', maxTag);
-  // console.log('minTag', minTag);
-  // console.log(seed_entries);
-  console.log(`Generated ${seed_entries.length} entries`);
   return seed_entries;
+}
+
+function generateTagsSeed(numSeeds = numTags) {
+  const seed_entries = [];
+  for (let i = 0; i < numSeeds; i++) {
+    seed_entries.push({
+      name: faker.hacker.noun(),
+    });
+  }
+  return seed_entries;
+}
+
+function generateEntryTagsSeed(
+  countEntries = numEntries,
+  countTags = numTags,
+  numSeeds = numEntryTags
+) {
+  const seed_entries = [];
+  for (let i = 0; i < numSeeds; i++) {
+    seed_entries.push({
+      entry_id: faker.datatype.number({ min: 1, max: countEntries }),
+      tag_id: faker.datatype.number({ min: 1, max: countTags }),
+    });
+  }
+  return seed_entries;
+}
+
+const generateTemplatesSeed = async (
+  numSeeds = numTemplates,
+  // countUsers = numUsers,
+  numTagsToAttach = 3,
+  sentencesInDescription = 5
+) => {
+  const randomInRange = (min, max) =>
+    Math.floor(Math.random() * (max - min) + min);
+
+  let tagOptions = await knex.select("name").from("tags");
+
+  let tagSelections = [];
+  for (let i = 0; i < numTagsToAttach; i++) {
+    tagSelections.push(
+      tagOptions.splice(randomInRange(0, tagOptions.length), 1)[0]
+    );
   }
 
+  const templates = [];
+  for (let i = 0; i < numSeeds; i++) {
+    let genTitle = faker.hacker.verb() + " " + faker.hacker.noun();
+    templates.push({
+      name: `${genTitle} - Template`,
+      form_data: {
+        title: genTitle,
+        description: generateFakeParagraph(sentencesInDescription),
+        tags: tagSelections,
+        // userId: faker.datatype.number({min:1,max:countUsers}),
+      },
+    });
+  }
+
+  return templates;
+};
 
 /**
  * @param { import("knex").Knex } knex
- * @returns { Promise<void> } 
+ * @returns { Promise<void> }
  */
-exports.seed = async function(knex) {
+exports.seed = async (knex) => {
+  // Insert users
+  let usersSeed = await generateUsersSeed();
+  await knex("users").del();
+  await knex("users").insert(usersSeed);
+  console.log(`Inserted ${usersSeed.length} users`);
 
-    // Insert users
-    await knex("users").del();
-    await knex("users")
-      .insert(generateUsersSeed());
-  
-    // Insert tags
-    await knex("tags").del();
-    await knex("tags")
-      .insert(generateTagsSeed());
-    
-    // Insert entries
-    await knex("entries").del();
-    await knex("entries")
-      .insert(generateEntriesSeed());
+  // Insert tags
+  let tagsSeed = await generateTagsSeed();
+  await knex("tags").del();
+  await knex("tags").insert(tagsSeed);
+  console.log(`Inserted ${tagsSeed.length} tags`);
 
-    // Insert entry_tags
-    await knex("entry_tag").del()
-    await knex("entry_tag")
-      .insert(generateEntryTagsSeed());
+  // Insert entries
+  let entriesSeed = await generateEntriesSeed();
+  await knex("entries").del();
+  await knex("entries").insert(entriesSeed);
+  console.log(`Inserted ${entriesSeed.length} entries`);
 
+  // Insert entry_tags
+  let entryTagsSeed = await generateEntryTagsSeed();
+  await knex("entry_tag").del();
+  await knex("entry_tag").insert(entryTagsSeed);
+  console.log(`Inserted ${entryTagsSeed.length} entry_tag relationships`);
+
+  // Insert templates
+  let templatesSeed = await generateTemplatesSeed();
+  await knex("templates").del();
+  await knex("templates").insert(templatesSeed);
+  console.log(`Inserted ${templatesSeed.length} templates`);
 };
