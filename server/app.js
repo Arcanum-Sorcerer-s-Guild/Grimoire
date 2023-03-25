@@ -43,7 +43,8 @@ app.get("/entries", (req, res) => {
       res.status(404).json({
         message:
           "The data you are looking for could not be found. Please try again",
-      })
+          err
+        })
     );
 });
 

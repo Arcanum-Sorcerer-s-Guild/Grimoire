@@ -5,6 +5,8 @@ let num_users = 100;
 let num_entries = 1500;
 let num_tags = 50;
 let num_entry_tags = 4000;
+
+// MAX 
 // let num_users = 100;
 // let num_entries = 1500;
 // let num_tags = 25;
