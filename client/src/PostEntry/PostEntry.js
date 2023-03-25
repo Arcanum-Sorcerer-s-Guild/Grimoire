@@ -37,7 +37,7 @@ const PostEntry = () => {
         <option>Loading...</option>
         :
         <>
-        <option disabled selected="selected">--Tags--</option>
+        <option disabled>--Tags--</option>
         {databaseTags.map( (tag) => {
           return(<option  key={tag.id} value={tag.name}>{tag.name}</option>)})
         }</>
