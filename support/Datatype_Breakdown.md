@@ -34,7 +34,6 @@
 
 ### POST TEMPLATES - POST /TEMPLATES
     {
-      user_id : user_id
       title : title
       desc : desc
       tags : [tags]
