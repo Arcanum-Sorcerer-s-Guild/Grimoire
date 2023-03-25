@@ -3,6 +3,7 @@ import { mslContext } from '../App.js';
 
 const PostEntry = () => {
   const [inputs,setInputs] = useState({})
+  const [tagsToAdd,setTagsToAdd] = useState([])
   const { srvPort,databaseTags } = React.useContext(mslContext);
 
 
@@ -13,7 +14,6 @@ const PostEntry = () => {
       body: JSON.stringify(inputs)
   };
   fetch(`http://localhost:${srvPort}/entries`, requestOptions)
-  // fetch(`http://localhost:3001/entries`, requestOptions)
     .then(response => response.json())
     .then(data => {
       //TODO get/handle appropriate returning value from server
@@ -24,7 +24,14 @@ const PostEntry = () => {
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs(values => ({...values, [name]: value}))
+
+    if (name === 'tags' ) {
+      let tempTags = [...tagsToAdd,value]
+      setTagsToAdd(tempTags)
+      setInputs(values => ({...values, [name]: tempTags}))
+    } else {
+      setInputs(values => ({...values, [name]: value}))
+    }
   }
 
   return(
@@ -44,6 +51,7 @@ const PostEntry = () => {
 
       }
     </select><br/>
+
     <textarea placeholder="description" name="description" onChange={handleChange} rows="4" cols="50"/><br/>
     <button>Submit</button>
     </form>
