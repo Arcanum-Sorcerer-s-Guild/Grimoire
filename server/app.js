@@ -35,7 +35,8 @@ app.get("/", (req, res) => {
 // });
 
 app.get("/entries", (req, res) => {
-  getEntries()
+  // console.log(req.query)
+  getEntries(req.query)
     .then((data) => {
       res.status(200).json(data);
     })
