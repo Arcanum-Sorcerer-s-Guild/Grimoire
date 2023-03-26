@@ -31,31 +31,36 @@ const getEntries = (search) => {
     .join("tags", "entry_tag.tag_id", "tags.id")
     .where(function () {
       this.where(
-        "entries.title",
-        "like",
-        `%%${search.title ? search.title : ""}%%`
+        "entries.id",
+        `${search.id ? "=" : ">"}`,
+        `${search.id ? search.id : 0}`
       )
-        .andWhere(
-          "entries.description",
-          "like",
-          `%%${search.desc ? search.desc : ""}%%`
-        )
-        .andWhere(
-          "entries.created",
-          ">=",
-          `${search.start ? search.start : "1990-01-01"}`
-        )
-        .andWhere(
-          "entries.created",
-          "<=",
-          `${search.end ? search.end : new Date().toISOString()}`
-        )
-        .andWhere(
-          "users.username",
-          "like",
-          `%%${search.user ? search.user : ""}%%`
-        )
-        // .whereIn("tags.name", ["transmitter"])
+        // .andWhere(
+        //   "entries.title",
+        //   "like",
+        //   `%%${search.title ? search.title : ""}%%`
+        // )
+        // .andWhere(
+        //   "entries.description",
+        //   "like",
+        //   `%%${search.desc ? search.desc : ""}%%`
+        // )
+        // .andWhere(
+        //   "entries.created",
+        //   ">=",
+        //   `${search.start ? search.start : "1990-01-01"}`
+        // )
+        // .andWhere(
+        //   "entries.created",
+        //   "<=",
+        //   `${search.end ? search.end : new Date().toISOString()}`
+        // )
+        // .andWhere(
+        //   "users.username",
+        //   "like",
+        //   `%${search.user ? search.user : ""}`
+        // );
+      // .whereIn("tags.name", search.tag ? search.tag : ["%%"])
     })
     .groupBy("entries.id", "users.id")
     .orderBy("entries.id");
@@ -72,12 +77,15 @@ const createEntryTag = (tags) => {
 };
 
 // Controller: POST a new entry to the DB
-const createEntry = ({ title, description, user_id, tags }) => {
+const createEntry = ([{ title, description, user_id, tags }]) => {
+
   const submitEntry = knex("entries").insert({
     title: title,
     description: description,
     user_id: user_id,
-  });
+  }, "id");
+
+  console.log("sub", submitEntry)
 
   const foundTags = [];
   tags.forEach((tag) => {
@@ -100,26 +108,6 @@ const createEntry = ({ title, description, user_id, tags }) => {
 
   createEntryTag(foundTags);
 };
-
-// const modifyEntry = () => {
-
-// }
-/**
- * const timestamp = Date.now();
-knex('tableName')
-  .insert({
-    email: "ignore@example.com",
-    name: "John Doe",
-    created_at: timestamp,
-    updated_at: timestamp,
-  })
-  .onConflict('email')
-  .merge({
-    name: "John Doe",
-    updated_at: timestamp,
-  })
-  .where('updated_at', '<', timestamp)
- */
 
 module.exports = {
   getUsers,

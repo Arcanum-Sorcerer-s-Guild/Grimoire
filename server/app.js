@@ -35,7 +35,6 @@ app.get("/", (req, res) => {
 // });
 
 app.get("/entries", (req, res) => {
-  // console.log(req.query)
   getEntries(req.query)
     .then((data) => {
       res.status(200).json(data);
@@ -44,8 +43,21 @@ app.get("/entries", (req, res) => {
       res.status(404).json({
         message:
           "The data you are looking for could not be found. Please try again",
-          err
-        })
+        err,
+      })
+    );
+});
+app.get("/entries/:id", (req, res) => {
+  getEntries({ id: req.params.id })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message:
+          "The data you are looking for could not be found. Please try again",
+        err,
+      })
     );
 });
 
@@ -87,11 +99,12 @@ app.get("/users", (req, res) => {
 
 //POST Requests
 
-
 //Post a new Entry to the DB
 app.post("/entries", (req, res) => {
-  console.log(req.body)
-  // getAllEntries()
+  // console.log(req.body);
+  const test = createEntry(req.body)
+
+  // createEntry = ({ title, description, user_id, tags }) 
   //   .then((data) => res.status(200).json(data))
   //   .catch((err) =>
   //     res.status(404).json({
