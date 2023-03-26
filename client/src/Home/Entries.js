@@ -46,7 +46,11 @@ const Entries = () => {
       {
       (entries.length !== 0) ?
       <div> { entries.map(entry => {
-        return(<p key={Math.random()}>{`${entry.title} ${entry.created} ${entry.username} ${entry.description}`}</p>)
+        return(
+          <p key={Math.random()}>
+            {`Title: ${entry.title} Created: ${entry.created} Username: ${entry.username} Started: ${entry.description} Tags: `}
+            {entry.tags.map(tag => <span key={Math.random()}>{` ${tag}`}</span>)}
+          </p>)
       } )} </div>
       :
       <div>Loading</div>
