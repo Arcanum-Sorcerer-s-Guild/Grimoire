@@ -1,15 +1,12 @@
 const knex = require("./dbConnections.js");
 
-
 // Controller: GET user from the DB
 const getUsers = (name) => {
   name = name ? name : "*";
-//   return knex("tags").select("id").where({ username: name }, "id");
-  const test =  knex("users")
-  .select("*")
-  .where("id")
-  console.log(test)
-  return test
+  //   return knex("tags").select("id").where({ username: name }, "id");
+  const test = knex("users").select("*").where("id");
+  console.log(test);
+  return test;
 };
 
 // Controller: GET tag from the DB
@@ -24,38 +21,16 @@ const getTags = (name) => {
 // Controller: GET entry from the DB
 const getEntries = () => {
   return knex("entries")
-
-    // .select([
-    //     "users.username",
-    //     "entries.title",
-    //   //   "entries.description",
-    //   //   "entries.created",
-    //   //   "entries.updated",
-    //     // knex.raw('array_agg(DISTINCT tags.name) as tags'),
-    //   //   ARRAY[tags.name],
-    //   knex
-    // ]
-
-        //  .select("*")
-        //  .from("movies")
-        //  .innerJoin("movie_actors", "movies.id", "movie_actors.movie_id")
-        //  .innerJoin("person", "movie_actors.person_id", "person.id")
-        //  .where("movies.id", req.params.id)
-
-
     .select(
-       "users.username",
-        "entries.title",
-        "entries.description",
-        "entries.created",
-        "entries.updated",
-        // DISTINCT("tags.name") as tags,
+      "entries.*",
+      "users.*",
+      knex.raw("array_agg(DISTINCT tags.name) as tags")
     )
-    .from('entries')
+    .join("users", "users.id", "=", "entries.user_id")
     .join("entry_tag", "entries.id", "entry_tag.entry_id")
     .join("tags", "entry_tag.tag_id", "tags.id")
-    .join("users", "entries.user_id", "users.id")
-    // .groupBy("entries.title");
+    .groupBy("entries.id", "users.id")
+    .orderBy("entries.id", "desc")
 };
 
 // Controller: POST a new Tag to the DB
@@ -95,7 +70,14 @@ const createEntry = ({ title, description, user_id, tags }) => {
     });
   });
 
-  createEntryTag(foundTags)
+  createEntryTag(foundTags);
 };
 
-module.exports = { getUsers, getTags, getEntries, createTag, createEntryTag, createEntry };
+module.exports = {
+  getUsers,
+  getTags,
+  getEntries,
+  createTag,
+  createEntryTag,
+  createEntry,
+};
