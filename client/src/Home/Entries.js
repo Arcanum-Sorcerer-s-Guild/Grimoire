@@ -15,9 +15,9 @@ const Entries = () => {
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs(values => ({...values, [name]: value}))
+    setInputs(values => ({...values, [name]: value}))  //Updates query on submit
+    //  setSearchTerms(values => ({...values, [name]: value}))  //Updates query on input
   }
-
 
   useEffect(() => {
     let searchTerm = ''
