@@ -81,7 +81,7 @@ const NavBar = () => {
                 <button
                   type='submit' 
                   className="font-medium text-white text-sm p-2 ml-1 bg-slate-900 rounded-md border
-                    border-blue-700 hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
+                  hover:bg-blue-800 focus:ring-4 focus:outline-none focus:ring-blue-300 dark:bg-blue-600 dark:hover:bg-blue-700 dark:focus:ring-blue-800"
                 >
                   {React.createElement(RiSearchEyeLine, {size: "20"})}
                   <span className="sr-only">Search</span>
