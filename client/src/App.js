@@ -16,6 +16,7 @@ export const mslContext = React.createContext();
 function App() {
   const [srvPort,setSrvPort] = useState(3001)
   const [databaseTags, setDatabaseTags] = useState();
+  const [searchTerms, setSearchTerms] = useState({});
 
   useEffect(() => {
     fetch(`http://localhost:${srvPort}/tags`)
@@ -26,12 +27,12 @@ function App() {
   },[])
 
   return (
-    <mslContext.Provider value={ {srvPort, databaseTags} }>
-    {console.log('Tags:', databaseTags)}
+    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms} }>
       <div>
       <NavBar />
       <Routes>
-        <Route exact path = "/home" element={<Entries />} />
+        <Route path = "/home" element = {<Entries />} />
+        {/* <Route path = "/" element={<Entries />} /> */}
         {/* <Route path = "/templates" element={<Templates />} /> */}
         <Route path="/login" element={<Login />} />
         <Route path="/post" element={<PostEntry />} />

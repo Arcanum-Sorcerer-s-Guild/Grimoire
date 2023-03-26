@@ -17,7 +17,7 @@ const PostEntry = () => {
     .then(response => response.json())
     .then(data => {
       //TODO get/handle appropriate returning value from server
-      console.log(data)
+      // console.log(data)
     });
   }
 
