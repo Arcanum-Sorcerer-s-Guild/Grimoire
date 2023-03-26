@@ -3,22 +3,20 @@ import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 
 const AccordionItem = ({open, toggle, title, desc}) => {
     return (
-        <div
-            className="pt-[10px]"
-        >
+        <div className="pt-2">
             <div
-                className="flex justify-between items-center cursor-pointer bg-gray-100 py-[25px] px-[50px]"
+                className="flex justify-between items-center cursor-pointer bg-gray-100 py-3 px-5"
                 onClick={toggle}
             >
-                <p className="text-[22px] font-semibold">
+                <p className="text-xl font-semibold">
                     {title}
                 </p>
-                <div className="text-[30px]">
+                <div className="text-sm">
                     { open ? <AiOutlineMinus /> : <AiOutlinePlus /> }
                 </div>
             </div>
             <Collapse isOpened={open}>
-                <div className="bg-gray-100 px-[50px] pb-[20px]">
+                <div className="bg-gray-100 px-5 pb-5">
                     {desc}
                 </div>
             </Collapse>

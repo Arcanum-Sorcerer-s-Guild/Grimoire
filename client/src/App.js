@@ -4,6 +4,7 @@ import Entries from "./Home/Entries.js";
 import Login from "./Login/Login.js"
 import Theme from "./Common/Theme.js"
 import NavBar from "./Common/NavBar.js"
+import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import './App.css';
 
@@ -32,13 +33,16 @@ function App() {
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
       <Theme />
       <NavBar />
-      <Routes>
-        <Route path = "/home" element = {<Entries />} />
-        {/* <Route path = "/" element={<Entries />} /> */}
-        {/* <Route path = "/templates" element={<Templates />} /> */}
-        <Route path="/login" element={<Login />} />
-        <Route path="/post" element={<PostEntry />} />
-      </Routes>
+      <div className="grid grid-flow-cols w-full">
+        <SearchBar />
+        <Routes>
+          <Route path = "/home" element = {<Entries />} />
+          {/* <Route path = "/" element={<Entries />} /> */}
+          {/* <Route path = "/templates" element={<Templates />} /> */}
+          <Route path="/login" element={<Login />} />
+          <Route path="/post" element={<PostEntry />} />
+        </Routes>
+      </div>
       </section>
     </mslContext.Provider>
   )

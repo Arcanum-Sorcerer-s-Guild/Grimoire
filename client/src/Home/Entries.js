@@ -73,8 +73,8 @@ const Entries = () => {
   ]
 
   return (
-   <section className="relative top-9 grid place-items-center h-screen">
-    <div className="px-[40px] max-w-[800px]">
+   <section className="col-span-2 place-items-center h-screen w-full">
+    <div className="px-9">
       {accordionData.map((data, index )=> {
         return (
           <AccordionItem 
