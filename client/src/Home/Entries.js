@@ -4,25 +4,38 @@ import { mslContext } from '../App.js';
 const Entries = () => {
   const [entries, setEntries] = useState([]);
   const [inputs,setInputs] = useState({})
-  const { srvPort } = React.useContext(mslContext);
-  const { searchTerms,setSearchTerms } = React.useContext(mslContext);
+  const [tagsToAdd,setTagsToAdd] = useState([])
+  const { searchTerms,setSearchTerms,databaseTags,srvPort } = React.useContext(mslContext);
 
   const handleSubmit = (event) => {
     event.preventDefault();
     setSearchTerms(...[inputs])
+    console.log(searchTerms)
   };
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
-    setInputs(values => ({...values, [name]: value}))  //Updates query on submit
-    //  setSearchTerms(values => ({...values, [name]: value}))  //Updates query on input
+    if (name === 'tags' ) {
+      let tempTags = [...tagsToAdd,value]
+      setTagsToAdd(tempTags)
+      setInputs(values => ({...values, [name]: tempTags}))
+    } else {
+      setInputs(values => ({...values, [name]: value}))
+    }
+
+    //  setSearchTerms(values => ({...values, [name]: value}))  //Updates query on input rather than form submit
   }
 
   useEffect(() => {
     let searchTerm = ''
     Object.entries(searchTerms).forEach(item => {
-      searchTerm+=`&${item[0]}=${item[1]}`
+      if (item[0] === 'tags' && item[0].length > 1) {
+        searchTerm+=`&tags=${item[1].join('&tags=')}`
+      } else {
+        searchTerm+=`&${item[0]}=${item[1]}`
+      }
+
     })
 
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
@@ -40,6 +53,19 @@ const Entries = () => {
       <input placeholder="Username" name="username" onChange={handleChange}/><br/>
       <input type="date" name="start" onChange={handleChange}/><br/>
       <input type="date" name="end" onChange={handleChange}/><br/>
+      <select name="tags" onChange={handleChange} defaultValue="--Tags--">
+      {
+        databaseTags === undefined ?
+        <option>Loading...</option>
+        :
+        <>
+        <option disabled>--Tags--</option>
+        {databaseTags.map( (tag) => {
+          return(<option  key={tag.id} value={tag.name}>{tag.name}</option>)})
+        }</>
+
+      }
+    </select>
     <input type="submit"/>
     </form>
     <div>
