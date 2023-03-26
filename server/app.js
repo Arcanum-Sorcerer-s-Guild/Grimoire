@@ -66,7 +66,7 @@ app.use("/users", (req, res) => {
   res.status(200).json(getUsers());
 });
 app.use("/getTags", (req, res) => {
-  res.status(200).json(getTags());
+  res.status(200).json(getTags(req.params.id));
 });
 
 // Get all tags from the DB
@@ -82,6 +82,7 @@ app.get("/tags", (req, res) => {
       })
     );
 });
+
 
 // Get all tags from the DB
 app.get("/users", (req, res) => {
@@ -102,7 +103,7 @@ app.get("/users", (req, res) => {
 //Post a new Entry to the DB
 app.post("/entries", (req, res) => {
   // console.log(req.body);
-  const test = createEntry(req.body)
+  createEntry(req.body)
 
   // createEntry = ({ title, description, user_id, tags }) 
   //   .then((data) => res.status(200).json(data))

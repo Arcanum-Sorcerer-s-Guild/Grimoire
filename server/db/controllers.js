@@ -17,6 +17,8 @@ const getTags = (name) => {
   return name;
 };
 
+
+
 // Controller: GET entry from the DB
 const getEntries = (search) => {
   console.log(search);
@@ -24,7 +26,7 @@ const getEntries = (search) => {
     .select(
       "entries.*",
       "users.username as user",
-      knex.raw("array_agg(DISTINCT tags.name) as tags")
+      knex.raw("array_agg(tags.name) as tags")
     )
     .join("users", "users.id", "entries.user_id")
     .join("entry_tag", "entries.id", "entry_tag.entry_id")
@@ -67,46 +69,48 @@ const getEntries = (search) => {
 };
 
 // Controller: POST a new Tag to the DB
-const createTag = (name) => {
-  return knex("tags").insert({ name: name });
+const createTag = async (name) => {
+  return await knex("tags").insert({ name: name }, "id");
 };
 
 // Controller: POST a new Tag-Entry relationship to the DB
-const createEntryTag = (tags) => {
-  return knex("entry-tag").insert(tags);
+const createEntryTag = async (tags) => {
+  return await knex("entry-tag").insert(tags);
 };
 
 // Controller: POST a new entry to the DB
-const createEntry = ([{ title, description, user_id, tags }]) => {
-
-  const submitEntry = knex("entries").insert({
+const createEntry = async ([{ title, description, user_id, tags }]) => {
+  const [submitEntry] = await knex("entries").insert({
     title: title,
     description: description,
     user_id: user_id,
   }, "id");
 
-  console.log("sub", submitEntry)
-
   const foundTags = [];
-  tags.forEach((tag) => {
-    const tagFound = getAllTags(tag);
-    tagFound.then((data) => {
+ tags.forEach( (tag) => {
+    const tagFound = getTags(tag)
+    .then((data) => {
       if (data.length === 0) {
         const returnedTag = createTag(tag);
         foundTags.push({
           tag_id: returnedTag.id,
-          entry_id: submitEntry[0].id,
+          entry_id: submitEntry.id,
         });
       } else {
         foundTags.push({
-          tag_id: data.id,
-          entry_id: submitEntry[0].id,
+          tag_id: data[0].id,
+          entry_id: submitEntry.id,
         });
       }
-    });
+    })
+    .then(data => {
+      console.log("foundTags", foundTags);
+    })
   });
+// console.log("foundTags", foundTags);
 
-  createEntryTag(foundTags);
+//   const test = createEntryTag(foundTags);
+//   console.log(test)
 };
 
 module.exports = {
