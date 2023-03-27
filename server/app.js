@@ -10,7 +10,7 @@ const {
   getTags,
   getEntries,
   createTag,
-  createEntryTag,
+  createEntryTagMiddle,
   createEntry,
 } = require("./db/controllers");
 
@@ -83,7 +83,6 @@ app.get("/tags", (req, res) => {
     );
 });
 
-
 // Get all tags from the DB
 app.get("/users", (req, res) => {
   getUsers()
@@ -103,10 +102,16 @@ app.get("/users", (req, res) => {
 //Post a new Entry to the DB
 app.post("/entries", (req, res) => {
   // console.log(req.body);
-  createEntry(req.body)
-
-  // createEntry = ({ title, description, user_id, tags }) 
-  //   .then((data) => res.status(200).json(data))
+  const create = createEntry(req.body)
+  .then((data) => {
+    res.status(200).json(data);
+  })
+  // console.log(create)
+ 
+  // .then((data) => console.log(data));
+  // .then((data) => getEntries({ id: data }))
+  // .then((data) => console.log(data))
+  // .then((data) => res.status(200).json(data))
   //   .catch((err) =>
   //     res.status(404).json({
   //       message:

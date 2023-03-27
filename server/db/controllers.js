@@ -5,7 +5,6 @@ const getUsers = (name) => {
   name = name ? name : "*";
   //   return knex("tags").select("id").where({ username: name }, "id");
   const test = knex("users").select("*").where("id");
-  console.log(test);
   return test;
 };
 
@@ -17,55 +16,72 @@ const getTags = (name) => {
   return name;
 };
 
-
-
 // Controller: GET entry from the DB
-const getEntries = (search) => {
-  console.log(search);
-  return knex("entries")
-    .select(
-      "entries.*",
-      "users.username as user",
-      knex.raw("array_agg(tags.name) as tags")
-    )
-    .join("users", "users.id", "entries.user_id")
-    .join("entry_tag", "entries.id", "entry_tag.entry_id")
-    .join("tags", "entry_tag.tag_id", "tags.id")
-    .where(function () {
-      this.where(
-        "entries.id",
-        `${search.id ? "=" : ">"}`,
-        `${search.id ? search.id : 0}`
+const getEntries = async (search) => {
+  let tagSearch = [];
+  if ("tags" in search) {
+    if (Array.isArray(search.tags)) {
+      tagSearch = search.tags;
+    } else {
+      tagSearch = search.tags.split(",");
+    }
+  }
+  return (
+    await knex("entries")
+      .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
+      .leftJoin("tags", "entry_tag.tag_id", "tags.id")
+      .leftJoin("users", "users.id", "entries.user_id")
+      .select(
+        "entries.*",
+        "users.username as user",
+        knex.raw("array_agg(tags.name) as tagsArray")
       )
-        // .andWhere(
-        //   "entries.title",
-        //   "like",
-        //   `%%${search.title ? search.title : ""}%%`
-        // )
-        // .andWhere(
-        //   "entries.description",
-        //   "like",
-        //   `%%${search.desc ? search.desc : ""}%%`
-        // )
-        // .andWhere(
-        //   "entries.created",
-        //   ">=",
-        //   `${search.start ? search.start : "1990-01-01"}`
-        // )
-        // .andWhere(
-        //   "entries.created",
-        //   "<=",
-        //   `${search.end ? search.end : new Date().toISOString()}`
-        // )
-        // .andWhere(
-        //   "users.username",
-        //   "like",
-        //   `%${search.user ? search.user : ""}`
-        // );
-      // .whereIn("tags.name", search.tag ? search.tag : ["%%"])
-    })
-    .groupBy("entries.id", "users.id")
-    .orderBy("entries.id");
+      .where(function () {
+        this.where(
+          "entries.id",
+          `${search.id ? "=" : ">"}`,
+          `${search.id ? search.id : 0}`
+        )
+          .andWhere(
+            "entries.title",
+            "like",
+            `%%${search.title ? search.title : ""}%%`
+          )
+          .andWhere(
+            "entries.description",
+            "like",
+            `%%${search.desc ? search.desc : ""}%%`
+          )
+          .andWhere(
+            "entries.created",
+            ">=",
+            `${search.start ? search.start : "1990-01-01"}`
+          )
+          .andWhere(
+            "entries.created",
+            "<=",
+            `${search.end ? search.end : new Date().toISOString()}`
+          )
+          .andWhere(
+            "users.username",
+            "like",
+            `${search.user ? `${search.user}%` : "%"}`
+          );
+        // .whereRaw("array_agg(tags.name) like ?", [`%${specific_tag_name}%`])
+        // .where('tags.name', 'like', '%cir%')
+      })
+      .groupBy("entries.id", "users.id")
+      .orderBy("entries.id", "DESC")
+      // .havingRaw('entries.id IS NOT NULL')
+      .havingRaw(
+        search.tags
+          ? `(
+      ${tagSearch
+        .map((name) => `bool_or(tags.name = '${name}')`)
+        .join(" AND ")})`
+          : `entries.id IS NOT NULL`
+      )
+  );
 };
 
 // Controller: POST a new Tag to the DB
@@ -74,43 +90,38 @@ const createTag = async (name) => {
 };
 
 // Controller: POST a new Tag-Entry relationship to the DB
-const createEntryTag = async (tags) => {
-  return await knex("entry-tag").insert(tags);
+const createEntryTagMiddle = async (tags) => {
+  const [createLink] = await knex("entry_tag").insert(tags, "id");
+  return createLink;
 };
 
 // Controller: POST a new entry to the DB
 const createEntry = async ([{ title, description, user_id, tags }]) => {
-  const [submitEntry] = await knex("entries").insert({
-    title: title,
-    description: description,
-    user_id: user_id,
-  }, "id");
-
-  const foundTags = [];
- tags.forEach( (tag) => {
-    const tagFound = getTags(tag)
-    .then((data) => {
-      if (data.length === 0) {
-        const returnedTag = createTag(tag);
-        foundTags.push({
-          tag_id: returnedTag.id,
+  const [submitEntry] = await knex("entries").insert(
+    {
+      title: title,
+      description: description,
+      user_id: user_id,
+    },
+    "*"
+  );
+  await tags.forEach(async (tag) => {
+    await getTags(tag).then(async ([data]) => {
+      if (data === undefined) {
+        await createEntryTagMiddle({
+          tag_id: await createTag(tag),
           entry_id: submitEntry.id,
         });
       } else {
-        foundTags.push({
-          tag_id: data[0].id,
+        await createEntryTagMiddle({
+          tag_id: data.id,
           entry_id: submitEntry.id,
         });
       }
-    })
-    .then(data => {
-      console.log("foundTags", foundTags);
-    })
+    });
   });
-// console.log("foundTags", foundTags);
-
-//   const test = createEntryTag(foundTags);
-//   console.log(test)
+  // return submitEntry;
+  return {submitEntry, tags}
 };
 
 module.exports = {
@@ -118,6 +129,6 @@ module.exports = {
   getTags,
   getEntries,
   createTag,
-  createEntryTag,
+  createEntryTagMiddle,
   createEntry,
 };
