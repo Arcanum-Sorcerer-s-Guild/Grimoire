@@ -110,7 +110,7 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
     });
   });
   // return submitEntry;
-  return { submitEntry, tags };
+  return  {...submitEntry, tags};
 };
 
 module.exports = {
