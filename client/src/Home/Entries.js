@@ -28,7 +28,6 @@ const Entries = () => {
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data.data)
         setEntries(data.data);
       });
   
