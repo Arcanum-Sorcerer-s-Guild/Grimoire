@@ -4,50 +4,33 @@ import { mslContext } from "../App.js";
 import Select from 'react-tailwindcss-select'
 
 const SearchBar = () => {
-  const [searchTags,setSearchTags] = useState(null)
   const [inputs, setInputs] = useState({});
   const { searchTerms, setSearchTerms, databaseTags} = React.useContext(mslContext);
+  const [selectedTags,setSelectedTags] = useState(null)
   
   const handleSubmit = (event) => {
+    let tagsStr = ''
+  
     event.preventDefault();
-    // setSearchTerms(...[inputs]);
-    setSearchTerms({title:"input"})
+    // console.log(selectedTags)
+    // selectedTags.map(tag => {
+    //   return(tagsStr += `tags=${tag.value}&`)
+    // })
+
+    setSearchTerms({q:inputs.q,tags:selectedTags.map(tag => `tags=${tag.value}`).join('&')})
     console.log(searchTerms);
   };
-  
-  //TODO REMOVE THIS LINE AND UPDATE LINE BELOW!!!
-  const [animal,setAnimal] = useState(null)
-  let options = [
-    {value: "fox", label: "? Fox"},
-    {value: "Butterfly", label: "? Butterfly"},
-    {value: "Honeybee", label: "? Honeybee"},
-];
 
-  const handleChange = (value) => {
-    console.log("value:", value)
-    setAnimal(value)
+
+  const handleSearchTagChange = (value) => {
+    setSelectedTags(value)
   }
 
-
-
-
-
-
-
-  // const handleChange = (event) => {
-  //   const name = event.target.name;
-  //   const value = event.target.value;
-  //   console.log(value)
-  //   if (name === "tags") {
-  //     let tempTags = [...tagsToAdd, value];
-  //     setTagsToAdd(tempTags);
-  //     setInputs((values) => ({ ...values, [name]: tempTags }));
-  //   } else {
-  //   setInputs((values) => ({ ...values, [name]: value }));
-
-    // } };
-
-
+  const handleChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setInputs((values) => ({ ...values, [name]: value }));
+    };
 
   return (
     <div className="col-span-2 w-full font-semibold text-2xl p-7">
@@ -78,18 +61,21 @@ const SearchBar = () => {
             id="search-bar"
             className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full pl-10 p-2
                     focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search"
+            placeholder="Search..."
             onChange={handleChange}
             required
           />
         </div>
 
+        {/* TAGGED SEARCH */}
         {databaseTags !== undefined ?
         <Select
-          value={animal}
-          onChange={handleChange}
+          value={selectedTags}
+          onChange={handleSearchTagChange}
           options={databaseTags}
           isMultiple="true"
+          isSearchable="true"
+          placeholder="Search Tags..."
           />
         : <div>Loading...</div>}
 
