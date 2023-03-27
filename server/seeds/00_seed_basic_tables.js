@@ -7,67 +7,89 @@ const numTags = 25;
 const numEntryTags = 4000;
 const numTemplates = 20;
 
-const generateFakeParagraph = (numSentences) => {
+function randomInRange(min, max) {
+  return Math.floor(Math.random() * (max - min) + min);
+}
+
+const generateFakeTitle = () => {
+  return faker.hacker.verb() + " " + faker.hacker.noun();
+};
+
+const generateFakeParagraph = (numSentences = randomInRange(1, 20)) => {
   const fakeParagraph = [];
-  for (let i = 0; i < numSentences; i++) {
+  while (fakeParagraph.length < numSentences) {
     fakeParagraph.push(faker.hacker.phrase());
   }
   return fakeParagraph.join(" ");
 };
 
-function generateEntriesSeed(
-  numSeeds = numEntries,
-  countUsers = numUsers,
-  sentencesInDescription = 5
-) {
+const generateUserId = (highestUserId = numUsers) => {
+  return randomInRange(1, highestUserId);
+};
+
+const generateFakeDate = () => {
+  return faker.date.between(
+    "2021-01-01T00:00:00.000Z",
+    "2023-01-01T00:00:00.000Z"
+  );
+};
+
+const generateEntriesSeed = (numSeeds = numEntries) => {
   const seed_entries = [];
-  for (let i = 0; i < numSeeds; i++) {
-    let date = faker.date.between(
-      "2021-01-01T00:00:00.000Z",
-      "2023-01-01T00:00:00.000Z"
-    );
+  while (seed_entries.length < numSeeds) {
+    const generatedTitle = generateFakeTitle();
+    const generatedDescription = generateFakeParagraph();
+    const generatedDate = generateFakeDate();
+    const generatedUserId = generateUserId();
+
     seed_entries.push({
-      title: faker.hacker.verb() + " " + faker.hacker.noun(),
-      description: generateFakeParagraph(sentencesInDescription),
-      created: date,
-      updated: date,
-      user_id: faker.datatype.number({ min: 1, max: countUsers }),
+      title: generatedTitle,
+      description: generatedDescription,
+      created: generatedDate,
+      updated: generatedDate,
+      user_id: generatedUserId,
     });
   }
   seed_entries.sort((a, b) => a.created - b.created);
   return seed_entries;
 }
 
-function generateUsersSeed(numSeeds = numUsers) {
-  const seed_entries = [];
-  for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push({
-      username: faker.internet.userName(),
-    });
+const generateUsersSeed = (numSeeds = numUsers) => {
+  const names = [];
+  while (names.length < numSeeds) {
+    let potentialName = faker.internet.userName();
+    while (names.includes(potentialName)) {
+      potentialName = `${faker.hacker.noun()}_${potentialName}`;
+    }
+    names.push(potentialName);
   }
+  let seed_entries = names.map((n) => ({ username: n }));
   return seed_entries;
 }
 
-function generateTagsSeed(numSeeds = numTags) {
-  const seed_entries = [];
-  for (let i = 0; i < numSeeds; i++) {
-    seed_entries.push({
-      name: faker.hacker.noun(),
-    });
+const generateTagsSeed = (numSeeds = numTags) => {
+  const names = [];
+  while (names.length < numSeeds) {
+    let potentialName = faker.hacker.noun();
+    while (names.includes(potentialName)) {
+      potentialName += ` ${faker.hacker.noun()}`;
+    }
+    names.push(potentialName);
   }
+  let seed_entries = names.map((n) => ({ name: n }));
   return seed_entries;
 }
 
-function generateEntryTagsSeed(
+const generateEntryTagsSeed = (
   countEntries = numEntries,
   countTags = numTags,
   numSeeds = numEntryTags
-) {
+) => {
   const seed_entries = [];
-  for (let i = 0; i < numSeeds; i++) {
+  while (seed_entries.length < numSeeds) {
     seed_entries.push({
-      entry_id: faker.datatype.number({ min: 1, max: countEntries }),
-      tag_id: faker.datatype.number({ min: 1, max: countTags }),
+      entry_id: randomInRange(1, countEntries),
+      tag_id: randomInRange(1, countTags),
     });
   }
   return seed_entries;
@@ -75,32 +97,26 @@ function generateEntryTagsSeed(
 
 const generateTemplatesSeed = async (
   numSeeds = numTemplates,
-  // countUsers = numUsers,
   numTagsToAttach = 3,
-  sentencesInDescription = 5
 ) => {
-  const randomInRange = (min, max) =>
-    Math.floor(Math.random() * (max - min) + min);
 
   let tagOptions = await knex.select("name").from("tags");
-
   let tagSelections = [];
-  for (let i = 0; i < numTagsToAttach; i++) {
+  while (tagSelections.length < numTagsToAttach) {
     tagSelections.push(
       tagOptions.splice(randomInRange(0, tagOptions.length), 1)[0]
     );
   }
 
-  const templates = [];
-  for (let i = 0; i < numSeeds; i++) {
-    let genTitle = faker.hacker.verb() + " " + faker.hacker.noun();
+  let templates = [];
+  while (templates.length < numSeeds) {
+    let generatedTitle = generateFakeTitle();
     templates.push({
-      name: `${genTitle} - Template`,
+      name: `${generatedTitle} - Template`,
       form_data: {
-        title: genTitle,
-        description: generateFakeParagraph(sentencesInDescription),
+        title: generatedTitle,
+        description: generateFakeParagraph(),
         tags: tagSelections,
-        // userId: faker.datatype.number({min:1,max:countUsers}),
       },
     });
   }

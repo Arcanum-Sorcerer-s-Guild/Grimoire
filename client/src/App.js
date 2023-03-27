@@ -25,8 +25,15 @@ function App() {
     fetch(`http://localhost:${srvPort}/tags`)
     .then(res => res.json())
     .then(data => {
-      setDatabaseTags(data)
-    })
+      setDatabaseTags(data.map(tag => {
+        return(
+        {
+          value:tag.name,
+          label:tag.name
+        }
+        )
+      }))
+    })   
   },[])
 
   return (
