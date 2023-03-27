@@ -25,12 +25,20 @@ function App() {
     fetch(`http://localhost:${srvPort}/tags`)
     .then(res => res.json())
     .then(data => {
-      setDatabaseTags(data)
-    })
+      setDatabaseTags(data.map(tag => {
+        return(
+        {
+          value:tag.name,
+          label:tag.name
+        }
+        )
+      }))
+    })   
   },[])
 
   return (
     <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms} }>
+      {console.log(databaseTags)}
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
       <Theme />
       <NavBar />

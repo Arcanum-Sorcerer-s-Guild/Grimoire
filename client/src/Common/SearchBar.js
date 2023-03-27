@@ -23,20 +23,29 @@ const SearchBar = () => {
     {value: "Honeybee", label: "? Honeybee"},
 ];
 
-  // const handleChange = (event) => {
   const handleChange = (value) => {
-    // const name = event.target.name;
-    // const value = event.target.value;
-    console.log(value)
-    // if (name === "tags") {
-    //   let tempTags = [...tagsToAdd, value];
-    //   setTagsToAdd(tempTags);
-    //   setInputs((values) => ({ ...values, [name]: tempTags }));
-    // } else {
-    // setInputs((values) => ({ ...values, [name]: value }));
+    console.log("value:", value)
     setAnimal(value)
-    // }
-  };
+  }
+
+
+
+
+
+
+
+  // const handleChange = (event) => {
+  //   const name = event.target.name;
+  //   const value = event.target.value;
+  //   console.log(value)
+  //   if (name === "tags") {
+  //     let tempTags = [...tagsToAdd, value];
+  //     setTagsToAdd(tempTags);
+  //     setInputs((values) => ({ ...values, [name]: tempTags }));
+  //   } else {
+  //   setInputs((values) => ({ ...values, [name]: value }));
+
+    // } };
 
 
 
@@ -75,11 +84,14 @@ const SearchBar = () => {
           />
         </div>
 
+        {databaseTags !== undefined ?
         <Select
           value={animal}
           onChange={handleChange}
-          options={options}
-        />
+          options={databaseTags}
+          isMultiple="true"
+          />
+        : <div>Loading...</div>}
 
         <button
           type="submit"
