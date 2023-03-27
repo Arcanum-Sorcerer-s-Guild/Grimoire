@@ -13,9 +13,7 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
     .then(res => res.json())
     .then(data => {
-      setEntry(data.data[0])
-      console.log(entry)
-      
+      setEntry(data.data[0])    
     })
   },[])
 
