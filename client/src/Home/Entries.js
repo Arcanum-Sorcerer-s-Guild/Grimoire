@@ -100,33 +100,33 @@ const Entries = () => {
 export default Entries;
 
 
-///Advanced Search
-{/* <form onSubmit={handleSubmit}>
-  <input placeholder="Title" name="title" onChange={handleChange} />
-  <br />
-  <input placeholder="Description" name="desc" onChange={handleChange} />
-  <br />
-  <input placeholder="Username" name="username" onChange={handleChange} />
-  <br />
-  <input type="date" name="start" onChange={handleChange} />
-  <br />
-  <input type="date" name="end" onChange={handleChange} />
-  <br />
-  <select name="tags" onChange={handleChange} defaultValue="--Tags--">
-    {databaseTags === undefined ? (
-      <option>Loading...</option>
-    ) : (
-      <>
-        <option disabled>--Tags--</option>
-        {databaseTags.map((tag) => {
-          return (
-            <option key={tag.id} value={tag.name}>
-              {tag.name}
-            </option>
-          );
-        })}
-        </>
-    )}
-  </select>
-  <input type="submit" />
-</form> */}
+// ///Advanced Search
+//  <form onSubmit={handleSubmit}>
+//   <input placeholder="Title" name="title" onChange={handleChange} />
+//   <br />
+//   <input placeholder="Description" name="desc" onChange={handleChange} />
+//   <br />
+//   <input placeholder="Username" name="username" onChange={handleChange} />
+//   <br />
+//   <input type="date" name="start" onChange={handleChange} />
+//   <br />
+//   <input type="date" name="end" onChange={handleChange} />
+//   <br />
+//   <select name="tags" onChange={handleChange} defaultValue="--Tags--">
+//     {databaseTags === undefined ? (
+//       <option>Loading...</option>
+//     ) : (
+//       <>
+//         <option disabled>--Tags--</option>
+//         {databaseTags.map((tag) => {
+//           return (
+//             <option key={tag.id} value={tag.name}>
+//               {tag.name}
+//             </option>
+//           );
+//         })}
+//         </>
+//     )}
+//   </select>
+//   <input type="submit" />
+// </form> 
