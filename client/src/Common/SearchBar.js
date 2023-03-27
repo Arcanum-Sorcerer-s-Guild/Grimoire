@@ -1,36 +1,30 @@
-import React, {useState} from 'react';
+import React, { useState } from "react";
 import { RiSearchEyeLine } from "react-icons/ri";
 import { mslContext } from "../App.js";
-import Select from 'react-tailwindcss-select'
+import Select from "react-tailwindcss-select";
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
-  const { searchTerms, setSearchTerms, databaseTags} = React.useContext(mslContext);
-  const [selectedTags,setSelectedTags] = useState(null)
-  
-  const handleSubmit = (event) => {
-    let tagsStr = ''
-  
-    event.preventDefault();
-    // console.log(selectedTags)
-    // selectedTags.map(tag => {
-    //   return(tagsStr += `tags=${tag.value}&`)
-    // })
+  const [selectedTags, setSelectedTags] = useState(null);
+  const { setSearchTerms, databaseTags } = React.useContext(mslContext);
 
-    setSearchTerms({q:inputs.q,tags:selectedTags.map(tag => `tags=${tag.value}`).join('&')})
-    console.log(searchTerms);
+  const handleSubmit = (event) => {
+    event.preventDefault();
+    setSearchTerms({
+      q: inputs.q,
+      tags: selectedTags.map((tag) => `tags=${tag.value}`).join("&"),
+    });
   };
 
-
   const handleSearchTagChange = (value) => {
-    setSelectedTags(value)
-  }
+    setSelectedTags(value);
+  };
 
   const handleChange = (event) => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
-    };
+  };
 
   return (
     <div className="col-span-2 w-full font-semibold text-2xl p-7">
@@ -68,16 +62,18 @@ const SearchBar = () => {
         </div>
 
         {/* TAGGED SEARCH */}
-        {databaseTags !== undefined ?
-        <Select
-          value={selectedTags}
-          onChange={handleSearchTagChange}
-          options={databaseTags}
-          isMultiple="true"
-          isSearchable="true"
-          placeholder="Search Tags..."
+        {databaseTags !== undefined ? (
+          <Select
+            value={selectedTags}
+            onChange={handleSearchTagChange}
+            options={databaseTags}
+            isMultiple="true"
+            isSearchable="true"
+            placeholder="Search Tags..."
           />
-        : <div>Loading...</div>}
+        ) : (
+          <div>Loading...</div>
+        )}
 
         <button
           type="submit"
@@ -87,9 +83,7 @@ const SearchBar = () => {
           {React.createElement(RiSearchEyeLine, { size: "20" })}
           <span className="sr-only">Search</span>
         </button>
-        <div>
-        
-        </div>
+        <div></div>
       </form>
     </div>
   );
