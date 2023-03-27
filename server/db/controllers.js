@@ -17,6 +17,13 @@ const getTags = (name) => {
 
 const getEntries = async (search) => {
   const { page = 1 } = search;
+  const { id = 0 } = search;
+  const { title = "" } = search;
+  const { desc = "" } = search;
+  const { start = "1990-01-01" } = search;
+  const { end = new Date().toISOString() } = search;
+  const { user = "" } = search;
+
   let tagSearch = [];
   if ("tags" in search) {
     if (Array.isArray(search.tags)) {
@@ -25,7 +32,6 @@ const getEntries = async (search) => {
       tagSearch = search.tags.split(",");
     }
   }
-  console.log(search);
   return await knex("entries")
     .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
     .leftJoin("tags", "entry_tag.tag_id", "tags.id")
@@ -36,36 +42,28 @@ const getEntries = async (search) => {
       knex.raw("array_agg(tags.name) as tags")
     )
     .where(function () {
-      this.where(
-        "entries.id",
-        `${search.id ? "=" : ">"}`,
-        `${search.id ? search.id : 0}`
-      )
-        .andWhere(
-          "entries.title",
-          "ilike",
-          `%${search.title ? search.title : ""}%`
+      if ("q" in search) {
+        this.where(
+          "entries.id",
+          `${id === 0 ? ">" : "="}`,
+          `${id}`
         )
-        .andWhere(
-          "entries.description",
-          "ilike",
-          `%${search.desc ? search.desc : ""}%`
+          .orWhere("entries.title", "ilike", `%${search.q}%`)
+          .orWhere("entries.description", "ilike", `%${search.q}%`)
+          .orWhere("users.username", "ilike", `%${search.q}%`);
+      } else {
+        console.log("search");
+        this.where(
+          "entries.id",
+          `${id === 0 ? ">" : "="}`,
+          `${id}`
         )
-        .andWhere(
-          "entries.created",
-          ">=",
-          `${search.start ? search.start : "1990-01-01"}`
-        )
-        .andWhere(
-          "entries.created",
-          "<=",
-          `${search.end ? search.end : new Date().toISOString()}`
-        )
-        .andWhere(
-          "users.username",
-          "ilike",
-          `%${search.user ? search.user : ""}%`
-        );
+          .andWhere("entries.title", "ilike", `%${title}%`)
+          .andWhere("entries.description", "ilike", `%${desc}%`)
+          .andWhere("entries.created", ">=", `${start}`)
+          .andWhere("entries.created", "<=", `${end}`)
+          .andWhere("users.username", "ilike", `%${user}%`);
+      }
     })
     .groupBy("entries.id", "users.id")
     .orderBy("entries.created", "desc")
