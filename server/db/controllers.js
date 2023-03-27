@@ -22,6 +22,7 @@ const getEntries = async (search) => {
       tagSearch = search.tags.split(",");
     }
   }
+  console.log(search);
   return await knex("entries")
     .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
     .leftJoin("tags", "entry_tag.tag_id", "tags.id")
@@ -29,7 +30,7 @@ const getEntries = async (search) => {
     .select(
       "entries.*",
       "users.username as user",
-      knex.raw("array_agg(tags.name) as tagsArray")
+      knex.raw("array_agg(tags.name) as tags")
     )
     .where(function () {
       this.where(
@@ -39,13 +40,13 @@ const getEntries = async (search) => {
       )
         .andWhere(
           "entries.title",
-          "like",
-          `%%${search.title ? search.title : ""}%%`
+          "ilike",
+          `%${search.title ? search.title : ""}%`
         )
         .andWhere(
           "entries.description",
-          "like",
-          `%%${search.desc ? search.desc : ""}%%`
+          "ilike",
+          `%${search.desc ? search.desc : ""}%`
         )
         .andWhere(
           "entries.created",
@@ -59,12 +60,12 @@ const getEntries = async (search) => {
         )
         .andWhere(
           "users.username",
-          "like",
-          `${search.user ? `${search.user}%` : "%"}`
+          "ilike",
+          `%${search.user ? search.user : ""}%`
         );
     })
     .groupBy("entries.id", "users.id")
-    .orderBy("entries.id", "DESC")
+    .orderBy("entries.created", "desc")
     // .havingRaw('entries.id IS NOT NULL')
     .havingRaw(
       search.tags
@@ -80,9 +81,12 @@ const createTag = async (name) => {
   return await knex("tags").insert({ name: name }, "id");
 };
 
-const createEntryTagMiddle = async (tags) => {
-  const [createLink] = await knex("entry_tag").insert(tags, "id");
-  return createLink;
+const createEntryTagMiddle = async ([entryId], tagId) => {
+  console.log(entryId.id, tagId);
+  return await knex("entry_tag").insert({
+    entry_id: entryId.id,
+    tag_id: tagId,
+  });
 };
 
 const createEntry = async ([{ title, description, user_id, tags }]) => {
@@ -97,20 +101,14 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
   await tags.forEach(async (tag) => {
     await getTags(tag).then(async ([data]) => {
       if (data === undefined) {
-        await createEntryTagMiddle({
-          tag_id: await createTag(tag),
-          entry_id: submitEntry.id,
-        });
+        await createEntryTagMiddle(await createTag(tag), submitEntry.id);
       } else {
-        await createEntryTagMiddle({
-          tag_id: data.id,
-          entry_id: submitEntry.id,
-        });
+        await createEntryTagMiddle(data.id, submitEntry.id);
       }
     });
   });
   // return submitEntry;
-  return  {...submitEntry, tags};
+  return { ...submitEntry, tags };
 };
 
 module.exports = {
