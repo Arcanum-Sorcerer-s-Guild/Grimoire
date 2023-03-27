@@ -1,11 +1,22 @@
 import React, {useEffect, useState} from "react";
 import { mslContext } from '../App.js';
+import AccordionItem from "../Common/AccordionItem";
 
 const Entries = () => {
-  const [entries, setEntries] = useState([]);
-  const [inputs,setInputs] = useState({})
-  const [tagsToAdd,setTagsToAdd] = useState([])
+  const [ entries, setEntries ] = useState([]);
+  const [ inputs,setInputs ] = useState({})
+  const [ tagsToAdd,setTagsToAdd ] = useState([])
   const { searchTerms,setSearchTerms,databaseTags,srvPort } = React.useContext(mslContext);
+
+  const [ open, setOpen ] = useState(false);
+
+  const toggle = (index) => {
+    if(open === index) {
+      return setOpen(false)
+    }
+
+    setOpen(index)
+  }
 
   const handleSubmit = (event) => {
     event.preventDefault();
@@ -45,46 +56,78 @@ const Entries = () => {
       setEntries(data)
     })
   },[searchTerms])
+
+  const accordionData = [
+    {
+      title: "Title 1",
+      desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, repellendus.'
+    },
+    {
+      title: "Title 2",
+      desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, repellendus.'
+    },
+    {
+      title: "Title 3",
+      desc: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Blanditiis, repellendus.'
+    },
+  ]
+
   return (
-    <>
-    <form onSubmit={handleSubmit}>
-      <input placeholder="Title" name="title" onChange={handleChange}/><br/>
-      <input placeholder="Description" name="desc" onChange={handleChange}/><br/>
-      <input placeholder="Username" name="username" onChange={handleChange}/><br/>
-      <input type="date" name="start" onChange={handleChange}/><br/>
-      <input type="date" name="end" onChange={handleChange}/><br/>
-      <select name="tags" onChange={handleChange} defaultValue="--Tags--">
-      {
-        databaseTags === undefined ?
-        <option>Loading...</option>
-        :
-        <>
-        <option disabled>--Tags--</option>
-        {databaseTags.map( (tag) => {
-          return(<option  key={tag.id} value={tag.name}>{tag.name}</option>)})
-        }</>
-
-      }
-    </select>
-    <input type="submit"/>
-    </form>
-    <div>
-      {
-      (entries.length !== 0) ?
-      <div> { entries.map(entry => {
-        return(
-          <p key={Math.random()}>
-            {`Title: ${entry.title} Created: ${entry.created} Username: ${entry.username} Started: ${entry.description} Tags: `}
-            {entry.tags.map(tag => <span key={Math.random()}>{` ${tag}`}</span>)}
-          </p>)
-      } )} </div>
-      :
-      <div>Loading</div>
-      }
-
+   <section className="col-span-2 place-items-center h-screen w-full">
+    <div className="px-9">
+      {accordionData.map((data, index )=> {
+        return (
+          <AccordionItem 
+            key={index} 
+            open={index === open} 
+            title={data.title} 
+            desc={data.desc} 
+            toggle={()=> toggle(index)}
+          />
+        )
+      })}
     </div>
-    </>
+   </section>
   )
 }
 
 export default Entries;
+
+// {/* <>
+//     <form onSubmit={handleSubmit}>
+//       <input placeholder="Title" name="title" onChange={handleChange}/><br/>
+//       <input placeholder="Description" name="desc" onChange={handleChange}/><br/>
+//       <input placeholder="Username" name="username" onChange={handleChange}/><br/>
+//       <input type="date" name="start" onChange={handleChange}/><br/>
+//       <input type="date" name="end" onChange={handleChange}/><br/>
+//       <select name="tags" onChange={handleChange} defaultValue="--Tags--">
+//       {
+//         databaseTags === undefined ?
+//         <option>Loading...</option>
+//         :
+//         <>
+//         <option disabled>--Tags--</option>
+//         {databaseTags.map( (tag) => {
+//           return(<option  key={tag.id} value={tag.name}>{tag.name}</option>)})
+//         }</>
+
+//       }
+//     </select>
+//     <input type="submit"/>
+//     </form>
+//     <div>
+//       {
+//       (entries.length !== 0) ?
+//       <div> { entries.map(entry => {
+//         return(
+//           <p key={Math.random()}>
+//             {`Title: ${entry.title} Created: ${entry.created} Username: ${entry.username} Started: ${entry.description} Tags: `}
+//             {entry.tags.map(tag => <span key={Math.random()}>{` ${tag}`}</span>)}
+//           </p>)
+//       } )} </div>
+//       :
+//       <div>Loading</div>
+//       }
+
+//     </div>
+//     </> */}
