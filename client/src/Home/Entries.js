@@ -16,10 +16,17 @@ const Entries = () => {
   };
 
   useEffect(() => {
-    let searchTerm = `q=${searchTerms.q}&${searchTerms.tags}`;
+    let searchTerm = ''
+    if (searchTerms.q !== undefined) 
+      searchTerm += `q=${searchTerms.q}`;
+    if (searchTerms.tags !== undefined)
+      searchTerm+=`&${searchTerms.tags}`
+
+    
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setEntries(data);
       });
   }, [searchTerms]);
