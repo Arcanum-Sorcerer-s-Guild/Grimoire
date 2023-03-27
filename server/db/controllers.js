@@ -64,7 +64,7 @@ const getEntries = async (search) => {
         );
     })
     .groupBy("entries.id", "users.id")
-    .orderBy("entries.id", "DESC")
+    .orderBy("entries.created")
     // .havingRaw('entries.id IS NOT NULL')
     .havingRaw(
       search.tags
