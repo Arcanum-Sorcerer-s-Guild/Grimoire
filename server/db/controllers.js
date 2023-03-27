@@ -41,12 +41,12 @@ const getEntries = async (search) => {
         .andWhere(
           "entries.title",
           "ilike",
-          `%%${search.title ? search.title : ""}%%`
+          `%${search.title ? search.title : ""}%`
         )
         .andWhere(
           "entries.description",
           "ilike",
-          `%%${search.desc ? search.desc : ""}%%`
+          `%${search.desc ? search.desc : ""}%`
         )
         .andWhere(
           "entries.created",
@@ -61,7 +61,7 @@ const getEntries = async (search) => {
         .andWhere(
           "users.username",
           "ilike",
-          `%%${search.user ? search.user : ""}%%`
+          `%${search.user ? search.user : ""}%`
         );
     })
     .groupBy("entries.id", "users.id")
