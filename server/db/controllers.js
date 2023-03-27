@@ -1,4 +1,6 @@
 const knex = require("./dbConnections.js");
+const { attachPaginate } = require("knex-paginate");
+attachPaginate();
 
 const getUsers = (name) => {
   name = name ? name : "*";
@@ -14,6 +16,7 @@ const getTags = (name) => {
 };
 
 const getEntries = async (search) => {
+  const { page = 1 } = search;
   let tagSearch = [];
   if ("tags" in search) {
     if (Array.isArray(search.tags)) {
@@ -74,7 +77,12 @@ const getEntries = async (search) => {
         .map((name) => `bool_or(tags.name = '${name}')`)
         .join(" AND ")})`
         : `entries.id IS NOT NULL`
-    );
+    )
+    .paginate({
+      perPage: 50,
+      currentPage: page,
+      isLengthAware: true,
+    });
 };
 
 const createTag = async (name) => {
