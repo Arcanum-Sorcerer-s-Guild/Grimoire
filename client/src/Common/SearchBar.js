@@ -1,31 +1,40 @@
 import React, {useState} from 'react';
 import { RiSearchEyeLine } from "react-icons/ri";
 import { mslContext } from "../App.js";
-
-
-
+import Select from 'react-tailwindcss-select'
 
 const SearchBar = () => {
+  const [searchTags,setSearchTags] = useState(null)
   const [inputs, setInputs] = useState({});
-  const { searchTerms, setSearchTerms, databaseTags } = React.useContext(mslContext);
-
+  const { searchTerms, setSearchTerms, databaseTags} = React.useContext(mslContext);
+  
   const handleSubmit = (event) => {
     event.preventDefault();
     // setSearchTerms(...[inputs]);
     setSearchTerms({title:"input"})
     console.log(searchTerms);
   };
+  
+  //TODO REMOVE THIS LINE AND UPDATE LINE BELOW!!!
+  const [animal,setAnimal] = useState(null)
+  let options = [
+    {value: "fox", label: "? Fox"},
+    {value: "Butterfly", label: "? Butterfly"},
+    {value: "Honeybee", label: "? Honeybee"},
+];
 
-  const handleChange = (event) => {
-    const name = event.target.name;
-    const value = event.target.value;
+  // const handleChange = (event) => {
+  const handleChange = (value) => {
+    // const name = event.target.name;
+    // const value = event.target.value;
+    console.log(value)
     // if (name === "tags") {
     //   let tempTags = [...tagsToAdd, value];
     //   setTagsToAdd(tempTags);
     //   setInputs((values) => ({ ...values, [name]: tempTags }));
     // } else {
-    setInputs((values) => ({ ...values, [name]: value }));
-    console.log(inputs)
+    // setInputs((values) => ({ ...values, [name]: value }));
+    setAnimal(value)
     // }
   };
 
@@ -66,16 +75,11 @@ const SearchBar = () => {
           />
         </div>
 
-        {/* SEARCH TAGS */}
-        <input
-            type="text"
-            name="tags"
-            id="search-bar"
-            className=" bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-md block w-full pl-10 p-2
-                    focus:ring-blue-500 focus:border-blue-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-blue-500 dark:focus:border-blue-500"
-            placeholder="Search Tags"
-            onChange={handleChange}
-          />
+        <Select
+          value={animal}
+          onChange={handleChange}
+          options={options}
+        />
 
         <button
           type="submit"
