@@ -8,17 +8,17 @@ const SingleEntry = () => {
   const { srvPort } = React.useContext(mslContext);
 
 
-  useEffect(
-    fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
-    .then(res => res.json())
-    .then(data => {
-      console.log(data)
-    })
-    ,[])
+  // useEffect(
+  //   fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
+  //   .then(res => res.json())
+  //   .then(data => {
+  //     console.log(data)
+  //   })
+  //   ,[])
 
   return(
     <div>
-      Hey!
+      {params.id}
     </div>
   )
 }
