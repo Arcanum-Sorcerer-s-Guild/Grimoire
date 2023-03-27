@@ -2,10 +2,9 @@ import React, {useState} from 'react'
 import { mslContext } from '../App.js';
 
 
-
-
 const Login = () => {
-const [inputs,setInputs] = useState({})
+
+  const [inputs,setInputs] = useState({})
 
   const handleSubmit = () => {
     console.log(`User ${inputs.username} logged in}`)
@@ -24,6 +23,7 @@ const [inputs,setInputs] = useState({})
     </form>
     </>
   )
-}
 
+  
+}
 export default Login;
