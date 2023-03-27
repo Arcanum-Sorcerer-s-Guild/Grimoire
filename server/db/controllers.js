@@ -1,15 +1,11 @@
 const knex = require("./dbConnections.js");
 
-// Controller: GET user from the DB
 const getUsers = (name) => {
   name = name ? name : "*";
-  //   return knex("tags").select("id").where({ username: name }, "id");
   const test = knex("users").select("*").where("id");
-  console.log(test);
   return test;
 };
 
-// Controller: GET tag from the DB
 const getTags = (name) => {
   name
     ? (name = knex("tags").select("*").where({ name: name }))
@@ -17,24 +13,35 @@ const getTags = (name) => {
   return name;
 };
 
-// Controller: GET entry from the DB
-const getEntries = (search) => {
-  console.log(search);
-  return knex("entries")
+const getEntries = async (search) => {
+  let tagSearch = [];
+  if ("tags" in search) {
+    if (Array.isArray(search.tags)) {
+      tagSearch = search.tags;
+    } else {
+      tagSearch = search.tags.split(",");
+    }
+  }
+  return await knex("entries")
+    .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
+    .leftJoin("tags", "entry_tag.tag_id", "tags.id")
+    .leftJoin("users", "users.id", "entries.user_id")
     .select(
       "entries.*",
       "users.username as user",
-      knex.raw("array_agg(DISTINCT tags.name) as tags")
+      knex.raw("array_agg(tags.name) as tagsArray")
     )
-    .join("users", "users.id", "entries.user_id")
-    .join("entry_tag", "entries.id", "entry_tag.entry_id")
-    .join("tags", "entry_tag.tag_id", "tags.id")
     .where(function () {
       this.where(
-        "entries.title",
-        "like",
-        `%%${search.title ? search.title : ""}%%`
+        "entries.id",
+        `${search.id ? "=" : ">"}`,
+        `${search.id ? search.id : 0}`
       )
+        .andWhere(
+          "entries.title",
+          "like",
+          `%%${search.title ? search.title : ""}%%`
+        )
         .andWhere(
           "entries.description",
           "like",
@@ -53,79 +60,64 @@ const getEntries = (search) => {
         .andWhere(
           "users.username",
           "like",
-          `%%${search.user ? search.user : ""}%%`
-        )
-        // .whereIn("tags.name", ["transmitter"])
+          `${search.user ? `${search.user}%` : "%"}`
+        );
     })
     .groupBy("entries.id", "users.id")
-    .orderBy("entries.id");
+    .orderBy("entries.id", "DESC")
+    // .havingRaw('entries.id IS NOT NULL')
+    .havingRaw(
+      search.tags
+        ? `(
+      ${tagSearch
+        .map((name) => `bool_or(tags.name = '${name}')`)
+        .join(" AND ")})`
+        : `entries.id IS NOT NULL`
+    );
 };
 
-// Controller: POST a new Tag to the DB
-const createTag = (name) => {
-  return knex("tags").insert({ name: name });
+const createTag = async (name) => {
+  return await knex("tags").insert({ name: name }, "id");
 };
 
-// Controller: POST a new Tag-Entry relationship to the DB
-const createEntryTag = (tags) => {
-  return knex("entry-tag").insert(tags);
+const createEntryTagMiddle = async (tags) => {
+  const [createLink] = await knex("entry_tag").insert(tags, "id");
+  return createLink;
 };
 
-// Controller: POST a new entry to the DB
-const createEntry = ({ title, description, user_id, tags }) => {
-  const submitEntry = knex("entries").insert({
-    title: title,
-    description: description,
-    user_id: user_id,
-  });
-
-  const foundTags = [];
-  tags.forEach((tag) => {
-    const tagFound = getAllTags(tag);
-    tagFound.then((data) => {
-      if (data.length === 0) {
-        const returnedTag = createTag(tag);
-        foundTags.push({
-          tag_id: returnedTag.id,
-          entry_id: submitEntry[0].id,
+const createEntry = async ([{ title, description, user_id, tags }]) => {
+  const [submitEntry] = await knex("entries").insert(
+    {
+      title: title,
+      description: description,
+      user_id: user_id,
+    },
+    "*"
+  );
+  await tags.forEach(async (tag) => {
+    await getTags(tag).then(async ([data]) => {
+      if (data === undefined) {
+        await createEntryTagMiddle({
+          tag_id: await createTag(tag),
+          entry_id: submitEntry.id,
         });
       } else {
-        foundTags.push({
+        await createEntryTagMiddle({
           tag_id: data.id,
-          entry_id: submitEntry[0].id,
+          entry_id: submitEntry.id,
         });
       }
     });
   });
-
-  createEntryTag(foundTags);
+  // return submitEntry;
+  return  {...submitEntry, tags};
 };
-
-// const modifyEntry = () => {
-
-// }
-/**
- * const timestamp = Date.now();
-knex('tableName')
-  .insert({
-    email: "ignore@example.com",
-    name: "John Doe",
-    created_at: timestamp,
-    updated_at: timestamp,
-  })
-  .onConflict('email')
-  .merge({
-    name: "John Doe",
-    updated_at: timestamp,
-  })
-  .where('updated_at', '<', timestamp)
- */
 
 module.exports = {
   getUsers,
   getTags,
   getEntries,
   createTag,
-  createEntryTag,
+  createEntryTagMiddle,
   createEntry,
 };

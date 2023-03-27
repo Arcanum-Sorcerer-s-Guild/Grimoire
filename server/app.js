@@ -1,16 +1,14 @@
-//Imports
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
 const app = express();
 
-//Controllers
 const {
   getUsers,
   getTags,
   getEntries,
   createTag,
-  createEntryTag,
+  createEntryTagMiddle,
   createEntry,
 } = require("./db/controllers");
 
@@ -18,8 +16,9 @@ app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
 
-//Improper Route Handling
-// Returns nothing for the home route
+const errorMessage =
+  "The data you are looking for could not be found. Please try again";
+
 app.get("/", (req, res) => {
   res.status(200).json("server running");
 });
@@ -35,29 +34,37 @@ app.get("/", (req, res) => {
 // });
 
 app.get("/entries", (req, res) => {
-  // console.log(req.query)
   getEntries(req.query)
     .then((data) => {
       res.status(200).json(data);
     })
     .catch((err) =>
       res.status(404).json({
-        message:
-          "The data you are looking for could not be found. Please try again",
-          err
-        })
+        message: errorMessage,
+        err,
+      })
+    );
+});
+app.get("/entries/:id", (req, res) => {
+  getEntries({ id: req.params.id })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+        err,
+      })
     );
 });
 
-// Get a user from the DB
 app.use("/users", (req, res) => {
   res.status(200).json(getUsers());
 });
 app.use("/getTags", (req, res) => {
-  res.status(200).json(getTags());
+  res.status(200).json(getTags(req.params.id));
 });
 
-// Get all tags from the DB
 app.get("/tags", (req, res) => {
   getTags()
     .then((data) => {
@@ -65,13 +72,11 @@ app.get("/tags", (req, res) => {
     })
     .catch((err) =>
       res.status(404).json({
-        message:
-          "The data you are looking for could not be found. Please try again",
+        message: errorMessage,
       })
     );
 });
 
-// Get all tags from the DB
 app.get("/users", (req, res) => {
   getUsers()
     .then((data) => {
@@ -79,26 +84,22 @@ app.get("/users", (req, res) => {
     })
     .catch((err) =>
       res.status(404).json({
-        message:
-          "The data you are looking for could not be found. Please try again",
+        message: errorMessage,
       })
     );
 });
 
-//POST Requests
-
-
-//Post a new Entry to the DB
 app.post("/entries", (req, res) => {
-  console.log(req.body)
-  // getAllEntries()
-  //   .then((data) => res.status(200).json(data))
-  //   .catch((err) =>
-  //     res.status(404).json({
-  //       message:
-  //         "The data you are looking for could not be found. Please try again",
-  //     })
-  //   );
+  // console.log(req.body);
+  const create = createEntry(req.body)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
 });
 
 // Post a new Template to the DB
