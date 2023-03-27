@@ -7,6 +7,7 @@ import Theme from "./Common/Theme.js"
 import NavBar from "./Common/NavBar.js"
 import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
+import SingleEntry from "./SingleEntry/SingleEntry.js"
 import './App.css';
 
 //require("dotenv").config();
@@ -45,6 +46,7 @@ function App() {
         <SearchBar />
         <Routes>
           <Route path = "/home" element = {<Entries />} />
+          <Route path = "/home/:id" element = {<SingleEntry />} />
           {/* <Route path = "/" element={<Entries />} /> */}
           {/* <Route path = "/templates" element={<Templates />} /> */}
           <Route path="/post" element={<PostEntry />} />
