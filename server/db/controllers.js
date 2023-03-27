@@ -1,14 +1,11 @@
 const knex = require("./dbConnections.js");
 
-// Controller: GET user from the DB
 const getUsers = (name) => {
   name = name ? name : "*";
-  //   return knex("tags").select("id").where({ username: name }, "id");
   const test = knex("users").select("*").where("id");
   return test;
 };
 
-// Controller: GET tag from the DB
 const getTags = (name) => {
   name
     ? (name = knex("tags").select("*").where({ name: name }))
@@ -16,7 +13,6 @@ const getTags = (name) => {
   return name;
 };
 
-// Controller: GET entry from the DB
 const getEntries = async (search) => {
   let tagSearch = [];
   if ("tags" in search) {
@@ -26,76 +22,69 @@ const getEntries = async (search) => {
       tagSearch = search.tags.split(",");
     }
   }
-  return (
-    await knex("entries")
-      .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
-      .leftJoin("tags", "entry_tag.tag_id", "tags.id")
-      .leftJoin("users", "users.id", "entries.user_id")
-      .select(
-        "entries.*",
-        "users.username as user",
-        knex.raw("array_agg(tags.name) as tagsArray")
+  return await knex("entries")
+    .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
+    .leftJoin("tags", "entry_tag.tag_id", "tags.id")
+    .leftJoin("users", "users.id", "entries.user_id")
+    .select(
+      "entries.*",
+      "users.username as user",
+      knex.raw("array_agg(tags.name) as tagsArray")
+    )
+    .where(function () {
+      this.where(
+        "entries.id",
+        `${search.id ? "=" : ">"}`,
+        `${search.id ? search.id : 0}`
       )
-      .where(function () {
-        this.where(
-          "entries.id",
-          `${search.id ? "=" : ">"}`,
-          `${search.id ? search.id : 0}`
+        .andWhere(
+          "entries.title",
+          "like",
+          `%%${search.title ? search.title : ""}%%`
         )
-          .andWhere(
-            "entries.title",
-            "like",
-            `%%${search.title ? search.title : ""}%%`
-          )
-          .andWhere(
-            "entries.description",
-            "like",
-            `%%${search.desc ? search.desc : ""}%%`
-          )
-          .andWhere(
-            "entries.created",
-            ">=",
-            `${search.start ? search.start : "1990-01-01"}`
-          )
-          .andWhere(
-            "entries.created",
-            "<=",
-            `${search.end ? search.end : new Date().toISOString()}`
-          )
-          .andWhere(
-            "users.username",
-            "like",
-            `${search.user ? `${search.user}%` : "%"}`
-          );
-        // .whereRaw("array_agg(tags.name) like ?", [`%${specific_tag_name}%`])
-        // .where('tags.name', 'like', '%cir%')
-      })
-      .groupBy("entries.id", "users.id")
-      .orderBy("entries.id", "DESC")
-      // .havingRaw('entries.id IS NOT NULL')
-      .havingRaw(
-        search.tags
-          ? `(
+        .andWhere(
+          "entries.description",
+          "like",
+          `%%${search.desc ? search.desc : ""}%%`
+        )
+        .andWhere(
+          "entries.created",
+          ">=",
+          `${search.start ? search.start : "1990-01-01"}`
+        )
+        .andWhere(
+          "entries.created",
+          "<=",
+          `${search.end ? search.end : new Date().toISOString()}`
+        )
+        .andWhere(
+          "users.username",
+          "like",
+          `${search.user ? `${search.user}%` : "%"}`
+        );
+    })
+    .groupBy("entries.id", "users.id")
+    .orderBy("entries.id", "DESC")
+    // .havingRaw('entries.id IS NOT NULL')
+    .havingRaw(
+      search.tags
+        ? `(
       ${tagSearch
         .map((name) => `bool_or(tags.name = '${name}')`)
         .join(" AND ")})`
-          : `entries.id IS NOT NULL`
-      )
-  );
+        : `entries.id IS NOT NULL`
+    );
 };
 
-// Controller: POST a new Tag to the DB
 const createTag = async (name) => {
   return await knex("tags").insert({ name: name }, "id");
 };
 
-// Controller: POST a new Tag-Entry relationship to the DB
 const createEntryTagMiddle = async (tags) => {
   const [createLink] = await knex("entry_tag").insert(tags, "id");
   return createLink;
 };
 
-// Controller: POST a new entry to the DB
 const createEntry = async ([{ title, description, user_id, tags }]) => {
   const [submitEntry] = await knex("entries").insert(
     {
@@ -121,7 +110,7 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
     });
   });
   // return submitEntry;
-  return {submitEntry, tags}
+  return { submitEntry, tags };
 };
 
 module.exports = {
