@@ -22,6 +22,7 @@ const getEntries = async (search) => {
       tagSearch = search.tags.split(",");
     }
   }
+  console.log(search);
   return await knex("entries")
     .leftJoin("entry_tag", "entries.id", "entry_tag.entry_id")
     .leftJoin("tags", "entry_tag.tag_id", "tags.id")
@@ -39,12 +40,12 @@ const getEntries = async (search) => {
       )
         .andWhere(
           "entries.title",
-          "like",
+          "ilike",
           `%%${search.title ? search.title : ""}%%`
         )
         .andWhere(
           "entries.description",
-          "like",
+          "ilike",
           `%%${search.desc ? search.desc : ""}%%`
         )
         .andWhere(
@@ -59,12 +60,12 @@ const getEntries = async (search) => {
         )
         .andWhere(
           "users.username",
-          "like",
-          `${search.user ? `${search.user}%` : "%"}`
+          "ilike",
+          `%%${search.user ? search.user : ""}%%`
         );
     })
     .groupBy("entries.id", "users.id")
-    .orderBy("entries.created")
+    .orderBy("entries.created", "desc")
     // .havingRaw('entries.id IS NOT NULL')
     .havingRaw(
       search.tags
@@ -107,7 +108,7 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
     });
   });
   // return submitEntry;
-  return  {...submitEntry, tags};
+  return { ...submitEntry, tags };
 };
 
 module.exports = {
