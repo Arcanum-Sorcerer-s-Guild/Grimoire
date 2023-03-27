@@ -10,8 +10,8 @@ const NavBar = () => {
 
   const links = [
     { name: 'Home', to: '/', icon: FaDungeon },
-    { name: 'Login', to: '/', icon: FaHatWizard },
-    { name: 'Post', to: '/', icon: GiSpellBook, margin: true },
+    { name: 'Post', to: '/', icon: GiSpellBook },
+    { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
   ];
 
   return (

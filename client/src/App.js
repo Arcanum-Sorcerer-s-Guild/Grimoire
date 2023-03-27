@@ -1,7 +1,8 @@
 import React, {useState, useEffect} from 'react'
 import { Routes, Route } from "react-router-dom";
 import Entries from "./Home/Entries.js";
-import Login from "./Login/Login.js"
+import LoginPage from './Login/pages/LoginPage.js';
+import SignupPage from './Login/pages/SignupPage.js';
 import Theme from "./Common/Theme.js"
 import NavBar from "./Common/NavBar.js"
 import SearchBar from "./Common/SearchBar.js"
@@ -39,8 +40,9 @@ function App() {
           <Route path = "/home" element = {<Entries />} />
           {/* <Route path = "/" element={<Entries />} /> */}
           {/* <Route path = "/templates" element={<Templates />} /> */}
-          <Route path="/login" element={<Login />} />
           <Route path="/post" element={<PostEntry />} />
+          <Route path="/login" element={<LoginPage />} />
+          <Route path="/signup" element={<SignupPage />} />
         </Routes>
       </div>
       </section>
