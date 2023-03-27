@@ -29,7 +29,7 @@ const getEntries = async (search) => {
     .select(
       "entries.*",
       "users.username as user",
-      knex.raw("array_agg(tags.name) as tagsArray")
+      knex.raw("array_agg(tags.name) as tags")
     )
     .where(function () {
       this.where(
