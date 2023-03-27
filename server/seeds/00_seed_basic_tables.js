@@ -34,6 +34,7 @@ function generateEntriesSeed(
       user_id: faker.datatype.number({ min: 1, max: countUsers }),
     });
   }
+  seed_entries.sort((a, b) => a.created - b.created);
   return seed_entries;
 }
 
