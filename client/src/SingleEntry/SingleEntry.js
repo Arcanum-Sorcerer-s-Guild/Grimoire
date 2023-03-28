@@ -3,7 +3,7 @@ import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
-import Select from "react-tailwindcss-select";
+import Select from "react-select";
 import "./singleEntry.css";
 
 const SingleEntry = () => {
@@ -156,7 +156,7 @@ const SingleEntry = () => {
                               value={selectedTags}
                               onChange={handleSearchTagChange}
                               options={databaseTags}
-                              isMultiple="true"
+                              isMulti="true"
                               isSearchable="true"
                               isClearable="true"
                               placeholder="Add Tags..."
