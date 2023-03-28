@@ -101,7 +101,7 @@ const getEntries = async (search) => {
         : `entries.id IS NOT NULL`
     )
     .paginate({
-      perPage: 50,
+      perPage: 10,
       currentPage: page,
       isLengthAware: true,
     });
