@@ -19,7 +19,12 @@ const UserAuth = () => {
       credentials: "include",
       body: JSON.stringify(formJSON),
     };
-    fetch(`http://localhost:${srvPort}/register`, requestOptions);
+    fetch(`http://localhost:${srvPort}/register`, requestOptions)
+      .then((response) => response.json())
+      .then((userData) => {
+        console.log("user data:", userData)
+        setUser(userData);
+      });
   };
 
   // onSubmit handler for logging in a user
@@ -37,7 +42,12 @@ const UserAuth = () => {
       credentials: "include",
       body: JSON.stringify(formJSON),
     };
-    fetch(`http://localhost:${srvPort}/login`, requestOptions);
+    fetch(`http://localhost:${srvPort}/login`, requestOptions)
+    .then((response) => response.json())
+    .then((userData) => {
+      console.log("user data:", userData)
+      setUser(userData);
+    });
   };
 
   // onClick handler for logging out a user
@@ -45,7 +55,10 @@ const UserAuth = () => {
     fetch(`http://localhost:${srvPort}/logout`, {
       method: "POST",
       credentials: "include",
-    });
+    })
+      .then(() => {
+        setUser({});
+      });
   };
 
   // onClick handler for retrieving a user's data
@@ -62,7 +75,10 @@ const UserAuth = () => {
       credentials: "include",
     })
       .then((response) => response.json())
-      .then((data) => console.log("user data:", data));
+      .then((userData) => {
+        console.log("user data:", userData)
+        setUser(userData);
+      });
   };
 
   return (
