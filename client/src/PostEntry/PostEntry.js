@@ -97,7 +97,7 @@ const PostEntry = () => {
                 rows="4"
                 cols="50"
               /><br/>
-              New Tags: (Seperate with commas)
+              New Tags: (Separate with commas)
               <br/> 
               <input
                 // classname="w-max"
