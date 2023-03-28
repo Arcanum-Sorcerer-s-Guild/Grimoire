@@ -11,9 +11,11 @@ const {
   getUsers,
   getTags,
   getEntries,
+  deleteEntry,
   createEntry,
   getUserByUsername,
   createUser,
+  updateEntry,
   countEntries,
   getTemplates,
   deleteTemplate,
@@ -113,8 +115,34 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  console.log(req.body);
-  const create = createEntry(req.body)
+  createEntry(req.body)
+    .then((data) => {
+      console.log("dataRecieved", data);
+      res.status(201).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+app.post("/entries/:id", (req, res) => {
+  const id = req.params.id;
+  updateEntry(req.body, id)
+    .then((data) => {
+      console.log(data);
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.delete("/entries/:id", (req, res) => {
+  // console.log(req.body);
+  deleteEntry(req.params.id)
     .then((data) => {
       res.status(200).json(data);
     })
@@ -238,50 +266,78 @@ app.post("/fetch-user", async (req, res) => {
 //   });
 // });
 //Count Entries
-app.get("/countentries", (req,res)=> {
+app.get("/countentries", (req, res) => {
   const create = countEntries(req.body)
     .then((data) => {
-      res.status(200).json(data)
+      res.status(201).json(data);
     })
     .catch((err) =>
-      res.status(404).json({
-        mesage:errorMessage,
+      res.status(204).json({
+        mesage: errorMessage,
       })
     );
-})
+});
 
 //Templates
 app.get("/templates", (req, res) => {
-  getTemplates().then((data) => res.status(200).json(data));
+  getTemplates()
+    .then((data) => res.status(204).json(data))
+    .catch((err) =>
+      res.status(400).json({
+        mesage: errorMessage,
+      })
+    );
 });
 
 app.get("/templates/:id", (req, res) => {
-  getTemplates(req.params.id).then((data) => res.status(200).json(data));
+  getTemplates(req.params.id)
+    .then((data) => res.status(204).json(data))
+    .catch((err) =>
+      res.status(204).json({
+        mesage: errorMessage,
+      })
+    );
 });
 
 app.post("/templates/:id", (req, res) => {
-  updateTemplates(req.body, req.params.id).then((data) =>
-    res.status(200).json(data)
-  );
+  updateTemplates(req.body, req.params.id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) =>
+      res.status(204).json({
+        mesage: errorMessage,
+      })
+    );
 });
 app.post("/templates", (req, res) => {
-  updateTemplates(req.body).then((data) => res.status(200).json(data));
+  updateTemplates(req.body)
+    .then((data) => res.status(200).json(data))
+    .catch((err) =>
+      res.status(204).json({
+        mesage: errorMessage,
+      })
+    );
 });
 app.delete("/templates/:id", (req, res) => {
-  deleteTemplate(req.params.id).then((data) => res.status(200).json(data));
+  deleteTemplate(req.params.id)
+    .then((data) => res.status(200).json(data))
+    .catch((err) =>
+      res.status(204).json({
+        mesage: errorMessage,
+      })
+    );
 });
 
 // wildcards
 app.use("/*", (req, res) => {
-  res.status(200).json("server running");
+  res.status(200).json("server running, unknown endpoint...");
 });
 
 app.use("/entries/*", (req, res) => {
-  res.status(200).json("server running");
+  res.status(200).json("server running, unknown endpoint...");
 });
 
 app.use("/tags/*", (req, res) => {
-  res.status(200).json("server running");
+  res.status(200).json("server running, unknown endpoint...");
 });
 
 module.exports = app;

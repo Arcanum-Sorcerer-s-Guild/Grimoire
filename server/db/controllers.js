@@ -4,31 +4,24 @@ attachPaginate();
 
 const getTemplates = async (id) => {
   if (id) {
-    console.log("id present", id)
+    console.log("id present", id);
     return await knex("templates").select("*").where("id", "=", id);
   } else {
     return await knex("templates").select("*");
   }
-};//✅
+};
 
 const deleteTemplate = (id) => {
   return knex("templates").where("id", "=", id).del();
-};//✅
-
+};
 
 const updateTemplates = async ([template], id) => {
-console.log(id)
+  console.log(id);
   if (id) {
-    return await knex("templates").where("id", "=", id ).update(
-      template,
-      "*"
-    );
+    return await knex("templates").where("id", "=", id).update(template, "*");
   } else {
-    console.log(template)
-    return await knex("templates").insert(
-      template,
-      "*"
-    );
+    console.log(template);
+    return await knex("templates").insert(template, "*");
   }
 };
 
@@ -37,11 +30,11 @@ const getUsers = (name) => {
   return knex("users").select("*").where("id");
 };
 
-const getTags = (name) => {
-  name
-    ? (name = knex("tags").select("*").where({ name: name }))
-    : (name = knex("tags").select("*"));
-  return name;
+const getTags = async (name) => {
+  const tagItems = name
+    ? await knex("tags").select("*").where({ name: name })
+    : await knex("tags").select("*");
+  return tagItems;
 };
 
 const getEntries = async (search) => {
@@ -115,63 +108,129 @@ const getEntries = async (search) => {
 };
 
 const createTag = async (name) => {
+  console.log("inserting Name");
   return await knex("tags").insert({ name: name }, "id");
 };
 
-const createEntryTagMiddle = async ([entryId], tagId) => {
-  return await knex("entry_tag").insert({
-    entry_id: entryId.id,
-    tag_id: tagId,
-  });
+const createEntryTagMiddle = async (tagId, entryId) => {
+  console.log("createEntryTagMiddle", "entryID", entryId, "tag ID", tagId);
+  return await knex("entry_tag").insert(
+    {
+      entry_id: entryId,
+      tag_id: tagId,
+    },
+    "id"
+  );
+};
+
+const deleteEntryTagMiddle = async (entryTagId) => {
+  const deleteJoinedItem = await knex("entry_tag")
+    .where("entry_id", "=", entryTagId)
+    .del();
+  return `deleteJoinedItem`;
 };
 
 const createEntry = async ([{ title, description, user_id, tags }]) => {
-  console.log('hey')
-  const [submitEntry] = await knex("entries").insert(
-    {
-      title: title,
-      description: description,
-      user_id: user_id,
-    },
-    "*"
-  );
-  await tags.forEach(async (tag) => {
-    await getTags(tag).then(async ([data]) => {
-      if (data === undefined) {
-        await createEntryTagMiddle(await createTag(tag), submitEntry.id);
-      } else {
-        await createEntryTagMiddle(data.id, submitEntry.id);
-      }
+  console.log("createEntry", { title, description, user_id, tags });
+  return await knex("entries")
+    .insert(
+      {
+        title: title,
+        description: description,
+        user_id: user_id,
+      },
+      "*"
+    )
+    .then(async ([entryCreated]) => {
+      console.log("test", entryCreated);
+      await tags.map(async (tag, index) => {
+        await getTags(tag).then(async ([data]) => {
+          console.log(tags);
+          if (data === undefined) {
+            await createTag(tag).then(async ([createTagItem]) => {
+              createEntryTagMiddle(createTagItem.id, entryCreated.id);
+            });
+          } else {
+            createEntryTagMiddle(data.id, entryCreated.id);
+          }
+        });
+      });
+      return [{ ...entryCreated, tags }];
     });
-  });
-  // return submitEntry;
-  return { ...submitEntry, tags };
 };
 
-const countEntries = async () => knex("entries").count('id');
+const updateEntry = async ([{ description, tags }], id) => {
+  console.log(id);
+  const test = await knex("entries")
+    .where("id", "=", id)
+    .update(
+      {
+        description: description,
+        updated: new Date().toISOString(),
+      },
+      "*"
+    )
+    .then(async (entryCreated) => {
+      await deleteEntryTagMiddle(id);
+      console.log(entryCreated);
+      return entryCreated;
+    })
+    .then(async ([entryCreated]) => {
+      console.log(entryCreated);
+      await tags.map(async (tag, index) => {
+        await getTags(tag).then(async ([data]) => {
+          if (data === undefined) {
+            await createTag(tag).then(async ([createTagItem]) => {
+              createEntryTagMiddle(createTagItem.id, entryCreated.id);
+            });
+          } else {
+            createEntryTagMiddle(data.id, entryCreated.id);
+          }
+        });
+      });
+      return [{ ...entryCreated, tags }];
+    });
+
+  console.log(test);
+  return test;
+};
+
+const deleteEntry = async (id) => {
+  const deleteEntryItem = await deleteEntryTagMiddle(id).then(async () => {
+    await knex("entries").where("id", "=", id).del();
+    return `item: ${id} is deleted`;
+  });
+  return deleteEntryItem;
+};
+
+const countEntries = async () => knex("entries").count("id");
 
 const getUserByUsername = async (username) => {
   return await knex("users").where("username", "ilike", username);
 };
 
 const createUser = async (username, hashedPassword, isAdmin) => {
-  console.log("creating user:", {username, hashedPassword, isAdmin});
+  console.log("creating user:", { username, hashedPassword, isAdmin });
   return await knex("users")
-    .insert([{
-      username: username,
-      password: hashedPassword,
-      is_admin: isAdmin,
-    }])
+    .insert([
+      {
+        username: username,
+        password: hashedPassword,
+        is_admin: isAdmin,
+      },
+    ])
     .returning("*");
-}
+};
 
 module.exports = {
   getUsers,
   getTags,
   getEntries,
+  deleteEntry,
   createTag,
   createEntryTagMiddle,
   createEntry,
+  updateEntry,
   countEntries,
   getTemplates,
   deleteTemplate,
