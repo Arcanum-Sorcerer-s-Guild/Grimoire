@@ -96,23 +96,23 @@ app.post("/entries", (req, res) => {
 //Templates
 app.get("/templates", (req, res) => {
   getTemplates().then((data) => res.status(200).json(data));
-}); 
+});
 
 app.get("/templates/:id", (req, res) => {
   getTemplates(req.params.id).then((data) => res.status(200).json(data));
-}); 
+});
 
 app.post("/templates/:id", (req, res) => {
   updateTemplates(req.body, req.params.id).then((data) =>
     res.status(200).json(data)
   );
-}); 
+});
 app.post("/templates", (req, res) => {
   updateTemplates(req.body).then((data) => res.status(200).json(data));
-}); 
+});
 app.delete("/templates/:id", (req, res) => {
   deleteTemplate(req.params.id).then((data) => res.status(200).json(data));
-}); 
+});
 
 // wildcards
 app.use("/*", (req, res) => {
