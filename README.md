@@ -27,8 +27,8 @@ The Master Incident Log is brought to you by The Sorcerer's Guild, where you too
 * Arcanum @ https://github.com/Harkerfield/sdi-blended-project2-scaffold
 
 To see more paragons of programming, check out the project contributors below:
-* Jason Martin @ https://github.com/JasonMartin85
-* Jacob Steward @ https://github.com/JacobTheEldest
-* Joseph Hartsfield @https://github.com/Harkerfield
 * David Bonilla @ https://github.com/ddbonilla
+* Jacob Steward @ https://github.com/JacobTheEldest
+* Jason Martin @ https://github.com/JasonMartin85
+* Joseph Hartsfield @https://github.com/Harkerfield
 * Kyle Hackett @ https://github.com/hackek
