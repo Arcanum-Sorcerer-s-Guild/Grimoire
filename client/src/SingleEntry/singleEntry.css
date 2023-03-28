@@ -20,3 +20,7 @@
   transform: translateX(-50%) */
   margin-top: auto;
 }
+
+.updateTaggedSearch {
+  padding: 10px;
+}

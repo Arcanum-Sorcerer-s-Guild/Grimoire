@@ -139,16 +139,18 @@ const SingleEntry = () => {
                       <Modal.Body>
                         <div className="h-max">
                           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                            Update Entry
+                            Update Entry: {entry.title} 
                           </h3>
-                          <div>Title: {entry.title}</div>
-                          <div>
-                            Created On:{" "}
-                            {`${entry.created_date} at ${entry.created_time}`}
-                          </div>
-                          <div>Username: {entry.user}</div>
-                          {/* TAGGED SEARCH */}
-                          {databaseTags !== undefined ? (
+                          <div>User {entry.user} on {`${entry.created_date} at ${entry.created_time}`}
+                            </div>
+                          <Textarea
+                            id="updatedDescription"
+                            defaultValue={entry.desc}
+                            rows={10}
+                            onChange={(event) => handleChange}
+                            />
+                            {/* TAGGED SEARCH */}
+                            <div className="updateTaggedSearch">
                             <Select
                               value={selectedTags}
                               onChange={handleSearchTagChange}
@@ -159,16 +161,8 @@ const SingleEntry = () => {
                               loading={databaseTags === undefined}
                               noOptionsMessage='No tags in system... You should make some!'
                             />
-                          ) : (
-                            <div>Loading...</div>
-                          )}
-                          <div>Update Description:</div>
-                          <Textarea
-                            id="updatedDescription"
-                            defaultValue={entry.desc}
-                            rows={10}
-                            onChange={(event) => handleChange}
-                          />
+                            </div>
+                          <div className="flex justify-center gap-4">
                           <Button onClick={onClickUpdate}>Update Entry</Button>
                           <Button
                             color="gray"
@@ -176,6 +170,7 @@ const SingleEntry = () => {
                           >
                             Cancel
                           </Button>
+                          </div>
                         </div>
                       </Modal.Body>
                     </Modal>
