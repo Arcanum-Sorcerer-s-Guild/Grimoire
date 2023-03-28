@@ -22,13 +22,15 @@ const Entries = () => {
     if (searchTerms.tags !== undefined)
       searchTerm+=`&${searchTerms.tags}`
 
+    console.log(searchTerm)
+
     
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
-        setEntries(data);
+        setEntries(data.data);
       });
+  
   }, [searchTerms]);
 
   return (
