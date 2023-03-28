@@ -11,31 +11,30 @@ const SingleEntry = () => {
   const { srvPort } = React.useContext(mslContext);
   const [entry, setEntry] = useState({});
   const [totalEntries, setTotalEntries] = useState();
+  const [updatedDesc, setUpdatedDesc] = useState();
 
   const onClickUpdate = () => {
     setShowUpdateModal(false);
     const requestOptions = {
-      method: "POST",
+      method: "PUT",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(),
     };
     fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
+        //TODO turn this into a real update (get a returning value?)
+        console.log(data)
       });
+      console.log(updatedDesc)
   };
 
   const onClickDelete = () => {
     setShowDeleteModal(false);
-    const requestOptions = {
-      method: "DELETE",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(),
-    };
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
+    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {method: "DELETE"})
       .then((res) => res.json())
       .then((data) => {
+        //TODO turn this into a real delete (get a returning value?)
         console.log(data);
       });
   };
@@ -56,21 +55,29 @@ const SingleEntry = () => {
       .then((data) => {
         setEntry({
           id: data.data[0].id,
-          title: data.data[0].title.charAt(0).toUpperCase() + data.data[0].title.slice(1),
+          title:
+            data.data[0].title.charAt(0).toUpperCase() +
+            data.data[0].title.slice(1),
           desc: data.data[0].description,
-          unmodified: data.data[0].created === data.data[0].updated ? true : false,
+          unmodified:
+            data.data[0].created === data.data[0].updated ? true : false,
           created_date: data.data[0].created.split("T")[0],
           created_time: data.data[0].created.split("T")[1].split(".")[0],
           updated_date: data.data[0].updated.split("T")[0],
           updated_time: data.data[0].updated.split("T")[1].split(".")[0],
-          user: data.data[0].user
-        }); 
+          user: data.data[0].user,
+        });
       });
   }, [params.id]);
 
   const onPageChange = (value) => {
     navigate(`/home/${value}`);
   };
+
+  const handleChange = (event) => {
+    const value = event.target.value;
+    setUpdatedDesc({description: value})
+  }
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -81,95 +88,99 @@ const SingleEntry = () => {
         {entry ? (
           <>
             <Card>
-              <div className="h-96" className="cardBox">
-              {/* ENTRY DISPLAY */}
-              <div className="decriptionBox">
-              {`${entry.title} by ${entry.user} created at ${entry.created_time} on ${entry.created_date} `}
-              <br />
-              {entry.unmodified === true ? (
-                <div></div>
-              ) : (
-                `Updated at ${entry.updated_time} on ${entry.updated_date}`
-              )}
-              <br />
-              <p>{entry.desc}</p>
-              </div>
+              <div className="cardBox">
+                {/* ENTRY DISPLAY */}
+                <div className="decriptionBox">
+                  {`${entry.title} by ${entry.user} created at ${entry.created_time} on ${entry.created_date} `}
+                  <br />
+                  {entry.unmodified === true ? (
+                    <div></div>
+                  ) : (
+                    `Updated at ${entry.updated_time} on ${entry.updated_date}`
+                  )}
+                  <br />
+                  <p>{entry.desc}</p>
+                </div>
 
-              <div className="cardButtons">
-                {/* UPDATE BUTTON */}
-                <React.Fragment>
-                  <Button onClick={() => setShowUpdateModal(true)}>
-                    Update Entry
-                  </Button>
-                  <Modal
-                    show={showUpdateModal}
-                    size="md"
-                    popup={true}
-                    onClose={() => setShowUpdateModal(false)}
-                  >
-                    <Modal.Header />
-                    <Modal.Body>
-                      <div className="space-y-6 px-6 pb-4 sm:pb-6 lg:px-8 xl:pb-8">
-                        <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                          Update Entry
-                        </h3>
-                        <div>Title: {entry.title}</div>
-                        <div>Created On: {entry.created}</div>
-                        <div>Username: {entry.user}</div>
-                        <div>Update Description:</div>
-                        <Textarea
-                          id="updatedDescription"
-                          defaultValue={entry.description}
-                          rows={10}
-                        />
-                        <Button onClick={onClickUpdate}>Update Entry</Button>
-                        <Button
-                          color="gray"
-                          onClick={() => setShowUpdateModal(false)}
-                        >
-                          Cancel
-                        </Button>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
-                </React.Fragment>
-                {/* DELETE BUTTON */}
-                <React.Fragment>
-                  <Button
-                    color="failure"
-                    onClick={() => setShowDeleteModal(true)}
-                  >
-                    Delete Entry
-                  </Button>
-                  <Modal
-                    show={showDeleteModal}
-                    onClose={() => setShowDeleteModal(false)}
-                    size="md"
-                    popup={true}
-                  >
-                    <Modal.Header />
-                    <Modal.Body>
-                      <div className="text-center">
-                        <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
-                        <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
-                          Confirm deletion of entry#{params.id} {entry.title}
-                        </h3>
-                        <div className="flex justify-center gap-4">
-                          <Button color="failure" onClick={onClickDelete}>
-                            Yes
-                          </Button>
+                <div className="cardButtons">
+                  {/* UPDATE BUTTON */}
+                  <React.Fragment>
+                    <Button onClick={() => setShowUpdateModal(true)}>
+                      Update Entry
+                    </Button>
+                    <Modal
+                      show={showUpdateModal}
+                      size="md"
+                      popup={true}
+                      onClose={() => setShowUpdateModal(false)}
+                    >
+                      <Modal.Header />
+                      <Modal.Body>
+                        <div className="space-y-6 ">
+                          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                            Update Entry
+                          </h3>
+                          <div>Title: {entry.title}</div>
+                          <div>
+                            Created On:{" "}
+                            {`${entry.created_date} at ${entry.created_time}`}
+                          </div>
+                          <div>Username: {entry.user}</div>
+                          <div>Update Description:</div>
+                          <Textarea
+                            id="updatedDescription"
+                            defaultValue={entry.desc}
+                            rows={10}
+                            onChange={(event)=>handleChange}
+                          />
+                          <Button onClick={onClickUpdate}>Update Entry</Button>
                           <Button
                             color="gray"
-                            onClick={() => setShowDeleteModal(false)}
+                            onClick={() => setShowUpdateModal(false)}
                           >
-                            No
+                            Cancel
                           </Button>
                         </div>
-                      </div>
-                    </Modal.Body>
-                  </Modal>
-                </React.Fragment>
-              </div>
+                      </Modal.Body>
+                    </Modal>
+                  </React.Fragment>
+                  {/* DELETE BUTTON */}
+                  <React.Fragment>
+                    <Button
+                      color="failure"
+                      onClick={() => setShowDeleteModal(true)}
+                    >
+                      Delete Entry
+                    </Button>
+                    <Modal
+                      show={showDeleteModal}
+                      onClose={() => setShowDeleteModal(false)}
+                      size="md"
+                      popup={true}
+                    >
+                      <Modal.Header />
+                      <Modal.Body>
+                        <div className="text-center">
+                          <HiOutlineExclamationCircle className="mx-auto mb-4 h-14 w-14 text-gray-400 dark:text-gray-200" />
+                          <h3 className="mb-5 text-lg font-normal text-gray-500 dark:text-gray-400">
+                            Delete Entry#{params.id}: {entry.title} permanently?
+                          </h3>
+                          <div className="flex justify-center gap-4">
+                            <Button color="failure" onClick={onClickDelete}>
+                              Yes
+                            </Button>
+                            <Button
+                              color="gray"
+                              onClick={() => setShowDeleteModal(false)}
+                            >
+                              No
+                            </Button>
+                          </div>
+                        </div>
+                      </Modal.Body>
+                    </Modal>
+                  </React.Fragment>
+                </div>
               </div>
             </Card>
 
