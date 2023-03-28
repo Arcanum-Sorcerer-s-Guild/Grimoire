@@ -112,7 +112,6 @@ const createTag = async (name) => {
   return await knex("tags").insert({ name: name }, "id");
 };
 
-<<<<<<< HEAD
 const createEntryTagMiddle = async (tagId, entryId) => {
   console.log("createEntryTagMiddle", "entryID", entryId, "tag ID", tagId);
   return await knex("entry_tag").insert(
@@ -157,32 +156,6 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
         });
       });
       return [{ ...entryCreated, tags }];
-=======
-const createEntryTagMiddle = async ([entryId], tagId) => {
-  return await knex("entry_tag").insert({
-    entry_id: entryId.id,
-    tag_id: tagId,
-  });
-};
-
-const createEntry = async ([{ title, description, user_id, tags }]) => {
-  console.log('hey')
-  const [submitEntry] = await knex("entries").insert(
-    {
-      title: title,
-      description: description,
-      user_id: user_id,
-    },
-    "*"
-  );
-  await tags.forEach(async (tag) => {
-    await getTags(tag).then(async ([data]) => {
-      if (data === undefined) {
-        await createEntryTagMiddle(await createTag(tag), submitEntry.id);
-      } else {
-        await createEntryTagMiddle(data.id, submitEntry.id);
-      }
->>>>>>> master
     });
 };
 
