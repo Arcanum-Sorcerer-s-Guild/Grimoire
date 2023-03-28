@@ -115,6 +115,9 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
   const entry = { ...req.body[0], user_id: req.session.user.userId };
   createEntry(entry)
     .then((data) => {
