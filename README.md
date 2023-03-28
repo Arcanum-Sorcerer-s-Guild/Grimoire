@@ -15,3 +15,20 @@ Once cloned locally:
 * open this repo with VSCode
 * run `npm install` to install all necessary dependencies
 * run `npm start` to start up the application 
+* navigate to localhost:3000/ in your local browser
+
+## Features
+
+To be finalized!
+
+## Contributions
+
+The Master Incident Log is brought to you by The Sorcerer's Guild, where you too can learn to wield the wonders of magic below:
+* Arcanum @ https://github.com/Harkerfield/sdi-blended-project2-scaffold
+
+To see more paragons of programming, check out the project contributors below:
+* Jason Martin @ https://github.com/JasonMartin85
+* Jacob Steward @ https://github.com/JacobTheEldest
+* Joseph Hartsfield @https://github.com/Harkerfield
+* David Bonilla @ https://github.com/ddbonilla
+* Kyle Hackett @ https://github.com/hackek
