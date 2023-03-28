@@ -56,7 +56,6 @@ function App() {
       <Theme />
       <NavBar />
       <div className="grid grid-flow-cols w-full">
-        <h1>Currently logged in as: {user.username}</h1>
         <SearchBar />
         <Routes>
           <Route path = "/home" element = {<Entries />} />

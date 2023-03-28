@@ -6,7 +6,7 @@ import { FaSearchengin } from "react-icons/fa";
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
-  const { setSearchTerms, databaseTags } = React.useContext(mslContext);
+  const { setSearchTerms, databaseTags, user } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
@@ -28,7 +28,6 @@ const SearchBar = () => {
         inputs,
         tags: tagsToAdd,
       });
-    
     }
   };
 
@@ -44,8 +43,16 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="col-span-2 w-full font-semibold text-2xl p-7">
-      <form className="flex items-center mt-10" onSubmit={handleSubmit}>
+    <div className="col-span-2 w-full text-2xl p-7">
+      {!user.username ? (
+        <div className="text-sm mt-4">Log In</div>
+      ) : (
+        <div className="text-sm mt-4">
+          Currently logged in as:
+          <span className="ml-1 font-semibold">{user.username}</span>
+        </div>
+      )}
+      <form className="flex items-center mt-5" onSubmit={handleSubmit}>
         <label htmlFor="search-bar" className="sr-only">
           Search
         </label>
@@ -89,16 +96,16 @@ const SearchBar = () => {
         {isOpen && (
           <div className="flex justify-center">
             <form onSubmit={handleSubmit}>
-            <input
-              type="text"
-              name="title"
-              id="advSearch-item"
-              className="text-sm rounded-md block pl-3 
+              <input
+                type="text"
+                name="title"
+                id="advSearch-item"
+                className="text-sm rounded-md block pl-3 
               bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
-              placeholder="Search..."
-              onChange={handleChange}
-              required
-            />
+                placeholder="Search..."
+                onChange={handleChange}
+                required
+              />
               <input type="text" name="description" placeholder="description" />
               <input type="text" name="start date" placeholder="start date" />
             </form>

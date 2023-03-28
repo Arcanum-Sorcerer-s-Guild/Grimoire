@@ -12,6 +12,7 @@ const NavBar = () => {
     { name: 'Home', to: '/', icon: FaDungeon },
     { name: 'Post', to: '/', icon: GiSpellBook },
     { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
+    { name: 'userauth', to: '/', icon: FaHatWizard, margin: true },
   ];
 
   return (

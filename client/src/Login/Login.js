@@ -18,6 +18,12 @@ const Login = () => {
 
   return(
     <>
+      <div className="mb-10">
+        <div className="flex justify-center">
+            <i className="ss ss-ss3 text-4xl text-amber-600" />
+        </div>
+
+      </div>
     <form onSubmit={handleSubmit}>
     <input placeholder="Username" name="username" onChange={handleChange}/>
     </form>

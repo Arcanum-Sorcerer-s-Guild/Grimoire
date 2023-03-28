@@ -83,6 +83,10 @@ const UserAuth = () => {
 
   return (
     <>
+  
+
+
+
       {/* Form for registering a user */}
       Register
       <form method="post" onSubmit={handleRegister}>
