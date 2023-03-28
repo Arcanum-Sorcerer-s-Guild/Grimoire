@@ -77,8 +77,8 @@ const SingleEntry = () => {
           updated_date: data.data[0].updated.split("T")[0],
           updated_time: data.data[0].updated.split("T")[1].split(".")[0],
           user: data.data[0].user,
+          tags: data.data[0].tags,
         });
-        console.log(data.data[0].tags)
         if (data.data[0].tags[0] !== null) {
           setSelectedTags(data.data[0].tags.map( tag => {
             return({
@@ -119,7 +119,8 @@ const SingleEntry = () => {
                     `Updated at ${entry.updated_time} on ${entry.updated_date}`
                   )}
                   <br />
-                  <p>{entry.desc}</p>
+                  <p>{entry.desc}</p><br/>
+                  <p>{entry.tags.map(tag => <div>{tag}</div>)}</p>
                 </div>
 
                 <div className="cardButtons">
