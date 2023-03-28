@@ -7,6 +7,7 @@ const {
   getUsers,
   getTags,
   getEntries,
+  deleteEntry,
   createEntry,
   countEntries,
   getTemplates,
@@ -83,7 +84,20 @@ app.get("/users", (req, res) => {
 
 app.post("/entries", (req, res) => {
   // console.log(req.body);
-  const create = createEntry(req.body)
+  createEntry(req.body)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.delete("/entries/:id", (req, res) => {
+  // console.log(req.body);
+  deleteEntry(req.params.id)
     .then((data) => {
       res.status(200).json(data);
     })

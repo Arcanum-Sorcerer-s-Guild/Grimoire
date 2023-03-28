@@ -4,7 +4,7 @@ attachPaginate();
 
 const getTemplates = async (id) => {
   if (id) {
-    console.log("id present", id)
+    console.log("id present", id);
     return await knex("templates").select("*").where("id", "=", id);
   } else {
     return await knex("templates").select("*");
@@ -13,22 +13,15 @@ const getTemplates = async (id) => {
 
 const deleteTemplate = (id) => {
   return knex("templates").where("id", "=", id).del();
-}
-
+};
 
 const updateTemplates = async ([template], id) => {
-console.log(id)
+  console.log(id);
   if (id) {
-    return await knex("templates").where("id", "=", id ).update(
-      template,
-      "*"
-    );
+    return await knex("templates").where("id", "=", id).update(template, "*");
   } else {
-    console.log(template)
-    return await knex("templates").insert(
-      template,
-      "*"
-    );
+    console.log(template);
+    return await knex("templates").insert(template, "*");
   }
 };
 
@@ -126,10 +119,13 @@ const createEntryTagMiddle = async ([entryId], tagId) => {
   });
 };
 
-const deleteEntry = () => {
+const deleteEntryTagMiddle = async (entryTagId) => {
+  const deleteJoinedItem = await knex("entry_tag")
+    .where("entry_id", "=", entryTagId)
+    .del();
+  return `deleteJoinedItem`;
+};
 
-  
-}
 const createEntry = async ([{ title, description, user_id, tags }]) => {
   const [submitEntry] = await knex("entries").insert(
     {
@@ -139,6 +135,7 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
     },
     "*"
   );
+
   await tags.forEach(async (tag) => {
     await getTags(tag).then(async ([data]) => {
       if (data === undefined) {
@@ -152,12 +149,20 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
   return { ...submitEntry, tags };
 };
 
-const countEntries = async () => knex("entries").count('id');
+const deleteEntry = async (id) => {
+  const test = deleteEntryTagMiddle(id).then(async () => {
+    await knex("tags").where("id", "=", id).del();
+  });
+  return test;
+};
+
+const countEntries = async () => knex("entries").count("id");
 
 module.exports = {
   getUsers,
   getTags,
   getEntries,
+  deleteEntry,
   createTag,
   createEntryTagMiddle,
   createEntry,
