@@ -133,6 +133,112 @@ app.post("/entries", (req, res) => {
     );
 });
 
+// register new user
+app.post("/register", async (req, res) => {
+  const { username, password, isAdmin } = req.body;
+
+  // reject missing username or missing password
+  if (username === undefined || password === undefined) {
+    console.log("undefined user or pass");
+    return res.sendStatus(403);
+  }
+
+  // reject duplicate username
+  const duplicate = await getUserByUsername(username);
+  if (duplicate.length > 0) {
+    console.log("duplicate username of id:", duplicate[0].id);
+    return res.sendStatus(403);
+  }
+
+  try {
+    // hash password and insert user into database
+    const hashedPassword = bcrypt.hashSync(password, 10);
+    const data = await createUser(username, hashedPassword, isAdmin);
+    const user = data[0];
+
+    // create session cookie
+    req.session.user = {
+      userId: user.id,
+      username: user.username,
+      isAdmin: user.is_admin,
+    };
+
+    // send user object to front end for cookie
+    res.status(200);
+    return res.json(req.session.user);
+  } catch (err) {
+    console.log(err);
+    return res.sendStatus(403);
+  }
+});
+
+// login existing user
+app.post("/login", async (req, res) => {
+  const { username, password } = req.body;
+
+  // reject missing username or missing password
+  if (username == undefined || password == undefined) {
+    console.log("undefined user or pass");
+    return res.sendStatus(403);
+  }
+
+  try {
+    // search db for user
+    const data = await getUserByUsername(username);
+
+    // reject if user not found
+    if (data.length === 0) {
+      console.log("user not found");
+      return res.sendStatus(403);
+    }
+    const user = data[0];
+    console.log("user:", user);
+
+    // compare password hashes and reject if incorrect
+    const matches = bcrypt.compareSync(password, user.password);
+    if (!matches) {
+      console.log("incorrect password");
+      return res.sendStatus(403);
+    }
+
+    // create session cookie
+    req.session.user = {
+      userId: user.id,
+      username: user.username,
+      isAdmin: user.is_admin,
+    };
+
+    // send user object to front end for cookie
+    res.status(200);
+    return res.json(req.session.user);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(403);
+  }
+});
+
+// logout user
+app.post("/logout", async (req, res) => {
+  try {
+    await req.session.destroy();
+    console.log("logout successful");
+    res.clearCookie("connect.sid");
+    return res.sendStatus(200);
+  } catch (err) {
+    console.error(err);
+    return res.sendStatus(500);
+  }
+});
+
+// send user details to front end
+app.post("/fetch-user", async (req, res) => {
+  if (req.sessionID && req.session.user) {
+    res.status(200);
+    return res.json(req.session.user);
+  }
+  return res.sendStatus(403);
+});
+
 // Post a new Template to the DB
 // app.post("/templates", (req, res) => {
 //   res.status(200).json({
