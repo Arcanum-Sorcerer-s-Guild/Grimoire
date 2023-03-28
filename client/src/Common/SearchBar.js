@@ -62,7 +62,6 @@ const SearchBar = () => {
         </div>
 
         {/* TAGGED SEARCH */}
-        {databaseTags !== undefined ? (
           <Select
             value={selectedTags}
             onChange={handleSearchTagChange}
@@ -70,10 +69,10 @@ const SearchBar = () => {
             isMultiple="true"
             isSearchable="true"
             placeholder="Search Tags..."
+            loading={databaseTags === undefined}
+            noOptionsMessage='No tags in system... You should make some!'
           />
-        ) : (
-          <div>Loading...</div>
-        )}
+ 
 
         <button
           type="submit"
