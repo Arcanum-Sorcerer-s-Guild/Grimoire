@@ -53,6 +53,7 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data)
         setEntry({
           id: data.data[0].id,
           title:
