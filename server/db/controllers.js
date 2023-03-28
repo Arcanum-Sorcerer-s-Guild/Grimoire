@@ -119,7 +119,6 @@ const createTag = async (name) => {
 };
 
 const createEntryTagMiddle = async ([entryId], tagId) => {
-  console.log(entryId.id, tagId);
   return await knex("entry_tag").insert({
     entry_id: entryId.id,
     tag_id: tagId,
@@ -127,6 +126,7 @@ const createEntryTagMiddle = async ([entryId], tagId) => {
 };
 
 const createEntry = async ([{ title, description, user_id, tags }]) => {
+  console.log('hey')
   const [submitEntry] = await knex("entries").insert(
     {
       title: title,

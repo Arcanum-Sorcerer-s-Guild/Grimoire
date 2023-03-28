@@ -9,15 +9,22 @@ const SearchBar = () => {
   const { setSearchTerms, databaseTags } = React.useContext(mslContext);
 
   const handleSubmit = (event) => {
+    let tagsToAdd;
     event.preventDefault();
+    if (selectedTags !== null) {
+      tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&")
+    } else {
+      tagsToAdd = ''
+    }
     setSearchTerms({
       q: inputs.q,
-      tags: selectedTags.map((tag) => `tags=${tag.value}`).join("&"),
+      tags: tagsToAdd
     });
   };
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
+    console.log(selectedTags)
   };
 
   const handleChange = (event) => {

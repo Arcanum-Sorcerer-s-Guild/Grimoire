@@ -17,19 +17,23 @@ const Entries = () => {
   };
 
   useEffect(() => {
-    let searchTerm = {}
+    console.log(searchTerms)
+    let searchTerm = ''
     if (searchTerms.q !== undefined) 
       searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined)
       searchTerm+=`&${searchTerms.tags}`
 
-    console.log(searchTerm)
 
-    
+    console.log(searchTerm)
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
-        setEntries(data.data);
+        if (data.data !== null) {
+          setEntries(data.data);
+        } else {
+          setEntries(undefined)
+        }  
       });
   
   }, [searchTerms]);
@@ -39,7 +43,7 @@ const Entries = () => {
       <section className="col-span-2 place-items-center h-screen w-full">
         <div className="px-9">
           <div>
-            {entries.length !== 0 ? (
+            {entries !== undefined ? (
               <div>
                 {" "}
                 {entries.map((entry, index) => {

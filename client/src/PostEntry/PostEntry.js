@@ -1,5 +1,7 @@
 import React, {useState} from 'react'
 import { mslContext } from '../App.js';
+import { Card } from "flowbite-react";
+
 
 const PostEntry = () => {
   const [inputs,setInputs] = useState({})
@@ -16,8 +18,7 @@ const PostEntry = () => {
   fetch(`http://localhost:${srvPort}/entries`, requestOptions)
     .then(response => response.json())
     .then(data => {
-      //TODO get/handle appropriate returning value from server
-      // console.log(data)
+      console.log(data)
     });
   }
 
@@ -36,7 +37,7 @@ const PostEntry = () => {
 
   return(
     <>
-    <form onSubmit={handleSubmit}>
+    <form className="text-black" onSubmit={handleSubmit}>
     <input placeholder="title" name="title" onChange={handleChange}/><br/>
      <select name="tags" onChange={handleChange} defaultValue="--Tags--">
       {
