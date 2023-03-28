@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { mslContext } from "../App.js";
 import { Card, Button } from "flowbite-react";
 import Select from "react-select";
+import {useNavigate} from "react-router-dom"
 
 const PostEntry = () => {
   const [inputs, setInputs] = useState({ tags: [] });
@@ -9,6 +10,7 @@ const PostEntry = () => {
   const { srvPort, databaseTags } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState(null);
   const [readyToSend,setReadyToSend] = useState(false)
+  const navigate = useNavigate();
 
   const handleSubmit = () => {
     let tagArray = inputs.tags;
@@ -62,9 +64,11 @@ const PostEntry = () => {
         })
         .then((data) => {
           console.log(data);
+          navigate("/home")
         })
         .catch((err) => {
           console.log(err);
+          alert(err)
         })
       }
       
