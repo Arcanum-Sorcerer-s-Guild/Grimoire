@@ -94,6 +94,7 @@ app.post("/entries", (req, res) => {
     );
 });
 
+//Count Entries
 app.get("/countentries", (req,res)=> {
   const create = countEntries(req.body)
     .then((data) => {
