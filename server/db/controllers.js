@@ -9,11 +9,11 @@ const getTemplates = async (id) => {
   } else {
     return await knex("templates").select("*");
   }
-};//✅
+};
 
 const deleteTemplate = (id) => {
   return knex("templates").where("id", "=", id).del();
-};//✅
+}
 
 
 const updateTemplates = async ([template], id) => {
@@ -126,6 +126,10 @@ const createEntryTagMiddle = async ([entryId], tagId) => {
   });
 };
 
+const deleteEntry = () => {
+
+  
+}
 const createEntry = async ([{ title, description, user_id, tags }]) => {
   const [submitEntry] = await knex("entries").insert(
     {
