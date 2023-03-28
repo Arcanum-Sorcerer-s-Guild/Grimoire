@@ -1,6 +1,7 @@
 import React, {useState, useEffect} from 'react'
 import { Routes, Route } from "react-router-dom";
 import Entries from "./Home/Entries.js";
+import UserAuth from './Login/UserAuth.js';
 import LoginPage from './Login/pages/LoginPage.js';
 import SignupPage from './Login/pages/SignupPage.js';
 import Theme from "./Common/Theme.js"
@@ -48,6 +49,7 @@ function App() {
           {/* <Route path = "/" element={<Entries />} /> */}
           {/* <Route path = "/templates" element={<Templates />} /> */}
           <Route path="/post" element={<PostEntry />} />
+          <Route path="/userauth" element={<UserAuth />} />
           <Route path="/login" element={<LoginPage />} />
           <Route path="/signup" element={<SignupPage />} />
         </Routes>
