@@ -142,10 +142,10 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
       "*"
     )
     .then(async ([entryCreated]) => {
-      console.log("test",entryCreated)
+      console.log("test", entryCreated);
       await tags.map(async (tag, index) => {
         await getTags(tag).then(async ([data]) => {
-          console.log(tags)
+          console.log(tags);
           if (data === undefined) {
             await createTag(tag).then(async ([createTagItem]) => {
               createEntryTagMiddle(createTagItem.id, entryCreated.id);
@@ -158,13 +158,6 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
       return [{ ...entryCreated, tags }];
     });
 };
-
-// if (id) {
-//   return await knex("templates").where("id", "=", id).update(template, "*");
-// } else {
-//   console.log(template);
-//   return await knex("templates").insert(template, "*");
-// }
 
 const updateEntry = async ([{ description, tags }], id) => {
   console.log(id);
@@ -203,12 +196,11 @@ const updateEntry = async ([{ description, tags }], id) => {
 };
 
 const deleteEntry = async (id) => {
-  const deleteEntryItem = await deleteEntryTagMiddle(id)
-  .then(async () => {
+  const deleteEntryItem = await deleteEntryTagMiddle(id).then(async () => {
     await knex("entries").where("id", "=", id).del();
-    return `item: ${id} is deleted`
+    return `item: ${id} is deleted`;
   });
-  return deleteEntryItem
+  return deleteEntryItem;
 };
 
 const countEntries = async () => knex("entries").count("id");
@@ -218,15 +210,17 @@ const getUserByUsername = async (username) => {
 };
 
 const createUser = async (username, hashedPassword, isAdmin) => {
-  console.log("creating user:", {username, hashedPassword, isAdmin});
+  console.log("creating user:", { username, hashedPassword, isAdmin });
   return await knex("users")
-    .insert([{
-      username: username,
-      password: hashedPassword,
-      is_admin: isAdmin,
-    }])
+    .insert([
+      {
+        username: username,
+        password: hashedPassword,
+        is_admin: isAdmin,
+      },
+    ])
     .returning("*");
-}
+};
 
 module.exports = {
   getUsers,
