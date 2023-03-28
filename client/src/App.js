@@ -21,6 +21,7 @@ function App() {
   const [srvPort,setSrvPort] = useState(3001)
   const [databaseTags, setDatabaseTags] = useState();
   const [searchTerms, setSearchTerms] = useState({});
+  const [user, setUser] = useState({});
 
   useEffect(() => {
     fetch(`http://localhost:${srvPort}/tags`)
@@ -37,12 +38,24 @@ function App() {
     })   
   },[])
 
+  // Check if session already exists
+  useEffect(() => {
+    fetch(`http://localhost:${srvPort}/fetch-user`, {
+      method: "POST",
+      "Access-Control-Allow-Origin": "*",
+      credentials: "include",
+    })
+      .then((response) => response.json())
+      .then((userData) => setUser(userData));
+  }, [])
+
   return (
-    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms} }>
+    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
       <Theme />
       <NavBar />
       <div className="grid grid-flow-cols w-full">
+        <h1>Currently logged in as: {user.username}</h1>
         <SearchBar />
         <Routes>
           <Route path = "/home" element = {<Entries />} />

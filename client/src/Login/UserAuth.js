@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { mslContext } from "../App.js";
 
 const UserAuth = () => {
-  const { srvPort } = React.useContext(mslContext);
+  const { srvPort, user, setUser } = React.useContext(mslContext);
 
   // onSubmit handler for registering a new user
   const handleRegister = (e) => {
