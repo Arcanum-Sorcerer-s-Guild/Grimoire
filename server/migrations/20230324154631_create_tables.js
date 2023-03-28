@@ -7,6 +7,8 @@ exports.up = function(knex) {
     .createTable('users', (table) => {
       table.increments('id').primary();
       table.string('username').notNullable();
+      table.string('password').nullable();
+      table.boolean('is_admin').defaultTo(false);
     })
     .createTable('entries', (table) => {
       table.increments('id').primary();
