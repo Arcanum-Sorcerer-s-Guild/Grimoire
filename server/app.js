@@ -82,7 +82,7 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  // console.log(req.body);
+  console.log(req.body);
   const create = createEntry(req.body)
     .then((data) => {
       res.status(200).json(data);
