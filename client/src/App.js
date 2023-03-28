@@ -53,7 +53,6 @@ function App() {
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full">
-        <SearchBar />
         <Routes>
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
@@ -61,6 +60,7 @@ function App() {
           {/* <Route path = "/templates" element={<Templates />} /> */}
           <Route path="/post" element={<PostEntry />} />
           <Route path="/login" element={<UserAuth />} />
+          <Route path="/" element={<UserAuth />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>

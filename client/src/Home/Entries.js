@@ -3,6 +3,7 @@ import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
 import DateObject from "react-date-object";
 import {Link} from "react-router-dom"
+import SearchBar from "../Common/SearchBar.js"
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
@@ -35,7 +36,8 @@ const Entries = () => {
   }, [searchTerms]);
 
   return (
-    <>
+    <>    
+      <SearchBar />
       <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
         <div className="px-9">
           <div>

@@ -18,10 +18,10 @@ const NavBar = () => {
   const links = [
     { name: "Home", to: "/", icon: FaDungeon },
     { name: "Post", to: "/", icon: GiSpellBook },
-    { name: "Login", to: "", icon: FaHatWizard, margin: true },
+    { name: "Login", to: "/", icon: FaHatWizard, margin: true },
     {
       name: "Theme",
-      to: "/",
+      to: "",
       icon: IoIosSettings,
       submenu: true,
       submenuItems: [
@@ -111,8 +111,8 @@ const NavBar = () => {
             rcanum MSL
           </h1>
         </div>
-          <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700"/>
-        <div className="text-white italic text-xs">
+        <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
+        <div className={`${!open && "hidden"} text-white italic text-xs`}>
           {!user.username ? (
             <div className=" mt-4">Log In</div>
           ) : (
@@ -141,17 +141,11 @@ const NavBar = () => {
                 >
                   {link?.name}
                 </h2>
-                <h2
-                  className={`absolute left-48 whitespace-pre font-semibold bg-slate-400 text-gray-900 rounded-md drop-shadow-lg ${
-                    open && "hidden"
-                  } 
-                  px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
-                >
-                  {link?.name}
-                </h2>
                 {link.submenu && (
                   <button
-                    className={`${subMenuOpen && "rotate-180"}`}
+                    className={`${subMenuOpen && "rotate-180"} ${
+                      !open && "opacity-0 translate-x-28 overflow-hidden"
+                    } `}
                     onClick={() => setSubMenuOpen(!subMenuOpen)}
                   >
                     {React.createElement(MdOutlineKeyboardArrowDown, {
@@ -161,17 +155,18 @@ const NavBar = () => {
                 )}
               </Link>
               {link.submenu && subMenuOpen && open && (
-                <ul className={`${!open && "scale-0"}`}>
+                <ul className={`${!open && "hidden"}`}>
                   {link.submenuItems.map((item, index) => (
                     <li
                       key={index}
                       className="flex items-center gap-x-4 cursor-pointer p-2 ml-10"
                     >
                       <button
-                        className="flex gap-3"
+                        className={`flex gap-3 ${theme === item.text && "text-sky-600"}`}
                         onClick={() => setTheme(item.text)}
                       >
-                        {React.createElement(item.icon, { size: "20" })} {item.text}
+                        {React.createElement(item.icon, { size: "20" })}{" "}
+                        {item.text}
                       </button>
                     </li>
                   ))}
