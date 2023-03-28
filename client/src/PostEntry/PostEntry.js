@@ -36,8 +36,6 @@ const PostEntry = () => {
       tags:tagArray,
       title:inputs.title,
       description: inputs.description,
-      //TODO REMOVE THIS HARDCODE
-      user_id: 13
     })
     
     
@@ -46,6 +44,8 @@ const PostEntry = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify([inputs]),
+        "Access-Control-Allow-Origin": "*",
+        credentials: "include",
       };
 
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
