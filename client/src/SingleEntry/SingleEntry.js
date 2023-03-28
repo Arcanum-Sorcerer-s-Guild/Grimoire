@@ -121,7 +121,7 @@ const SingleEntry = () => {
                   )}
                   <br />
                   <p>{entry.desc}</p><br/>
-                  <p>{entry.tags.includes(null)  ? <div>No tags, why don't you add some!</div> : entry.tags.map(tag => <div>{tag}</div>)}</p>
+                  <p>{Array.isArray(entry.tags)  ?  entry.tags.map((tag,index) => <span key={index}>{tag}<br/></span>) : <span>No tags, why don't you add some!</span>}</p>
                 </div>
 
                 <div className="cardButtons">
@@ -158,6 +158,7 @@ const SingleEntry = () => {
                               options={databaseTags}
                               isMultiple="true"
                               isSearchable="true"
+                              isClearable="true"
                               placeholder="Add Tags..."
                               loading={databaseTags === undefined}
                               noOptionsMessage='No tags in system... You should make some!'

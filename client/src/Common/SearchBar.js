@@ -68,6 +68,7 @@ const SearchBar = () => {
             options={databaseTags}
             isMultiple="true"
             isSearchable="true"
+            isClearable="true"
             placeholder="Search Tags..."
             loading={databaseTags === undefined}
             noOptionsMessage='No tags in system... You should make some!'
