@@ -3,6 +3,7 @@ import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
+import Select from "react-tailwindcss-select";
 import "./singleEntry.css";
 
 const SingleEntry = () => {
@@ -12,6 +13,12 @@ const SingleEntry = () => {
   const [entry, setEntry] = useState({});
   const [totalEntries, setTotalEntries] = useState();
   const [updatedDesc, setUpdatedDesc] = useState();
+  const { databaseTags } = React.useContext(mslContext);
+  const [selectedTags, setSelectedTags] = useState(null);
+
+  const handleSearchTagChange = (value) => {
+    setSelectedTags(value);
+  };
 
   const onClickUpdate = () => {
     setShowUpdateModal(false);
@@ -24,14 +31,17 @@ const SingleEntry = () => {
       .then((res) => res.json())
       .then((data) => {
         //TODO turn this into a real update (get a returning value?)
-        console.log(data)
+        console.log(data);
       });
-      console.log(updatedDesc)
+    console.log(selectedTags)
+    console.log(updatedDesc);
   };
 
   const onClickDelete = () => {
     setShowDeleteModal(false);
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {method: "DELETE"})
+    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {
+      method: "DELETE",
+    })
       .then((res) => res.json())
       .then((data) => {
         //TODO turn this into a real delete (get a returning value?)
@@ -53,7 +63,7 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data)
+        console.log(data);
         setEntry({
           id: data.data[0].id,
           title:
@@ -68,6 +78,13 @@ const SingleEntry = () => {
           updated_time: data.data[0].updated.split("T")[1].split(".")[0],
           user: data.data[0].user,
         });
+        console.log(data.data[0].tags)
+        setSelectedTags(data.data[0].tags.map( tag => {
+          return({
+            value:tag,
+            label:tag
+        })
+        }))
       });
   }, [params.id]);
 
@@ -77,8 +94,8 @@ const SingleEntry = () => {
 
   const handleChange = (event) => {
     const value = event.target.value;
-    setUpdatedDesc({description: value})
-  }
+    setUpdatedDesc({ description: value });
+  };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
@@ -117,7 +134,7 @@ const SingleEntry = () => {
                     >
                       <Modal.Header />
                       <Modal.Body>
-                        <div className="space-y-6 ">
+                        <div className="h-max">
                           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                             Update Entry
                           </h3>
@@ -127,12 +144,25 @@ const SingleEntry = () => {
                             {`${entry.created_date} at ${entry.created_time}`}
                           </div>
                           <div>Username: {entry.user}</div>
+                          {/* TAGGED SEARCH */}
+                          {databaseTags !== undefined ? (
+                            <Select
+                              value={selectedTags}
+                              onChange={handleSearchTagChange}
+                              options={databaseTags}
+                              isMultiple="true"
+                              isSearchable="true"
+                              placeholder="Search Tags..."
+                            />
+                          ) : (
+                            <div>Loading...</div>
+                          )}
                           <div>Update Description:</div>
                           <Textarea
                             id="updatedDescription"
                             defaultValue={entry.desc}
                             rows={10}
-                            onChange={(event)=>handleChange}
+                            onChange={(event) => handleChange}
                           />
                           <Button onClick={onClickUpdate}>Update Entry</Button>
                           <Button
