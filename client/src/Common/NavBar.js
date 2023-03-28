@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Theme from "./Theme";
 
 import controlImage from "../assets/control.png";
 import { FaDungeon, FaHatWizard } from 'react-icons/fa'; 
 import { GiSpellBook } from 'react-icons/gi'; 
+import { IoIosSettings } from 'react-icons/io'; 
 
 const NavBar = () => {
   const [ open, setOpen ] = useState(true);
@@ -12,11 +14,12 @@ const NavBar = () => {
     { name: 'Home', to: '/', icon: FaDungeon },
     { name: 'Post', to: '/', icon: GiSpellBook },
     { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
+    { name: 'Theme', to: '/', icon: IoIosSettings },
   ];
 
   return (
     <div className="flex">
-      <div className={` bg-slate-800 h-screen p-5 pt-8 relative duration-300 ${open ? "w-72" : "w-20"}`}>
+      <div className={` bg-slate-800 max-h-fit p-5 pt-8 relative duration-300 ${open ? "w-72" : "w-20"}`}>
         <img 
           src={controlImage} 
           alt="control"
@@ -35,6 +38,7 @@ const NavBar = () => {
         </div>
         <div className="flex flex-col relative text-white mt-4">
           {links?.map((link, index) => (
+            <>
             <Link 
               to={link.name} 
               key={index}
@@ -56,6 +60,8 @@ const NavBar = () => {
                 {link?.name}
               </h2>
             </Link>
+            <Theme />
+            </>
           ))}
         </div>
       </div>
