@@ -1,31 +1,9 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
+import { Link } from "react-router-dom";
 
 const UserAuth = () => {
   const { srvPort, user, setUser } = React.useContext(mslContext);
-
-  // onSubmit handler for registering a new user
-  const handleRegister = (e) => {
-    e.preventDefault(); // prevent page reload
-
-    const form = e.target;
-    const formData = new FormData(form);
-    const formJSON = Object.fromEntries(formData.entries());
-    console.log("formJSON", formJSON);
-
-    const requestOptions = {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      credentials: "include",
-      body: JSON.stringify(formJSON),
-    };
-    fetch(`http://localhost:${srvPort}/register`, requestOptions)
-      .then((response) => response.json())
-      .then((userData) => {
-        console.log("user data:", userData)
-        setUser(userData);
-      });
-  };
 
   // onSubmit handler for logging in a user
   const handleLogin = (e) => {
@@ -43,11 +21,11 @@ const UserAuth = () => {
       body: JSON.stringify(formJSON),
     };
     fetch(`http://localhost:${srvPort}/login`, requestOptions)
-    .then((response) => response.json())
-    .then((userData) => {
-      console.log("user data:", userData)
-      setUser(userData);
-    });
+      .then((response) => response.json())
+      .then((userData) => {
+        console.log("user data:", userData);
+        setUser(userData);
+      });
   };
 
   // onClick handler for logging out a user
@@ -55,10 +33,9 @@ const UserAuth = () => {
     fetch(`http://localhost:${srvPort}/logout`, {
       method: "POST",
       credentials: "include",
-    })
-      .then(() => {
-        setUser({});
-      });
+    }).then(() => {
+      setUser({});
+    });
   };
 
   // onClick handler for retrieving a user's data
@@ -68,58 +45,112 @@ const UserAuth = () => {
   //   isAdmin: false,
   //   username: "testuser"
   // }
-  const handleFetchUser = () => {
-    fetch(`http://localhost:${srvPort}/fetch-user`, {
-      method: "POST",
-      "Access-Control-Allow-Origin": "*",
-      credentials: "include",
-    })
-      .then((response) => response.json())
-      .then((userData) => {
-        console.log("user data:", userData)
-        setUser(userData);
-      });
-  };
+  // const handleFetchUser = () => {
+  //   fetch(`http://localhost:${srvPort}/fetch-user`, {
+  //     method: "POST",
+  //     "Access-Control-Allow-Origin": "*",
+  //     credentials: "include",
+  //   })
+  //     .then((response) => response.json())
+  //     .then((userData) => {
+  //       console.log("user data:", userData);
+  //       setUser(userData);
+  //     });
+  // };
 
   return (
-    <>
-  
+    <div className="p-8 col-span-2 place-items-center h-screen w-full">
+      <div className="flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
+        <div className="max-w-md w-full space-y-8">
+          <div className="mb-10">
+            <div className="flex justify-center">
+              <i className="ss ss-ss3 text-4xl text-amber-600" />
+            </div>
+            <h2 className="mt-2 text-center text-3xl font-extrabold text-gray-900 dark:text-white">
+              Log in into your account
+            </h2>
+            <p className="mt-5 text-center text-sm text-gray-600 dark:text-gray-200">
+              Don't have an account yet?
+              <Link
+                to={"/Register"}
+                className="font-medium text-amber-600 hover:text-amber-400 ml-2"
+              >
+                Signup
+              </Link>
+            </p>
+            <form
+              method="post"
+              onSubmit={handleLogin}
+              className="mt-8 space-y-6"
+            >
+              <div className="-space-y-px">
+                <div className="my-5">
+                  <label htmlFor="username" className="sr-only">
+                    Username
+                  </label>
+                  <input
+                    name="username"
+                    type="text"
+                    placeholder="Username"
+                    className="rounded-md border-gray-300 w-full"
+                  />
+                </div>
+                <div className="my-5">
+                  <label htmlFor="password" className="sr-only">
+                    Password
+                  </label>
+                  <input
+                    name="password"
+                    type="password"
+                    placeholder="Password"
+                    className="rounded-md border-gray-300 w-full"
+                  />
+                </div>
+                <div className="flex items-center justify-between">
+                  <div className="flex items-center">
+                    <input
+                      id="remember-me"
+                      name="remember-me"
+                      type="checkbox"
+                      className="h-4 w-4 text-amber-600 focus:ring-amber-400 border-gray-300 rounded mt-3"
+                    />
+                    <label
+                      htmlFor="remember-me"
+                      className="ml-2 block text-sm text-gray-900 mt-3"
+                    >
+                      Remember me
+                    </label>
+                  </div>
 
-
-
-      {/* Form for registering a user */}
-      Register
-      <form method="post" onSubmit={handleRegister}>
-        <label for="username">Username</label>
-        <input name="username" type="text" placeholder="username" />
-        <br />
-        <label for="password">Password</label>
-        <input name="password" type="password" placeholder="Enter password" />
-        <br />
-        <label for="isAdmin">Admin?</label>
-        <input name="isAdmin" type="checkbox" value="true" />
-        <br />
-        <button type="submit">Register</button>
-      </form>
-      <br />
-      {/* Form for logging in a user */}
-      Login
-      <form method="post" onSubmit={handleLogin}>
-        <label for="username">Username</label>
-        <input name="username" type="text" placeholder="username" />
-        <br />
-        <label for="password">Password</label>
-        <input name="password" type="password" placeholder="Enter password" />
-        <br />
-        <button type="submit">Login</button>
-      </form>
-      <br />
-      {/* Example button for logging out a user */}
-      <button onClick={handleLogout}>Logout</button>
-      <br />
-      {/* Example button for retrieving a user's data */}
-      <button onClick={handleFetchUser}>Retrieve User</button>
-    </>
+                  <div className="text-sm mt-3">
+                    <a
+                      href="#"
+                      className="font-medium text-amber-600 hover:text-amber-400"
+                    >
+                      Forgot your password?
+                    </a>
+                  </div>
+                </div>
+                <div>
+                  <button
+                    type="submit"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
+                  >
+                    Login
+                  </button>
+                  <button
+                    onClick={handleLogout}
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
+                  >
+                    Logout
+                  </button>
+                </div>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
   );
 };
 export default UserAuth;
