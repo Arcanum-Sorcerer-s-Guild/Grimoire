@@ -10,6 +10,7 @@ const {
   createTag,
   createEntryTagMiddle,
   createEntry,
+  countEntries,
 } = require("./db/controllers");
 
 app.use(cors());
@@ -101,6 +102,18 @@ app.post("/entries", (req, res) => {
       })
     );
 });
+
+app.get("/countentries", (req,res)=> {
+  const create = countEntries(req.body)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch((err) =>
+      res.status(404).json({
+        mesage:errorMessage,
+      })
+    );
+})
 
 // Post a new Template to the DB
 // app.post("/templates", (req, res) => {

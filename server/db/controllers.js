@@ -119,6 +119,8 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
   return { ...submitEntry, tags };
 };
 
+const countEntries = async () => knex("entries").count('id');
+
 module.exports = {
   getUsers,
   getTags,
@@ -126,4 +128,5 @@ module.exports = {
   createTag,
   createEntryTagMiddle,
   createEntry,
+  countEntries,
 };
