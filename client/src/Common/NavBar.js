@@ -6,15 +6,21 @@ import controlImage from "../assets/control.png";
 import { FaDungeon, FaHatWizard } from 'react-icons/fa'; 
 import { GiSpellBook } from 'react-icons/gi'; 
 import { IoIosSettings } from 'react-icons/io'; 
+import { MdOutlineKeyboardArrowDown } from 'react-icons/md'; 
 
 const NavBar = () => {
   const [ open, setOpen ] = useState(true);
+  const [ subMenuOpen, setSubMenuOpen ] = useState(true);
 
   const links = [
     { name: 'Home', to: '/', icon: FaDungeon },
     { name: 'Post', to: '/', icon: GiSpellBook },
     { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
-    { name: 'Theme', to: '/', icon: IoIosSettings },
+    { name: 'Theme', to: '/', icon: IoIosSettings, submenu: true, submenuItems: [
+      {title: "light" },
+      {title: "dark" },
+      {title: "system" },
+    ]},
   ];
 
   return (
@@ -59,8 +65,27 @@ const NavBar = () => {
               >
                 {link?.name}
               </h2>
+              {link.submenu && (
+                  <button
+                    className={`${subMenuOpen && "rotate-180"}`}
+                    onClick={() => setSubMenuOpen(!subMenuOpen)}
+                  >
+                    {React.createElement(MdOutlineKeyboardArrowDown, {size:'20'})}
+                  </button>   
+               )}
             </Link>
-            <Theme />
+              {link.submenu && subMenuOpen && open && (
+                  <ul className={`${!open && "scale-0"}`}>
+                    {link.submenuItems.map((item, index)=>(
+                      <li 
+                        key={index}
+                        className="flex items-center gap-x-4 cursor-pointer p-2 ml-10"
+                      >
+                        {item.title}
+                      </li>
+                    ))}
+                  </ul>
+              )}
             </>
           ))}
         </div>
