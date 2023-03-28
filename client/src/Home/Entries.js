@@ -2,12 +2,12 @@ import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
 import DateObject from "react-date-object";
-import {Link} from "react-router-dom"
-import SearchBar from "../Common/SearchBar.js"
+import { Link } from "react-router-dom";
+import SearchBar from "../Common/SearchBar.js";
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
-  const { searchTerms, setSearchTerms, databaseTags, srvPort } =
+  const { searchTerms, setSearchTerms, databaseTags, srvPort, user } =
     React.useContext(mslContext);
 
   const [open, setOpen] = useState(false);
@@ -28,7 +28,7 @@ const Entries = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
-          setEntries(data.data)
+          setEntries(data.data);
         } else {
           setEntries(undefined);
         }
@@ -36,10 +36,21 @@ const Entries = () => {
   }, [searchTerms]);
 
   return (
-    <>    
+    <>
+      <div className= "col-span-2 italic text-xs text-end mr-5">
+        {!user.username ? (
+          <div className=" mt-4">...</div>
+        ) : (
+          <div className="mt-4">
+            currently logged in as:
+            <span className="ml-1 font-semibold">{user.username}</span>
+          </div>
+        )}
+      </div>
       <SearchBar />
-      <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
-        <div className="px-9">
+      <div className="text-sm font-semibold ml-5">Total Entries: </div>
+      <section className="col-span-2 place-items-center max-h-fit mb-5">
+        <div className="px-9 bg-slate-500 shadow-sm p-4 m-4 rounded-md">
           <div>
             {entries !== undefined ? (
               <div>

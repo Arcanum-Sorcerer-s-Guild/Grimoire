@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { mslContext } from "../App.js";
 import Select from "react-select";
 import { FaSearchengin } from "react-icons/fa";
+import './common.css';
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
@@ -76,6 +77,7 @@ const SearchBar = () => {
               placeholder="Search Tags..."
               loading={databaseTags === undefined}
               noOptionsMessage="No tags in system... You should make some!"
+              className="select text-sm"
             />
           </div>
         </div>

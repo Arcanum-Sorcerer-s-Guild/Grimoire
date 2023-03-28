@@ -13,15 +13,13 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 const NavBar = () => {
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
-  const { user } = React.useContext(mslContext);
 
   const links = [
     { name: "Home", to: "/", icon: FaDungeon },
     { name: "Post", to: "/", icon: GiSpellBook },
-    { name: "Login", to: "/", icon: FaHatWizard, margin: true },
+    { name: "Login", to: "/", icon: FaHatWizard },
     {
       name: "Theme",
-      to: "",
       icon: IoIosSettings,
       submenu: true,
       submenuItems: [
@@ -92,7 +90,7 @@ const NavBar = () => {
         <img
           src={controlImage}
           alt="control"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-slate-900 border-2 rounded-full ${
+          className={`absolute cursor-pointer -right-3 top-9 w-7 border-slate-900 border-1 shadow-sm rounded-full ${
             !open && "rotate-180"
           }`}
           onClick={() => setOpen(!open)}
@@ -112,16 +110,6 @@ const NavBar = () => {
           </h1>
         </div>
         <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
-        <div className={`${!open && "hidden"} text-white italic text-xs`}>
-          {!user.username ? (
-            <div className=" mt-4">Log In</div>
-          ) : (
-            <div className="mt-4">
-              Currently logged in as:
-              <span className="ml-1 font-semibold">{user.username}</span>
-            </div>
-          )}
-        </div>
         <div className="flex flex-col relative text-white mt-4">
           {links?.map((link, index) => (
             <>
