@@ -1,7 +1,7 @@
 import React,{useEffect, useState} from 'react'
 import { mslContext } from "../App.js"
 import {useParams, useNavigate} from 'react-router-dom'
-import { Modal, Button, Textarea, Pagination } from "flowbite-react";
+import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2"
 
 
@@ -72,10 +72,18 @@ const SingleEntry = () => {
   const[showUpdateModal, setShowUpdateModal] = useState(false)
 
   return(
-    <div>
+    <section className="col-span-2 place-items-center h-screen w-full">
+    <div className="px-9">
       {entry ? <>
+        <Card>
+          {/* ENTRY DISPLAY */}
+        {`Created: ${entry.title} by ${entry.user} on ${entry.created}`}<br/>
+        {entry.updated === entry.created ? <div></div> : `Updated: ${entry.updated}` }<br/>
+        <p>{entry.description}</p>
+        
 
       {/* DELETE BUTTON */}
+      <div className="flex">
       <React.Fragment>
         <Button onClick={() =>setShowDeleteModal(true)}>Delete Entry</Button>
         <Modal show={showDeleteModal} onClose={(()=>setShowDeleteModal(false))} size="md" popup={true}>
@@ -121,14 +129,10 @@ const SingleEntry = () => {
             </Modal.Body>
           </Modal>
       </React.Fragment>
+      </div>
+      </Card>
 
       
-    <div>
-      {/* ENTRY DISPLAY */}
-    {`Created: ${entry.title} by ${entry.user} on ${entry.created}`}<br/>
-    {`Updated: ${entry.updated}` }<br/>
-    <p>{entry.description}</p>
-    </div>
     
   <div className="flex items-center justify-center text-center">
 
@@ -147,6 +151,7 @@ const SingleEntry = () => {
     
     </> : <div>No entry with that id.</div> }
   </div>
+  </section>
   )
 }
 
