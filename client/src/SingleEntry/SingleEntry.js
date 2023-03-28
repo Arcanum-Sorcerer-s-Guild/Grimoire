@@ -3,7 +3,7 @@ import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
-import Select from "react-tailwindcss-select";
+import Select from "react-select";
 import "./singleEntry.css";
 
 const SingleEntry = () => {
@@ -63,7 +63,6 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setEntry({
           id: data.data[0].id,
           title:
@@ -79,7 +78,6 @@ const SingleEntry = () => {
           user: data.data[0].user,
           tags: data.data[0].tags,
         });
-        console.log(data.data[0].tags)
         if (data.data[0].tags[0] !== null) {
           setSelectedTags(data.data[0].tags.map( tag => {
             return({
@@ -156,7 +154,7 @@ const SingleEntry = () => {
                               value={selectedTags}
                               onChange={handleSearchTagChange}
                               options={databaseTags}
-                              isMultiple="true"
+                              isMulti="true"
                               isSearchable="true"
                               isClearable="true"
                               placeholder="Add Tags..."

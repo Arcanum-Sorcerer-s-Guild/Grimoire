@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
 import DateObject from "react-date-object";
+import {Link} from "react-router-dom"
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
@@ -18,17 +19,15 @@ const Entries = () => {
   };
 
   useEffect(() => {
-    console.log(searchTerms);
     let searchTerm = "";
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined) searchTerm += `&${searchTerms.tags}`;
 
-    console.log(searchTerm);
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
-          setEntries(data.data);
+          setEntries(data.data)
         } else {
           setEntries(undefined);
         }
@@ -51,7 +50,7 @@ const Entries = () => {
                     <AccordionItem
                       key={index}
                       open={index === open}
-                      title={`${title}`}
+                      title={<Link to={`/Home/${entry.id}`}>{`${title}`}</Link>}
                       date={`${dateCreated}`}
                       desc={entry.description}
                       toggle={() => toggle(index)}

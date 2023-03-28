@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import Select from "react-tailwindcss-select";
+import Select from "react-select";
 import { FaSearchengin } from "react-icons/fa";
 
 const SearchBar = () => {
@@ -33,7 +33,6 @@ const SearchBar = () => {
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
-    console.log(selectedTags);
   };
 
   const handleChange = (event) => {
@@ -79,7 +78,7 @@ const SearchBar = () => {
               value={selectedTags}
               onChange={handleSearchTagChange}
               options={databaseTags}
-              isMultiple="true"
+              isMulti="true"
               isSearchable="true"
               isClearable="true"
               placeholder="Search Tags..."
