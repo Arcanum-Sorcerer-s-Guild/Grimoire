@@ -6,7 +6,7 @@ import { FaSearchengin } from "react-icons/fa";
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
-  const { setSearchTerms, databaseTags, user } = React.useContext(mslContext);
+  const { setSearchTerms, databaseTags } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
@@ -43,15 +43,7 @@ const SearchBar = () => {
 
   return (
     <div className="col-span-2 w-full text-2xl p-7">
-      {!user.username ? (
-        <div className="text-sm mt-4">Log In</div>
-      ) : (
-        <div className="text-sm mt-4">
-          Currently logged in as:
-          <span className="ml-1 font-semibold">{user.username}</span>
-        </div>
-      )}
-      <form className="flex items-center mt-5" onSubmit={handleSubmit}>
+      <form className="flex items-center mt-2" onSubmit={handleSubmit}>
         <label htmlFor="search-bar" className="sr-only">
           Search
         </label>
