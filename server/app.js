@@ -9,6 +9,7 @@ const {
   getEntries,
   deleteEntry,
   createEntry,
+  updateEntry,
   countEntries,
   getTemplates,
   deleteTemplate,
@@ -86,6 +87,20 @@ app.post("/entries", (req, res) => {
   // console.log(req.body);
   createEntry(req.body)
     .then((data) => {
+      console.log("dataRecieved", data);
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+app.post("/entries/:id", (req, res) => {
+  const id = req.params.id;
+  updateEntry(req.body, id)
+    .then((data) => {
+      console.log(data);
       res.status(200).json(data);
     })
     .catch((err) =>
@@ -109,17 +124,17 @@ app.delete("/entries/:id", (req, res) => {
 });
 
 //Count Entries
-app.get("/countentries", (req,res)=> {
+app.get("/countentries", (req, res) => {
   const create = countEntries(req.body)
     .then((data) => {
-      res.status(200).json(data)
+      res.status(200).json(data);
     })
     .catch((err) =>
       res.status(404).json({
-        mesage:errorMessage,
+        mesage: errorMessage,
       })
     );
-})
+});
 
 //Templates
 app.get("/templates", (req, res) => {

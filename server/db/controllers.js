@@ -30,11 +30,11 @@ const getUsers = (name) => {
   return knex("users").select("*").where("id");
 };
 
-const getTags = (name) => {
-  name
-    ? (name = knex("tags").select("*").where({ name: name }))
-    : (name = knex("tags").select("*"));
-  return name;
+const getTags = async (name) => {
+  const tagItems = name
+    ? await knex("tags").select("*").where({ name: name })
+    : await knex("tags").select("*");
+  return tagItems;
 };
 
 const getEntries = async (search) => {
@@ -108,15 +108,19 @@ const getEntries = async (search) => {
 };
 
 const createTag = async (name) => {
+  console.log("inserting Name");
   return await knex("tags").insert({ name: name }, "id");
 };
 
-const createEntryTagMiddle = async ([entryId], tagId) => {
-  console.log(entryId.id, tagId);
-  return await knex("entry_tag").insert({
-    entry_id: entryId.id,
-    tag_id: tagId,
-  });
+const createEntryTagMiddle = async (tagId, entryId) => {
+  console.log("createEntryTagMiddle", "entryID", entryId, "tag ID", tagId);
+  return await knex("entry_tag").insert(
+    {
+      entry_id: entryId,
+      tag_id: tagId,
+    },
+    "id"
+  );
 };
 
 const deleteEntryTagMiddle = async (entryTagId) => {
@@ -127,33 +131,79 @@ const deleteEntryTagMiddle = async (entryTagId) => {
 };
 
 const createEntry = async ([{ title, description, user_id, tags }]) => {
-  const [submitEntry] = await knex("entries").insert(
-    {
-      title: title,
-      description: description,
-      user_id: user_id,
-    },
-    "*"
-  );
-
-  await tags.forEach(async (tag) => {
-    await getTags(tag).then(async ([data]) => {
-      if (data === undefined) {
-        await createEntryTagMiddle(await createTag(tag), submitEntry.id);
-      } else {
-        await createEntryTagMiddle(data.id, submitEntry.id);
-      }
+  return await knex("entries")
+    .insert(
+      {
+        title: title,
+        description: description,
+        user_id: user_id,
+      },
+      "*"
+    )
+    .then(async ([entryCreated]) => {
+      await tags.map(async (tag, index) => {
+        await getTags(tag).then(async ([data]) => {
+          if (data === undefined) {
+            await createTag(tag).then(async ([createTagItem]) => {
+              createEntryTagMiddle(createTagItem.id, entryCreated.id);
+            });
+          } else {
+            createEntryTagMiddle(data.id, entryCreated.id);
+          }
+        });
+      });
+      return [{ ...entryCreated, tags }];
     });
-  });
-  // return submitEntry;
-  return { ...submitEntry, tags };
+};
+
+// if (id) {
+//   return await knex("templates").where("id", "=", id).update(template, "*");
+// } else {
+//   console.log(template);
+//   return await knex("templates").insert(template, "*");
+// }
+
+const updateEntry = async ([{ description, tags }], id) => {
+  console.log(id);
+  const test = await knex("entries")
+    .where("id", "=", id)
+    .update(
+      {
+        description: description,
+        updated: new Date().toISOString(),
+      },
+      "*"
+    )
+    .then(async (entryCreated) => {
+      await deleteEntryTagMiddle(id);
+      console.log(entryCreated);
+      return entryCreated;
+    })
+    .then(async ([entryCreated]) => {
+      console.log(entryCreated);
+      await tags.map(async (tag, index) => {
+        await getTags(tag).then(async ([data]) => {
+          if (data === undefined) {
+            await createTag(tag).then(async ([createTagItem]) => {
+              createEntryTagMiddle(createTagItem.id, entryCreated.id);
+            });
+          } else {
+            createEntryTagMiddle(data.id, entryCreated.id);
+          }
+        });
+      });
+      return [{ ...entryCreated, tags }];
+    });
+
+  console.log(test);
+  return test;
 };
 
 const deleteEntry = async (id) => {
-  const test = deleteEntryTagMiddle(id).then(async () => {
+  const deleteEntryItem = await deleteEntryTagMiddle(id).then(async () => {
     await knex("tags").where("id", "=", id).del();
   });
-  return test;
+  return deleteEntryItem;
 };
 
 const countEntries = async () => knex("entries").count("id");
@@ -166,6 +216,7 @@ module.exports = {
   createTag,
   createEntryTagMiddle,
   createEntry,
+  updateEntry,
   countEntries,
   getTemplates,
   deleteTemplate,
