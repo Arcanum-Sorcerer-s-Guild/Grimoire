@@ -79,12 +79,14 @@ const SingleEntry = () => {
           user: data.data[0].user,
         });
         console.log(data.data[0].tags)
-        setSelectedTags(data.data[0].tags.map( tag => {
-          return({
-            value:tag,
-            label:tag
-        })
-        }))
+        if (data.data[0].tags[0] !== null) {
+          setSelectedTags(data.data[0].tags.map( tag => {
+            return({
+              value:tag,
+              label:tag
+          })
+          }))
+      }
       });
   }, [params.id]);
 
@@ -152,7 +154,9 @@ const SingleEntry = () => {
                               options={databaseTags}
                               isMultiple="true"
                               isSearchable="true"
-                              placeholder="Search Tags..."
+                              placeholder="Add Tags..."
+                              loading={databaseTags === undefined}
+                              noOptionsMessage='No tags in system... You should make some!'
                             />
                           ) : (
                             <div>Loading...</div>
