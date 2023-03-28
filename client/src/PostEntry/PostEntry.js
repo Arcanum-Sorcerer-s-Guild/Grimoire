@@ -47,7 +47,6 @@ const PostEntry = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify([inputs]),
       };
-      console.log(requestOptions.body)
 
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
         .then((res) => {

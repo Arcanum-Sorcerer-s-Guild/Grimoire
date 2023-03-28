@@ -63,7 +63,6 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries?id=${params.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setEntry({
           id: data.data[0].id,
           title:
@@ -79,7 +78,6 @@ const SingleEntry = () => {
           user: data.data[0].user,
           tags: data.data[0].tags,
         });
-        console.log(data.data[0].tags)
         if (data.data[0].tags[0] !== null) {
           setSelectedTags(data.data[0].tags.map( tag => {
             return({

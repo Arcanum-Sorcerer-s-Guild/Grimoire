@@ -25,7 +25,6 @@ const SearchBar = () => {
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
-    console.log(selectedTags);
   };
 
   const handleChange = (event) => {
