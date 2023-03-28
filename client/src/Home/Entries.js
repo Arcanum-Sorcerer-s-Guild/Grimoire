@@ -27,7 +27,7 @@ const Entries = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
-          console.log(data.data)
+          setEntries(data.data)
         } else {
           setEntries(undefined);
         }
