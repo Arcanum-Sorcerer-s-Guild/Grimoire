@@ -8,6 +8,7 @@ const {
   getTags,
   getEntries,
   createEntry,
+  countEntries,
   getTemplates,
   deleteTemplate,
   updateTemplates,
@@ -92,6 +93,19 @@ app.post("/entries", (req, res) => {
       })
     );
 });
+
+//Count Entries
+app.get("/countentries", (req,res)=> {
+  const create = countEntries(req.body)
+    .then((data) => {
+      res.status(200).json(data)
+    })
+    .catch((err) =>
+      res.status(404).json({
+        mesage:errorMessage,
+      })
+    );
+})
 
 //Templates
 app.get("/templates", (req, res) => {
