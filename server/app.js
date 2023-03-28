@@ -115,7 +115,8 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  createEntry(req.body)
+  const entry = { ...req.body[0], user_id: req.session.user.userId };
+  createEntry(entry)
     .then((data) => {
       res.status(201).json(data);
     })

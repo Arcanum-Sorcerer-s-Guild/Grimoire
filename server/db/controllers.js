@@ -130,7 +130,7 @@ const deleteEntryTagMiddle = async (entryTagId) => {
   return `deleteJoinedItem`;
 };
 
-const createEntry = async ([{ title, description, user_id, tags }]) => {
+const createEntry = async ({ title, description, user_id, tags }) => {
   console.log("createEntry", { title, description, user_id, tags });
   return await knex("entries")
     .insert(
