@@ -2,10 +2,39 @@ const knex = require("./dbConnections.js");
 const { attachPaginate } = require("knex-paginate");
 attachPaginate();
 
+const getTemplates = async (id) => {
+  if (id) {
+    console.log("id present", id)
+    return await knex("templates").select("*").where("id", "=", id);
+  } else {
+    return await knex("templates").select("*");
+  }
+};//✅
+
+const deleteTemplate = (id) => {
+  return knex("templates").where("id", "=", id).del();
+};//✅
+
+
+const updateTemplates = async ([template], id) => {
+console.log(id)
+  if (id) {
+    return await knex("templates").where("id", "=", id ).update(
+      template,
+      "*"
+    );
+  } else {
+    console.log(template)
+    return await knex("templates").insert(
+      template,
+      "*"
+    );
+  }
+};
+
 const getUsers = (name) => {
   name = name ? name : "*";
-  const test = knex("users").select("*").where("id");
-  return test;
+  return knex("users").select("*").where("id");
 };
 
 const getTags = (name) => {
@@ -129,4 +158,7 @@ module.exports = {
   createEntryTagMiddle,
   createEntry,
   countEntries,
+  getTemplates,
+  deleteTemplate,
+  updateTemplates,
 };

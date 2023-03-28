@@ -7,10 +7,11 @@ const {
   getUsers,
   getTags,
   getEntries,
-  createTag,
-  createEntryTagMiddle,
   createEntry,
   countEntries,
+  getTemplates,
+  deleteTemplate,
+  updateTemplates,
 } = require("./db/controllers");
 
 app.use(cors());
@@ -23,16 +24,6 @@ const errorMessage =
 app.get("/", (req, res) => {
   res.status(200).json("server running");
 });
-
-// // Returns nothing for deeper entries routes
-// app.use("/entries/*", (req, res) => {
-//   res.status(200).json("server running");
-// });
-
-// // Returns nothing for deeper entries routes
-// app.use("/tags/*", (req, res) => {
-//   res.status(200).json("server running");
-// });
 
 app.get("/entries", (req, res) => {
   getEntries(req.query)
@@ -115,15 +106,38 @@ app.get("/countentries", (req,res)=> {
     );
 })
 
-// Post a new Template to the DB
-// app.post("/templates", (req, res) => {
-//   res.status(200).json({
-//     message: "Post Request Sent! Server Running Successfully",
-//   });
-// });
+//Templates
+app.get("/templates", (req, res) => {
+  getTemplates().then((data) => res.status(200).json(data));
+});
 
-//PUT Requests
+app.get("/templates/:id", (req, res) => {
+  getTemplates(req.params.id).then((data) => res.status(200).json(data));
+});
 
-//DELETE Requests
+app.post("/templates/:id", (req, res) => {
+  updateTemplates(req.body, req.params.id).then((data) =>
+    res.status(200).json(data)
+  );
+});
+app.post("/templates", (req, res) => {
+  updateTemplates(req.body).then((data) => res.status(200).json(data));
+});
+app.delete("/templates/:id", (req, res) => {
+  deleteTemplate(req.params.id).then((data) => res.status(200).json(data));
+});
+
+// wildcards
+app.use("/*", (req, res) => {
+  res.status(200).json("server running");
+});
+
+app.use("/entries/*", (req, res) => {
+  res.status(200).json("server running");
+});
+
+app.use("/tags/*", (req, res) => {
+  res.status(200).json("server running");
+});
 
 module.exports = app;
