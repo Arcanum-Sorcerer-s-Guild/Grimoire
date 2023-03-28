@@ -1,0 +1,26 @@
+
+.cardBox {
+  display:flex;
+  flex-direction: column;
+  height: 600px;
+}
+
+.descriptionBox {
+  margin-top: 80%;
+}
+
+.cardButtons {
+  display: flex;
+  flex-direction: row; 
+  justify-content: center;
+  gap: 10px;
+  /* position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%) */
+  margin-top: auto;
+}
+
+.updateTaggedSearch {
+  padding: 10px;
+}
