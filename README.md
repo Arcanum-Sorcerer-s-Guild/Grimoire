@@ -1,5 +1,5 @@
 
-# Master Incident Log
+# Master Incident Log [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 
 
@@ -8,13 +8,13 @@ The Master Incident Log is an event tracker for JavaScript. It allows users to c
 
 ## Usage
 
-In order to get started, fork this scaffold repository in Github and clone it locally onto your machine. 
+In order to get started, fork this scaffold repository in Github and clone it locally onto your machine.
 
-Once cloned locally: 
+Once cloned locally:
 * navigate to the local directory housing your repo
 * open this repo with VSCode
 * run `npm install` to install all necessary dependencies
-* run `npm start` to start up the application 
+* run `npm start` to start up the application
 * navigate to localhost:3000/ in your local browser
 
 ## Features
