@@ -50,7 +50,7 @@ const NavBar = () => {
                 {link?.name}
               </h2>
               <h2
-                className={`absolute left-48 whitespace-pre font-semibold bg-white text-gray-900 rounded-md drop-shadow-lg ${open && "hidden"} 
+                className={`absolute left-48 whitespace-pre font-semibold bg-slate-400 text-gray-900 rounded-md drop-shadow-lg ${open && "hidden"} 
                   px-0 py-0 w-0 overflow-hidden group-hover:px-2 group-hover:py-1 group-hover:left-14 group-hover:duration-300 group-hover:w-fit`}
               >
                 {link?.name}
