@@ -131,6 +131,7 @@ const deleteEntryTagMiddle = async (entryTagId) => {
 };
 
 const createEntry = async ([{ title, description, user_id, tags }]) => {
+  console.log("createEntry", { title, description, user_id, tags });
   return await knex("entries")
     .insert(
       {
@@ -141,8 +142,10 @@ const createEntry = async ([{ title, description, user_id, tags }]) => {
       "*"
     )
     .then(async ([entryCreated]) => {
+      console.log("test",entryCreated)
       await tags.map(async (tag, index) => {
         await getTags(tag).then(async ([data]) => {
+          console.log(tags)
           if (data === undefined) {
             await createTag(tag).then(async ([createTagItem]) => {
               createEntryTagMiddle(createTagItem.id, entryCreated.id);
@@ -200,10 +203,12 @@ const updateEntry = async ([{ description, tags }], id) => {
 };
 
 const deleteEntry = async (id) => {
-  const deleteEntryItem = await deleteEntryTagMiddle(id).then(async () => {
-    await knex("tags").where("id", "=", id).del();
+  const deleteEntryItem = await deleteEntryTagMiddle(id)
+  .then(async () => {
+    await knex("entries").where("id", "=", id).del();
+    return `item: ${id} is deleted`
   });
-  return deleteEntryItem;
+  return deleteEntryItem
 };
 
 const countEntries = async () => knex("entries").count("id");

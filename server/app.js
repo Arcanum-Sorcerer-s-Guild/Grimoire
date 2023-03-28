@@ -84,7 +84,6 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  // console.log(req.body);
   createEntry(req.body)
     .then((data) => {
       console.log("dataRecieved", data);
@@ -127,7 +126,7 @@ app.delete("/entries/:id", (req, res) => {
 app.get("/countentries", (req, res) => {
   const create = countEntries(req.body)
     .then((data) => {
-      res.status(200).json(data);
+      res.status(201).json(data);
     })
     .catch((err) =>
       res.status(404).json({
