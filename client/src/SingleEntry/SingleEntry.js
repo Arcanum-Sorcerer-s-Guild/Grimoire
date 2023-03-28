@@ -79,6 +79,7 @@ const SingleEntry = () => {
           user: data.data[0].user,
           tags: data.data[0].tags,
         });
+        console.log(data.data[0].tags)
         if (data.data[0].tags[0] !== null) {
           setSelectedTags(data.data[0].tags.map( tag => {
             return({
@@ -86,7 +87,7 @@ const SingleEntry = () => {
               label:tag
           })
           }))
-      }
+      } 
       });
   }, [params.id]);
 
@@ -120,7 +121,7 @@ const SingleEntry = () => {
                   )}
                   <br />
                   <p>{entry.desc}</p><br/>
-                  <p>{entry.tags.map(tag => <div>{tag}</div>)}</p>
+                  <p>{entry.tags.includes(null)  ? <div>No tags, why don't you add some!</div> : entry.tags.map(tag => <div>{tag}</div>)}</p>
                 </div>
 
                 <div className="cardButtons">
