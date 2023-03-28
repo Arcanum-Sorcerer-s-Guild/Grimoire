@@ -14,6 +14,8 @@ const {
   createTag,
   createEntryTagMiddle,
   createEntry,
+  getUserByUsername,
+  createUser,
 } = require("./db/controllers");
 
 app.use(morgan("tiny"));
