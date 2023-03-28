@@ -6,6 +6,7 @@ const Entries = () => {
   const [entries, setEntries] = useState([]);
   const { searchTerms, setSearchTerms, databaseTags, srvPort } =
     React.useContext(mslContext);
+  
   const [open, setOpen] = useState(false);
 
   const toggle = (index) => {
@@ -16,7 +17,7 @@ const Entries = () => {
   };
 
   useEffect(() => {
-    let searchTerm = ''
+    let searchTerm = {}
     if (searchTerms.q !== undefined) 
       searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined)
