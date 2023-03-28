@@ -1,6 +1,10 @@
 const express = require("express");
 const morgan = require("morgan");
 const cors = require("cors");
+const bcrypt = require("bcrypt");
+const session = require("express-session");
+const KnexSessionStore = require("connect-session-knex")(session);
+const knex = require("./db/dbConnections.js");
 const app = express();
 
 const {
@@ -12,9 +16,34 @@ const {
   createEntry,
 } = require("./db/controllers");
 
-app.use(cors());
 app.use(morgan("tiny"));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(
+  cors({
+    origin: "http://localhost:3000",
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    credentials: true,
+  })
+);
+const store = new KnexSessionStore({
+  knex,
+  tablename: "sessions",
+});
+app.use(
+  session({
+    store: store,
+    secret: process.env.SESSION_SECRET || "6f646a6c6e6775306d7a68686d64637",
+    saveUninitialized: false,
+    resave: false,
+    cookie: {
+      secure: false,
+      httpOnly: true,
+      sameSite: "lax",
+      maxAge: 1000 * 60 * 60 * 24, // in milliseconds: ms * s * m * h = 1 day
+    },
+  })
+);
 
 const errorMessage =
   "The data you are looking for could not be found. Please try again";
