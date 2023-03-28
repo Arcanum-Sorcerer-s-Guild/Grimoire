@@ -2,10 +2,7 @@ import React, {useState, useEffect} from 'react'
 import { Routes, Route } from "react-router-dom";
 import Entries from "./Home/Entries.js";
 import UserAuth from './Login/UserAuth.js';
-import Register from './Login/Register.js';
-import LoginPage from './Login/pages/LoginPage.js';
-import SignupPage from './Login/pages/SignupPage.js';
-import Theme from "./Common/Theme.js"
+import SignUp from './Login/SignUp.js';
 import NavBar from "./Common/NavBar.js"
 import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
@@ -54,7 +51,6 @@ function App() {
   return (
     <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
-      <Theme />
       <NavBar />
       <div className="grid grid-flow-cols w-full">
         <SearchBar />
@@ -64,10 +60,8 @@ function App() {
           {/* <Route path = "/" element={<Entries />} /> */}
           {/* <Route path = "/templates" element={<Templates />} /> */}
           <Route path="/post" element={<PostEntry />} />
-          <Route path="/userauth" element={<UserAuth />} />
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<LoginPage />} />
-          <Route path="/signup" element={<SignupPage />} />
+          <Route path="/login" element={<UserAuth />} />
+          <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
       </section>

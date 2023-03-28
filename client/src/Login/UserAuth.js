@@ -72,7 +72,7 @@ const UserAuth = () => {
             <p className="mt-5 text-center text-sm text-gray-600 dark:text-gray-200">
               Don't have an account yet?
               <Link
-                to={"/Register"}
+                to={"/SignUp"}
                 className="font-medium text-amber-600 hover:text-amber-400 ml-2"
               >
                 Signup

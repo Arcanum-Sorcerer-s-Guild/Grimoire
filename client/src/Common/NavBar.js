@@ -1,9 +1,11 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
+import Theme from "./Theme";
 
 import controlImage from "../assets/control.png";
 import { FaDungeon, FaHatWizard } from 'react-icons/fa'; 
 import { GiSpellBook } from 'react-icons/gi'; 
+import { IoIosSettings } from 'react-icons/io'; 
 
 const NavBar = () => {
   const [ open, setOpen ] = useState(true);
@@ -12,7 +14,7 @@ const NavBar = () => {
     { name: 'Home', to: '/', icon: FaDungeon },
     { name: 'Post', to: '/', icon: GiSpellBook },
     { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
-    { name: 'userauth', to: '/', icon: FaHatWizard, margin: true },
+    { name: 'Theme', to: '/', icon: IoIosSettings },
   ];
 
   return (
@@ -36,6 +38,7 @@ const NavBar = () => {
         </div>
         <div className="flex flex-col relative text-white mt-4">
           {links?.map((link, index) => (
+            <>
             <Link 
               to={link.name} 
               key={index}
@@ -57,6 +60,8 @@ const NavBar = () => {
                 {link?.name}
               </h2>
             </Link>
+            <Theme />
+            </>
           ))}
         </div>
       </div>

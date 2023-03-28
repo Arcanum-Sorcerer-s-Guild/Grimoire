@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { mslContext } from "../App.js";
 import { Link } from "react-router-dom";
 
-const Register = () => {
+const SignUp = () => {
   const { srvPort, user, setUser } = React.useContext(mslContext);
 
   // onSubmit handler for registering a new user
@@ -103,4 +103,4 @@ const Register = () => {
   //   <br />
   // </>
 };
-export default Register;
+export default SignUp;
