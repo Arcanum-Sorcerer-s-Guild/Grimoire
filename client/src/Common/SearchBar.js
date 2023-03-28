@@ -17,10 +17,19 @@ const SearchBar = () => {
     } else {
       tagsToAdd = "";
     }
-    setSearchTerms({
-      q: inputs.q,
-      tags: tagsToAdd,
-    });
+
+    if (inputs.q === "") {
+      setSearchTerms({
+        q: inputs.q,
+        tags: tagsToAdd,
+      });
+    } else {
+      setSearchTerms({
+        inputs,
+        tags: tagsToAdd,
+      });
+    
+    }
   };
 
   const handleSearchTagChange = (value) => {
@@ -37,7 +46,7 @@ const SearchBar = () => {
   return (
     <div className="col-span-2 w-full font-semibold text-2xl p-7">
       <form className="flex items-center mt-10" onSubmit={handleSubmit}>
-        <label for="search-bar" className="sr-only">
+        <label htmlFor="search-bar" className="sr-only">
           Search
         </label>
         <div className="relative w-full">
@@ -54,7 +63,7 @@ const SearchBar = () => {
               required
             />
             <div className="absolute top-2 right-4 text-sm rounded-md">
-              {React.createElement(FaSearchengin , { size: "20" })}
+              {React.createElement(FaSearchengin, { size: "20" })}
             </div>
           </div>
           <div className="mt-2">
@@ -74,18 +83,25 @@ const SearchBar = () => {
         </div>
       </form>
       <div className="relative text-right">
-        <button
-          className="text-xs"
-          onClick={() => setIsOpen(!isOpen)}
-        >
+        <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
           advanced search
         </button>
         {isOpen && (
           <div className="flex justify-center">
-            title
-            description
-            start date
-            end date
+            <form onSubmit={handleSubmit}>
+            <input
+              type="text"
+              name="title"
+              id="advSearch-item"
+              className="text-sm rounded-md block pl-3 
+              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+              placeholder="Search..."
+              onChange={handleChange}
+              required
+            />
+              <input type="text" name="description" placeholder="description" />
+              <input type="text" name="start date" placeholder="start date" />
+            </form>
           </div>
         )}
       </div>

@@ -37,12 +37,11 @@ const Entries = () => {
 
   return (
     <>
-      <section className="col-span-2 place-items-center h-screen w-full">
+      <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
         <div className="px-9">
           <div>
             {entries !== undefined ? (
               <div>
-                {" "}
                 {entries.map((entry, index) => {
                   let title = entry.title.toUpperCase();
                   let date = new DateObject(entry.created);

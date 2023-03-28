@@ -16,7 +16,7 @@ const NavBar = () => {
 
   return (
     <div className="flex">
-      <div className={` bg-slate-800 h-screen p-5 pt-8 relative duration-300 ${open ? "w-72" : "w-20"}`}>
+      <div className={` bg-slate-800 max-h-fit p-5 pt-8 relative duration-300 ${open ? "w-72" : "w-20"}`}>
         <img 
           src={controlImage} 
           alt="control"
