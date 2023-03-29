@@ -62,6 +62,7 @@ const getEntries = async (search) => {
     )
     .where(function () {
       if ("q" in search) {
+        // q = q.replace(' ', "&");
         // console.log(search.q);
         this.whereRaw(
           `to_tsvector(entries::text) @@ to_tsquery('${search.q}:*')`
