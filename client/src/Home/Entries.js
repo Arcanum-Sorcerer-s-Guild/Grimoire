@@ -29,7 +29,6 @@ const Entries = () => {
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined) searchTerm += `&${searchTerms.tags}`;
     if (searchTerms.page !== undefined) searchTerm += `&page=${searchTerms.page}`
-    console.log('Search term',searchTerm)
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
@@ -51,8 +50,8 @@ const Entries = () => {
               <div>
                 {entries.map((entry, index) => {
                   let title = entry.title.toUpperCase();
-                  let dateCreated = new DateObject(entry.created).format("YYYY-MM-DD HH:mm");
-                  let dateUpdated = new DateObject(entry.updated).format("YYYY-MM-DD HH:mm")
+                  let dateCreated = new DateObject(entry.created).format("YYYY-MM-DD  HH:mm");
+                  let dateUpdated = new DateObject(entry.updated).format("YYYY-MM-DD  HH:mm")
 
                   return (
                     <AccordionItem

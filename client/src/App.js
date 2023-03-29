@@ -56,6 +56,9 @@ function App() {
       <div className="grid grid-flow-cols w-full">
         <SearchBar />
         <Routes>
+        <Route exact path="/">
+            {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
+        </Route>
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
           {/* <Route path = "/" element={<Entries />} /> */}
