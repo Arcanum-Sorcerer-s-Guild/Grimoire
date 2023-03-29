@@ -89,7 +89,7 @@ const PostEntry = () => {
         <div className="px-9">
           <React.Fragment>
             <Card>
-              <h2>New Entry</h2>
+              <h2 className="text-amber-600">New Entry</h2>
               <input
                 className="text-lg border border-gray-200 p-4 rounded-md"
                 placeholder="Title..."
@@ -107,7 +107,7 @@ const PostEntry = () => {
                 />
                 <hr className="m-5" />
                 <div>
-                  <h2>Tags</h2>
+                  <h2 className="text-amber-800">Tags</h2>
 
                   <div className="updateTaggedSearch mt-5">
                     <Select
