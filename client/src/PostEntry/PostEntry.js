@@ -52,7 +52,7 @@ const PostEntry = () => {
         })
         .then((data) => {
           console.log(data);
-          // navigate("/home")
+          navigate("/home")
         })
         .catch((err) => {
           console.log(err);

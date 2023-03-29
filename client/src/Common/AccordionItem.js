@@ -11,7 +11,7 @@ const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tag
             >
                 <p className="text-xl  text-blue-800 dark:text-amber-500">
                     {title}
-                    <span className={`${open && "hidden"} text-sm m-2 text-gray-500 dark:text-gray-400`}>by "username" on</span>
+                    <span className={`${open && "hidden"} text-sm m-2 text-gray-500 dark:text-gray-400`}>{`by ${user}`}on</span>
                     <span className={`${open && "hidden"} text-sm text-gray-500 dark:text-gray-400`}>{dateCreated}</span>
                 </p>
                 <div className="flex text-sm">

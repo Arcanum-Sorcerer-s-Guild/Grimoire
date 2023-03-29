@@ -87,6 +87,7 @@ const SearchBar = () => {
             />
           </div>
         </div>
+        <button type="submit"/>
       </form>
       <div className="relative text-right">
         <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
