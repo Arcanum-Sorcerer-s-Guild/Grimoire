@@ -11,7 +11,7 @@ import Select from "react-select";
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
-  const { setSearchTerms, databaseTags } = React.useContext(mslContext);
+  const { setSearchTerms, databaseTags, user } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
