@@ -1,40 +1,39 @@
-import Select from "react-select";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { mslContext } from "../App.js";
-import CreatableSelect from 'react-select/creatable';
+import { Pagination, Spinner } from "flowbite-react";
 
 
 const Templates = () => {
-  const { databaseTags } = React.useContext(mslContext);
-  const [selectedTags, setSelectedTags] = useState(null);
+  const { databaseTags, srvPort } = React.useContext(mslContext);
+  const [templates, setTemplates] = useState();
 
-  const handleSubmit = (e) => {
-    console.log(e)
-    e.preventDefault();
-    console.log('hey!')
-  }
+  
 
-  return(<div>
 
-    <form onSubmit={handleSubmit}>
+  useEffect(()=>{
+    fetch(`http://localhost:${srvPort}/templates`)
+    .then(res=>res.json())
+    .then(data=>{
+      console.log(data)
+      setTemplates(data.data)
+    })
+  },[])
 
-    <CreatableSelect 
-      isMulti
-      isLoading={databaseTags ? false : true}
-      options={databaseTags}
-      placeholder='Search...'
-      openOnFocus='true' s
-      hideSelectedValues='true'
-      isClearable='true'
-      escapeClearsValue='true'
-    />
-    <button type="submit">submit</button>
-    </form>
+  return(<>
+    <section className="col-span-2 place-items-center max-h-fit w-full mb-5">  
+      <div className="px-9">
+        {templates 
+        ? <div>Templates loaded!</div>
+        : <Spinner aria-label="Extra large spinner example" size="xl" /> }
+
+
+
 
     
+    </div>
+    </section>
 
-
-  </div>)
+  </>)
 }
 
 export default Templates

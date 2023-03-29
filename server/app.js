@@ -296,6 +296,7 @@ app.get("/templates", (req, res) => {
 });
 
 app.get("/templates/:id", (req, res) => {
+  console.log(req.params.id)
   getTemplates(req.params.id)
     .then((data) => res.status(204).json(data))
     .catch((err) =>

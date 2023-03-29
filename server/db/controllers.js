@@ -4,7 +4,6 @@ attachPaginate();
 
 const getTemplates = async (id) => {
   if (id) {
-    // console.log("id present", id);
     return await knex("templates").select("*").where("id", "=", id);
   } else {
     return await knex("templates").select("*");
