@@ -188,7 +188,7 @@ const SingleEntry = () => {
                 <div className="cardButtons mt-10">
                   <React.Fragment>
                     <Button
-                      className="bg-slate-700"
+                      className="bg-slate-700 dark:bg-slate-500"
                       onClick={() => setShowUpdateModal(true)}
                     >
                       Update Entry
@@ -235,7 +235,7 @@ const SingleEntry = () => {
                             <div className="flex justify-center gap-4">
                               <Button 
                                 type="submit"
-                                className="bg-slate-800"
+                                className="bg-slate-800 dark:bg-slate-500"
                               >
                                 Update Entry
                               </Button>
@@ -254,7 +254,7 @@ const SingleEntry = () => {
                   {/* DELETE BUTTON */}
                   <React.Fragment>
                     <Button
-                      className="bg-slate-700"
+                      className="bg-slate-700 dark:bg-slate-500"
                       onClick={() => setShowDeleteModal(true)}
                     >
                       Delete Entry
