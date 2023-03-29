@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
-import { Pagination,Spinner } from "flowbite-react";
+import { Pagination, Spinner } from "flowbite-react";
 import DateObject from "react-date-object";
-import {Link,useNavigate} from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
@@ -11,11 +11,11 @@ const Entries = () => {
     React.useContext(mslContext);
   const navigate = useNavigate();
   const [open, setOpen] = useState(false);
-  const [pageData, setPageData] = useState()
-  
+  const [pageData, setPageData] = useState();
+
   const onPageChange = (value) => {
-    setSearchTerms({...searchTerms,page:value })
-  }
+    setSearchTerms({ ...searchTerms, page: value });
+  };
 
   const toggle = (index) => {
     if (open === index) {
@@ -28,23 +28,26 @@ const Entries = () => {
     let searchTerm = "";
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined) searchTerm += `&${searchTerms.tags}`;
-    if (searchTerms.page !== undefined) searchTerm += `&page=${searchTerms.page}`
-    if (searchTerms.title !== undefined) searchTerm += `&title=${searchTerms.title}`
-    if (searchTerms.description !== undefined) searchTerm += `&description=${searchTerms.description}`
-    if (searchTerms.start !== undefined) searchTerm += `&start=${searchTerms.start}`
-    if (searchTerms.end !== undefined) searchTerm += `&end=${searchTerms.end}`
+    if (searchTerms.page !== undefined)
+      searchTerm += `&page=${searchTerms.page}`;
+    if (searchTerms.title !== undefined)
+      searchTerm += `&title=${searchTerms.title}`;
+    if (searchTerms.description !== undefined)
+      searchTerm += `&description=${searchTerms.description}`;
+    if (searchTerms.start !== undefined)
+      searchTerm += `&start=${searchTerms.start}`;
+    if (searchTerms.end !== undefined) searchTerm += `&end=${searchTerms.end}`;
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
-          
-          setEntries(data.data)
-          setPageData(data.pagination)
+          setEntries(data.data);
+          setPageData(data.pagination);
         } else {
           setEntries(undefined);
         }
-      })
-      // .then(result => navigate("/home"));
+      });
+    // .then(result => navigate("/home"));
   }, [searchTerms]);
 
   return (
@@ -56,8 +59,12 @@ const Entries = () => {
               <div>
                 {entries.map((entry, index) => {
                   let title = entry.title.toUpperCase();
-                  let dateCreated = new DateObject(entry.created).format("YYYY-MM-DD  HH:mm");
-                  let dateUpdated = new DateObject(entry.updated).format("YYYY-MM-DD  HH:mm")
+                  let dateCreated = new DateObject(entry.created).format(
+                    "YYYY-MM-DD  HH:mm"
+                  );
+                  let dateUpdated = new DateObject(entry.updated).format(
+                    "YYYY-MM-DD  HH:mm"
+                  );
 
                   return (
                     <AccordionItem
@@ -75,26 +82,24 @@ const Entries = () => {
                 })}{" "}
               </div>
             ) : (
-              <Spinner
-              aria-label="Extra large spinner example"
-              size="xl"
-            />
+              <Spinner aria-label="Extra large spinner example" size="xl" />
             )}
           </div>
           <div className="flex items-center justify-center text-center">
-          {pageData ? <Pagination
-                    currentPage={parseInt(pageData.currentPage)}
-                    layout="pagination"
-                    onPageChange={onPageChange}
-                    showIcons={true}
-                    totalPages={parseInt(pageData.lastPage)}
-                    previousLabel="Go back"
-                    nextLabel="Go forward"
-                  /> :   <Spinner
-                  aria-label="Extra large spinner example"
-                  size="xl"
-                />}
-            </div>
+            {pageData ? (
+              <Pagination
+                currentPage={parseInt(pageData.currentPage)}
+                layout="pagination"
+                onPageChange={onPageChange}
+                showIcons={true}
+                totalPages={parseInt(pageData.lastPage)}
+                previousLabel="Go back"
+                nextLabel="Go forward"
+              />
+            ) : (
+              <Spinner aria-label="Extra large spinner example" size="xl" />
+            )}
+          </div>
         </div>
       </section>
     </>

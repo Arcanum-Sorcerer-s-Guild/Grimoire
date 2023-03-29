@@ -115,7 +115,8 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  console.log(req.body)
+  //I think something weird is happening around here (title:undefined)?
+  console.log(req.body);
   if (!req.session.user) {
     return res.status(401).json({ message: "unauthorized" });
   }
