@@ -12,7 +12,6 @@ const SignUp = () => {
     const form = e.target;
     const formData = new FormData(form);
     const formJSON = Object.fromEntries(formData.entries());
-    console.log("formJSON", formJSON);
 
     const requestOptions = {
       method: "POST",
@@ -23,7 +22,6 @@ const SignUp = () => {
     fetch(`http://localhost:${srvPort}/register`, requestOptions)
       .then((response) => response.json())
       .then((userData) => {
-        console.log("user data:", userData);
         setUser(userData);
       });
   };

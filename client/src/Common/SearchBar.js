@@ -23,8 +23,9 @@ const SearchBar = () => {
       tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
     } 
 
+
     setSearchTerms({
-        q: inputs.q,
+        q: `%${inputs.q.replace(' ','%')}%`,
         tags: tagsToAdd,
       });
     };

@@ -46,18 +46,15 @@ const PostEntry = () => {
         "Access-Control-Allow-Origin": "*",
         credentials: "include",
       };
-      console.log(requestOptions)
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
         .then((res) => {
           if (!res.ok) throw new Error(res.statusText);
           res.json();
         })
         .then((data) => {
-          console.log(data);
           navigate("/home");
         })
         .catch((err) => {
-          console.log(err);
           alert(err);
         });
     }
