@@ -30,7 +30,6 @@ const NavBar = () => {
     { name: "Home", to: "/", icon: <AiOutlineHome /> },
     { name: "Post", to: "/", icon: <AiOutlineFileText /> },
     { name: 'Templates', to: '/', icon: <AiOutlineHome />},
-    { name: "Login", to: "/", icon: <BsPerson />, spacing: true },
     {
       name: "Theme",
       icon: <AiOutlineSetting />,
@@ -41,8 +40,46 @@ const NavBar = () => {
         { text: "system", icon: <RiComputerLine /> },
       ],
     },
-    { name: "Logout", to: "/", icon: <AiOutlineLogout />, spacing: true },
   ];
+  let userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Login
+    </span>
+  </Link>;
+
+  if (user.username) {
+    userLink = <Link 
+      onClick={
+        () => {
+          fetch(`http://localhost:${srvPort}/logout`, {
+            method: "POST",
+            credentials: "include",
+          })
+            .then(() => setUser({}));
+        }
+      }
+      className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
+    >
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Logout
+    </span>
+  </Link>;
+  } else {
+    userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Login
+    </span>
+  </Link>;
+  }
 
   //Theme Setup
   const [theme, setTheme] = useState(
@@ -183,10 +220,11 @@ const NavBar = () => {
               )}
             </>
           ))}
+          {userLink}
         </div>
         <div className={`w-full float-right text-white italic ${!open && "hidden"}`}>
           {!user.username ? (
-            <div className="text-sm mt-4">Log In</div>
+            <div className="text-sm mt-4">Not Logged In</div>
           ) : (
             <div className="text-sm mt-4">
               Currently logged in as:
