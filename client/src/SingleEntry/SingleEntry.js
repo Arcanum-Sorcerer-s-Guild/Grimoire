@@ -12,36 +12,78 @@ const SingleEntry = () => {
   const { srvPort } = React.useContext(mslContext);
   const [entry, setEntry] = useState({});
   const [totalEntries, setTotalEntries] = useState();
-  const [updatedDesc, setUpdatedDesc] = useState();
+  const [updatedObj, setUpdatedObj] = useState();
   const { databaseTags } = React.useContext(mslContext);
-  const [selectedTags, setSelectedTags] = useState(null);
+  const [selectedTags, setSelectedTags] = useState();
+  const [readyToSend,setReadyToSend] = useState(false)
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
   };
 
-  const onClickUpdate = () => {
-    setShowUpdateModal(false);
-    const requestOptions = {
-      method: "PUT",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(),
-    };
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
-      .then((res) => res.json())
-      .then((data) => {
-        //TODO turn this into a real update (get a returning value?)
-        console.log(data);
-      });
+  const onClickUpdate = (e) => {
+    e.preventDefault();
+    let tagArray = [];
     console.log(selectedTags)
-    console.log(updatedDesc);
+
+    const form = e.target;
+    const formData = new FormData(form)
+
+    if (selectedTags !== null) {
+      if (selectedTags.length > 1) {
+        console.log(1)
+        selectedTags.map((tag) => tagArray.push(tag.value));
+      } else if (selectedTags.length !== 0) {
+        console.log(2)
+        tagArray.push(selectedTags[0].value);
+      }
+    }
+    console.log(tagArray)
+
+
+      // setUpdatedObj({
+      //     ...Object.fromEntries(formData.entries()),
+      //     tags:selectedTags
+      // })    
+
+      
+    
+    console.log(updatedObj)
+    //setReadyToSend(true)
+  
   };
+
+  useEffect(()=>{
+    if(readyToSend) {
+      const requestOptions = {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({updatedObj}),
+      };
+      console.log(requestOptions.body)
+      fetch(`http://localhost:${srvPort}/entries`, requestOptions)
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+        res.json();
+        })
+        .then((data) => {
+          console.log(data);
+          // navigate("/home")
+          setShowUpdateModal(false);
+          setReadyToSend(false)
+        })
+        .catch((err) => {
+          console.log(err);
+          alert(err)
+        })
+      }
+      },[readyToSend])
+    
 
   const onClickDelete = () => {
     setShowDeleteModal(false);
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {
-      method: "DELETE",
-    })
+    console.log(params.id)
+    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {method: "DELETE"})
       .then((res) => res.json())
       .then((data) => {
         //TODO turn this into a real delete (get a returning value?)
@@ -93,11 +135,6 @@ const SingleEntry = () => {
     navigate(`/home/${value}`);
   };
 
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setUpdatedDesc({ description: value });
-  };
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
@@ -136,34 +173,35 @@ const SingleEntry = () => {
                     >
                       <Modal.Header />
                       <Modal.Body>
+                      <form method="post" onSubmit={onClickUpdate}>
                         <div className="h-max">
                           <h3 className="text-xl font-medium text-gray-900 dark:text-white">
                             Update Entry: {entry.title} 
                           </h3>
                           <div>User {entry.user} on {`${entry.created_date} at ${entry.created_time}`}
                             </div>
-                          <Textarea
+                          <textarea
+                            name="description"
                             id="updatedDescription"
                             defaultValue={entry.desc}
                             rows={10}
-                            onChange={(event) => handleChange}
                             />
                             {/* TAGGED SEARCH */}
                             <div className="updateTaggedSearch">
                             <Select
-                              value={selectedTags}
+                              defaultValue={selectedTags}
                               onChange={handleSearchTagChange}
                               options={databaseTags}
                               isMulti="true"
                               isSearchable="true"
                               isClearable="true"
-                              placeholder="Add Tags..."
+                              placeholder="Search Tags..."
                               loading={databaseTags === undefined}
-                              noOptionsMessage='No tags in system... You should make some!'
+                              noOptionsMessage="No tags in system... You should make some!"
                             />
-                            </div>
+                                  </div>
                           <div className="flex justify-center gap-4">
-                          <Button onClick={onClickUpdate}>Update Entry</Button>
+                          <Button type="submit">Update Entry</Button>
                           <Button
                             color="gray"
                             onClick={() => setShowUpdateModal(false)}
@@ -172,6 +210,7 @@ const SingleEntry = () => {
                           </Button>
                           </div>
                         </div>
+                      </form>
                       </Modal.Body>
                     </Modal>
                   </React.Fragment>
