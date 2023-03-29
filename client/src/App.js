@@ -50,7 +50,7 @@ function App() {
 
   return (
     <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
-      <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
+      <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full">
         <Routes>

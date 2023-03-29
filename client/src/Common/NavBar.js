@@ -1,37 +1,33 @@
 import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
-import { RiSunLine, RiComputerLine } from "react-icons/ri";
-import { BsMoon } from "react-icons/bs";
-import { mslContext } from "../App.js";
+import './common.css';
 
-import controlImage from "../assets/control.png";
-import { FaDungeon, FaHatWizard } from "react-icons/fa";
-import { GiSpellBook } from "react-icons/gi";
-import { IoIosSettings } from "react-icons/io";
-import { MdOutlineKeyboardArrowDown } from "react-icons/md";
+//icons
+import { MdNavigateBefore } from "react-icons/md";
+import { BsSearch, BsChevronDown, BsPerson, BsSun, BsMoon } from "react-icons/bs";
+import { RiDashboardFill, RiComputerLine } from "react-icons/ri";
+import { AiOutlineHome, AiOutlineFileText, AiOutlineSetting, AiOutlineLogout } from "react-icons/ai";
 
 const NavBar = () => {
+
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
-  const { user } = React.useContext(mslContext);
 
+  //Sidebar Nav Links
   const links = [
-    { name: "Home", to: "/", icon: FaDungeon },
-    { name: "Post", to: "/", icon: GiSpellBook },
-    { name: "Login", to: "/", icon: FaHatWizard, margin: true },
-    {
-      name: "Theme",
-      icon: IoIosSettings,
-      submenu: true,
-      submenuItems: [
-        { title: "light", icon: RiSunLine, text: "light" },
-        { title: "dark", icon: BsMoon, text: "dark" },
-        { title: "system", icon: RiComputerLine, text: "system" },
-      ],
+    { name: "Home", to: "/", icon: <AiOutlineHome /> },
+    { name: "Post", to: "/", icon: <AiOutlineFileText />},
+    { name: "Login", to: "/", icon: <BsPerson />, spacing: true },
+    { name: "Theme", icon: <AiOutlineSetting/>, submenu: true, submenuItems: [
+        { text: "light",icon: <BsSun />},
+        { text: "dark", icon: <BsMoon />},
+        { text: "system", icon:  <RiComputerLine />},
+     ],
     },
+    { name: "Logout", to: "/", icon: <AiOutlineLogout />, spacing: true },
   ];
 
-  //theme setup
+  //Theme Setup
   const [theme, setTheme] = useState(
     localStorage.getItem("theme") ? localStorage.getItem("theme") : "system"
   );
@@ -61,7 +57,7 @@ const NavBar = () => {
 
       case "light":
         element.classList.remove("dark");
-        localStorage.setItem("theme", "dark");
+        localStorage.setItem("theme", "light");
         break;
 
       default:
@@ -82,91 +78,70 @@ const NavBar = () => {
   });
 
   return (
-    <div className="flex">
-      <div
-        className={` bg-slate-800 max-h-fit p-5 pt-8 relative duration-300 ${
-          open ? "w-72" : "w-20"
-        }`}
+    <>
+      <div 
+        className={`relative bg-slate-900 h-fit p-5 pt-8 m-5 rounded-md w-
+        ${open ? "w-96" : "w-20 "} duration-300`}
       >
-        <img
-          src={controlImage}
-          alt="control"
-          className={`absolute cursor-pointer -right-3 top-9 w-7 border-slate-900 border-1 shadow-sm rounded-full ${
-            !open && "rotate-180"
-          }`}
+        <MdNavigateBefore 
+          className={`absolute bg-white text-2xl rounded-full -right-3 top-9
+          border border-slate-800 cursor-pointer ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
-        <div className="flex items-center text-3xl">
-          <i
-            className={`ss ss-parl3 cursor-pointer duration-500 text-amber-600 ${
-              open && "rotate-[360deg]"
-            }`}
-          />
-          <h1
-            className={`origin-left font-medium text-2xl text-white duration-300 ${
-              !open && "scale-0"
-            }`}
+        <div className="inline-flex">
+          <i className={`brand ss ss-parl3 text-white bg-amber-500 text-4xl rounded-full
+          cursor-pointer block float-left mr-1 ${!open && "rotate-[360deg]"} duration-300`}/>
+          <h1 className={`text-white origin-left font-medium text-4xl px-2 ${!open && "scale-0"} duration-300`}
           >
-            rcanum MSL
+            MSL
+            <span className="text-xs ml-2">beta</span>
           </h1>
         </div>
-        <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
-        <div className={`${!open && "hidden"} text-white italic text-xs`}>
-          {!user.username ? (
-            <div className=" mt-4">...</div>
-          ) : (
-            <div className="mt-4">
-              currently logged in as:
-              <span className="ml-1 font-semibold">{user.username}</span>
-            </div>
-          )}
+        
+          <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
+
+        <div className={`flex items-center rounded-md mt-6 ${!open ? "px-2.5" : "px-4"} py-2 bg-light-white`}>
+          <BsSearch 
+            className={`text-white text-lg block float-left cursor-pointer ${!open && "mr-2"}`}
+          />
+            <input 
+              type={"search"}
+              placeholder="Search" 
+              className={`text-base bg-transparent w-full text-white border-none focus:outline-none 
+              ${!open && "hidden"}`}
+
+            />
         </div>
-        <div className="flex flex-col relative text-white mt-4">
-          {links?.map((link, index) => (
+        <div className="pt-2">
+          {links.map((link, i) =>(
             <>
               <Link
+                key={i}
                 to={link.name}
-                key={index}
-                className={`group flex gap-3.5 items-center text-sm font-medium p-2 hover:bg-gray-100/10 rounded-md ${
-                  link?.margin && "mt-5"
-                }`}
+                className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2
+                hover:bg-light-white rounded-md ${link.spacing ? "mt-9" : "mt-2"}`}
               >
-                <div>{React.createElement(link?.icon, { size: "20" })}</div>
-                <h2
-                  style={{ transitionDelay: `{index + 3}00ms` }}
-                  className={`whitespace-pre duration-500 ${
-                    !open && "opacity-0 translate-x-28 overflow-hidden"
-                  }`}
-                >
-                  {link?.name}
-                </h2>
-                {link.submenu && (
-                  <button
-                    className={`${subMenuOpen && "rotate-180"} ${
-                      !open && "opacity-0 translate-x-28 overflow-hidden"
-                    } `}
-                    onClick={() => setSubMenuOpen(!subMenuOpen)}
-                  >
-                    {React.createElement(MdOutlineKeyboardArrowDown, {
-                      size: "20",
-                    })}
-                  </button>
+                <span className="text-2xk block float-left">
+                  {link.icon ? link.icon : <RiDashboardFill/>}
+                </span>
+                <span className={`text-base font-medium flex-1 ${!open && "hidden"} duration-300`}>
+                  {link.name}
+                </span>
+                {link.submenu && open && (
+                  <BsChevronDown className={`${subMenuOpen && "rotate-180"}`} onClick={ () => setSubMenuOpen(!subMenuOpen)}/>
                 )}
               </Link>
               {link.submenu && subMenuOpen && open && (
-                <ul className={`${!open && "hidden"}`}>
-                  {link.submenuItems.map((item, index) => (
-                    <li
-                      key={index}
-                      className="flex items-center gap-x-4 cursor-pointer p-2 ml-10"
+                <ul>
+                  {link.submenuItems.map((submenuItems, i) => (
+                    <li 
+                      key={i}
+                      className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 px-5
+                      hover:bg-light-white rounded-md ${link.spacing ? "mt-9" : "mt-2"}
+                      ${theme === submenuItems.text && "text-sky-600"}`}
+                      onClick={() => setTheme(submenuItems.text)}
                     >
-                      <button
-                        className={`flex gap-3 ${theme === item.text && "text-sky-600"}`}
-                        onClick={() => setTheme(item.text)}
-                      >
-                        {React.createElement(item.icon, { size: "20" })}{" "}
-                        {item.text}
-                      </button>
+                      {submenuItems.icon} {submenuItems.text}
                     </li>
                   ))}
                 </ul>
@@ -175,7 +150,7 @@ const NavBar = () => {
           ))}
         </div>
       </div>
-    </div>
+    </>
   );
 };
 export default NavBar;
