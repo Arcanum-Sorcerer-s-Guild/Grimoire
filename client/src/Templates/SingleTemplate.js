@@ -31,33 +31,33 @@ const SingleTemplate = () => {
 
   return (
     <>
-      <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
+      <section className="col-span-2 place-items-center max-h-fit w-full mb-5 mt-20">
         <div className="px-9">
           {template ? (
             <>
-              <div class="overflow-hidden bg-white shadow sm:rounded-lg">
+              <div class="overflow-hidden bg-slate-200 dark:bg-blue-900 shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:px-6">
-                  <h3 class="text-base font-semibold leading-6 text-gray-900">
+                  <h3 class="text-base font-semibold leading-6 text-amber-600">
                     {`Template ID#${template.id}`}
                   </h3>
-                  <p class="mt-1 max-w-2xl text-sm text-gray-500">
+                  <p class="mt-1 max-w-2xl text-sm text-gray-500 dark:text-white">
                     A template just for you!
                   </p>
                 </div>
                 <div class="border-t border-gray-200"></div>
                 <dl>
-                  <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">Title</dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                  <div class="bg-gray-50 dark:bg-gray-600 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500  dark:text-white">Title</dt>
+                    <dd class="mt-1 text-sm text-gray-900  dark:text-white sm:col-span-2 sm:mt-0">
                       {`${template.form_data.title}`}
                     </dd>
                   </div>
                   <div class="border-t border-gray-200"></div>
-                  <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
-                    <dt class="text-sm font-medium text-gray-500">
+                  <div class="bg-gray-50 dark:bg-gray-600 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
+                    <dt class="text-sm font-medium text-gray-500  dark:text-white">
                       Description
                     </dt>
-                    <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
+                    <dd class="mt-1 text-sm text-gray-900  dark:text-white sm:col-span-2 sm:mt-0">
                     {`${template.form_data.description}`}
                     </dd>
                   </div>
@@ -71,7 +71,10 @@ const SingleTemplate = () => {
 
               <div className="flex justify-center pt-10">
                 {" "}
-                <Button onClick={() => selectTemplate()}>
+                <Button 
+                  className="bg-slate-800 dark:bg-slate-500"
+                  onClick={() => selectTemplate()}
+                >
                   Use Template
                 </Button>{" "}
               </div>

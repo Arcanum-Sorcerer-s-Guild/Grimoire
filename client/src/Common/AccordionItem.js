@@ -23,17 +23,17 @@ const AccordionItem = ({
                 bg-slate-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
         onClick={toggle}
       >
-        <p className="text-xl  text-blue-800 dark:text-amber-500">
+        <p className="text-sm text-blue-800 dark:text-amber-500">
           {title}
           <span
             className={`${
               open && "hidden"
-            } text-sm m-2 text-gray-500 dark:text-gray-400`}
+            } text-xs mx-1 text-gray-500 dark:text-gray-400`}
           >{`by ${user} on`}</span>
           <span
             className={`${
               open && "hidden"
-            } text-sm text-gray-500 dark:text-gray-400`}
+            } text-xs text-gray-500 dark:text-gray-400`}
           >
             {dateCreated}
           </span>
