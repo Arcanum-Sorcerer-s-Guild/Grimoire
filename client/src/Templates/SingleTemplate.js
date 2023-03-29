@@ -8,23 +8,24 @@ const SingleTemplate = () => {
     React.useContext(mslContext);
   const [template, setTemplate] = useState();
   const navigate = useNavigate();
+  let params = useParams();
+
 
   const selectTemplate = () => {
-    let description1 = "SLKDJfsjd";
-    let title1 = "laksjdfls";
+;
     setTemplateValues({
-      description: description1,
-      title: title1,
+      title: template.form_data.title,
+      description: template.form_data.description,
     });
     navigate("/post");
   };
 
   useEffect(() => {
-    fetch(`http://localhost:${srvPort}/templates`)
+    fetch(`http://localhost:${srvPort}/templates/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
         console.log(data);
-        setTemplate(data.data);
+        setTemplate(data[0]);
       });
   }, []);
 
@@ -37,10 +38,10 @@ const SingleTemplate = () => {
               <div class="overflow-hidden bg-white shadow sm:rounded-lg">
                 <div class="px-4 py-5 sm:px-6">
                   <h3 class="text-base font-semibold leading-6 text-gray-900">
-                    Template ###
+                    {`Template ID#${template.id}`}
                   </h3>
                   <p class="mt-1 max-w-2xl text-sm text-gray-500">
-                    Template created: ###
+                    A template just for you!
                   </p>
                 </div>
                 <div class="border-t border-gray-200"></div>
@@ -48,7 +49,7 @@ const SingleTemplate = () => {
                   <div class="bg-gray-50 px-4 py-5 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
                     <dt class="text-sm font-medium text-gray-500">Title</dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                      title
+                      {`${template.form_data.title}`}
                     </dd>
                   </div>
                   <div class="border-t border-gray-200"></div>
@@ -57,7 +58,7 @@ const SingleTemplate = () => {
                       Description
                     </dt>
                     <dd class="mt-1 text-sm text-gray-900 sm:col-span-2 sm:mt-0">
-                      Description
+                    {`${template.form_data.description}`}
                     </dd>
                   </div>
                   <div>

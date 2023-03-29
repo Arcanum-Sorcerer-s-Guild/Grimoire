@@ -23,7 +23,7 @@ const Templates = () => {
     .then(res=>res.json())
     .then(data=>{
       console.log(data)
-      setTemplates(data.data)
+      setTemplates(data)
     })
   },[])
 
@@ -33,20 +33,15 @@ const Templates = () => {
         {templates 
         ? <div>
                 {templates.map((entry, index) => {
-                  let title = entry.title.toUpperCase();
-                  let dateCreated = new DateObject(entry.created).format(
-                    "YYYY-MM-DD  HH:mm"
-                  );
+                  let title = entry.name.toUpperCase();
 
                   return (
                     <AccordionItem
                       key={index}
                       open={index === open}
                       title={<Link to={`/Templates/${entry.id}`}>{`${title}`}</Link>}
-                      dateCreated={`${dateCreated}`}
-                      desc={entry.description}
+                      desc={entry.form_data.description}
                       toggle={() => toggle(index)}
-                      user={entry.user}
                     />
                   );
                 })}{" "}

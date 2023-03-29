@@ -16,6 +16,7 @@ const AccordionItem = ({
   user,
 }) => {
   const { searchTerms } = React.useContext(mslContext);
+  console.log(user,dateCreated)
   return (
     <div className="pt-2 shadow-md">
       <div
