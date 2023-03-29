@@ -1,20 +1,15 @@
 # Master Incident Log [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 
 ## Table of Contents
-***
 1. [Usage](#usage)
 3. [Installation](#installation)
 2. [Features](#features)
 4. [Contributions](#contributions)
 
 ## Usage
-***
-
 The Master Incident Log is an event tracker using JavaScript. It allows users to communicate important events, search for trends, and maintain communication between team members of different shifts. Team blockers can be identified quickly by reading the current day's events.
 
 ## Installation
-***
-
 In order to get started, fork this scaffold repository in Github and clone it locally onto your machine.
 
 ### The Local Setup
@@ -51,7 +46,6 @@ $ npm start
 ```
 
 ## Features
-***
 
 ### User Login
 Product users are able to authenticate themselves to the system by providing their system username and password. If a user does not have an account, they can create one. Access control is enforced by account.
@@ -69,7 +63,6 @@ Users can create a template of a post to save time when making future posts. Pos
 Search capabilities allow the database of posts to be filtered by inclusion or exclusion of keywords in the title and description, post tags, and dates.
 
 ## Contributions
-***
 
 ### Sponsor
 Master Incident Log is brought to you by The Sorcerer's Guild, where you too can learn to wield the wonders of magic:
