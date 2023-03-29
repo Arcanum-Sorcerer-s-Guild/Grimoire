@@ -46,7 +46,6 @@ const SingleEntry = () => {
     //   tags: [ 'asdf' ]
     // }
 
-    console.log("This!", requestOptions);
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
@@ -70,7 +69,6 @@ const SingleEntry = () => {
       "Access-Control-Allow-Origin": "*",
       credentials: "include",
     };
-    console.log(requestOptions);
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
@@ -140,7 +138,6 @@ const SingleEntry = () => {
   return (
     <section className="col-span-2 place-items-center h-screen w-full mt-10">
       <div className="px-9">
-        {console.log(entry.title)}
         {entry ? (
           <>
             <Card>
