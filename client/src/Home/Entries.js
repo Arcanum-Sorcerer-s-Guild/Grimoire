@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
+import SearchBar from "../Common/SearchBar.js"
 
 
 //React Apis
@@ -59,6 +60,7 @@ const Entries = () => {
 
   return (
     <>
+      <SearchBar />
       <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
       
         <div className="px-9">

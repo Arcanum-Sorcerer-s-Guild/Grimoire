@@ -9,7 +9,7 @@ import SingleEntry from "./SingleEntry/SingleEntry.js"
 import Templates from "./Templates/Templates.js"
 import SingleTemplate from "./Templates/SingleTemplate.js"
 import './App.css';
-import SearchBar from "./Common/SearchBar.js"
+// import SearchBar from "./Common/SearchBar.js"
 
 //require("dotenv").config();
 
@@ -59,7 +59,7 @@ function App() {
       <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full h-screen">
-      <SearchBar />
+      {/* <SearchBar /> */}
         <Routes>
         <Route exact path="/" element={<UserAuth />}/>
             {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
