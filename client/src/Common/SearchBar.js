@@ -24,6 +24,7 @@ const SearchBar = () => {
     };
     
   const resetSearchTerms = (value) => {
+      setInputs()
       setSearchTerms({})
       alert('Search terms reset!')
     }
@@ -55,8 +56,6 @@ const SearchBar = () => {
     const name = event.target.name;
     const value = event.target.value;
     setAdvancedInputs((values) => ({ ...values, [name]: value }));
-  
-    
   };
 
   return (<>
