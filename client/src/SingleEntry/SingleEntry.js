@@ -70,12 +70,6 @@ const SingleEntry = () => {
       credentials: "include",
     };
     console.log(requestOptions);
-    // TODO fix credential issue
-
-    // 1675:1 Access to fetch at 'http://localhost:3001/entries/id=1675'
-    // from origin 'http://localhost:3000' has been blocked by CORS policy:
-    //  Method DELETE is not allowed by Access-Control-Allow-Methods
-    //  in preflight response.
     fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
@@ -135,7 +129,9 @@ const SingleEntry = () => {
   return (
     <section className="col-span-2 place-items-center h-screen w-full">
       <div className="px-9">
+        {console.log(entry.title)}
         {entry ? (
+          
           <>
             <Card>
               <div className="cardBox">
