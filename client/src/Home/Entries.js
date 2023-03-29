@@ -50,6 +50,7 @@ const Entries = () => {
         if (data.data !== null) {
           setEntries(data.data);
           setPageData(data.pagination);
+          console.log(data.pagination);
         } else {
           setEntries(undefined);
         }
