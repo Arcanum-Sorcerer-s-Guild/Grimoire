@@ -23,7 +23,7 @@ import {
 const NavBar = () => {
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
-  const { user } = React.useContext(mslContext);
+  const { user, setUser, srvPort } = React.useContext(mslContext);
 
   //Sidebar Nav Links
   const links = [
