@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import Select from "react-select";
+import Select, { components, MultiValueGenericProps } from "react-select";
 import { FaSearchengin } from "react-icons/fa";
 
 const SearchBar = () => {
@@ -154,7 +154,6 @@ const SearchBar = () => {
                 control: (baseStyles, state) => ({
                   ...baseStyles,
                   borderColor: state.isFocused ? 'blue' : 'dark',
-                  color: 'blue',
                 })}}
               
               />
