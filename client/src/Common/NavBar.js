@@ -183,7 +183,7 @@ const NavBar = () => {
             </>
           ))}
         </div>
-        <div className=" w-full float-right text-white italic">
+        <div className={`w-full float-right text-white italic ${!open && "hidden"}`}>
           {!user.username ? (
             <div className="text-sm mt-4">Log In</div>
           ) : (
