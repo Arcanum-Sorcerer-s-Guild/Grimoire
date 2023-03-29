@@ -1,10 +1,12 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import Select from "react-select";
 import "./common.css";
 
 //Icons
 import { BsSearch } from "react-icons/bs";
+
+//React Api
+import Select from "react-select";
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
@@ -45,8 +47,8 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="flex mt-4 p-2 max-w-5xl mx-auto gap-4 bg-slate-700 rounded-md">
-      <div className="w-1/2">
+    <div className="col-span-2 mt-4 mx-10 rounded-md">
+      <div className="w-full">
         <div className="rounded-md p-2">
           <Select
             value={selectedTags}
@@ -62,28 +64,25 @@ const SearchBar = () => {
           />
         </div>
       </div>
-      <div className="w-1/2">
-        <div className="rounded-md p-2">
-          <form className="flex relative">
-            <input
-              type="text"
-              name="q"
-              id="search-bar"
-              className="grow rounded-md border-gray-300 text-sm"
-              placeholder="Search..."
-              onChange={handleChange}
-              required
-            />
-            <BsSearch className="absolute top-3 right-3 dark:text-slate-800" />
-          </form>
+      <div className="flex">
+        <div className="grow">
+          <div className="rounded-md p-2">
+            <form className="flex relative">
+              <input
+                type="text"
+                name="q"
+                id="search-bar"
+                className="grow rounded-md border-gray-300 text-sm"
+                placeholder="Search..."
+                onChange={handleChange}
+                required
+              />
+              <BsSearch className="absolute top-3 right-3 dark:text-slate-800" />
+            </form>
+          </div>
         </div>
-      </div>
-      <div className="w-1/4">
-        <div className="rounded-md p-2">
-          <button
-            className="text-sm p-2 px-8 relative text-white"
-            onClick={() => setIsOpen(!isOpen)}
-          >
+        <div className=" w-1/5 rounded-md p-2 border border-gray-300">
+          <button className="text-sm px-4" onClick={() => setIsOpen(!isOpen)}>
             advanced search
           </button>
           {isOpen && (
@@ -92,7 +91,7 @@ const SearchBar = () => {
                 type="text"
                 name="title"
                 id="search-bar"
-                className="grow rounded-md border-gray-300 text-sm mb-2"
+                className="grow rounded-md border-gray-300 text-sm my-2"
                 placeholder="Title..."
                 onChange={handleChange}
                 required
@@ -101,7 +100,7 @@ const SearchBar = () => {
                 type="text"
                 name="description"
                 id="search-bar"
-                className="grow rounded-md border-gray-300 text-sm mb-2"
+                className="grow rounded-md border-gray-300 text-sm my-2"
                 placeholder="Description..."
                 onChange={handleChange}
                 required
@@ -110,7 +109,7 @@ const SearchBar = () => {
                 type="text"
                 name="start-date"
                 id="search-bar"
-                className="grow rounded-md border-gray-300 text-sm mb-2"
+                className="grow rounded-md border-gray-300 text-sm my-2"
                 placeholder="Start Date..."
                 onChange={handleChange}
                 required
