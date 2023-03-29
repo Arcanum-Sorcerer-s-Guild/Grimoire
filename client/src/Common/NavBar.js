@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { mslContext } from "../App.js";
 import "./common.css";
 
@@ -22,6 +22,7 @@ import {
 } from "react-icons/ai";
 
 const NavBar = () => {
+  const navigate = useNavigate();
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
   const { user, setUser, srvPort } = React.useContext(mslContext);
@@ -59,7 +60,10 @@ const NavBar = () => {
             method: "POST",
             credentials: "include",
           })
-            .then(() => setUser({}));
+            .then(() => {
+              setUser({})
+              navigate('/Login')
+           });
         }
       }
       className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
