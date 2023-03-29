@@ -283,7 +283,7 @@ app.get("/tags", (req, res) => {
       res.status(200).json(data);
     })
     .catch((err) =>
-      res.status(404).json({
+      res.status(400).json({
         message: errorMessage,
       })
     );
@@ -292,7 +292,7 @@ app.get("/tags", (req, res) => {
 // Templates
 app.get("/templates", (req, res) => {
   getTemplates()
-    .then((data) => res.status(204).json(data))
+    .then((data) => res.status(200).json(data))
     .catch((err) =>
       res.status(400).json({
         mesage: errorMessage,
@@ -302,7 +302,7 @@ app.get("/templates", (req, res) => {
 
 app.get("/templates/:id", (req, res) => {
   getTemplates(req.params.id)
-    .then((data) => res.status(204).json(data))
+    .then((data) => res.status(200).json(data))
     .catch((err) =>
       res.status(204).json({
         mesage: errorMessage,
