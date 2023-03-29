@@ -149,7 +149,6 @@ const SearchBar = () => {
               isClearable="true"
               placeholder="Search Tags..."
               isLoading={databaseTags === undefined}
-              noOptionsMessage="No tags in system... You should make some!"
               styles={{
                 control: (baseStyles, state) => ({
                   ...baseStyles,
