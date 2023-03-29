@@ -3,13 +3,13 @@ import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
 import { Pagination,Spinner } from "flowbite-react";
 import DateObject from "react-date-object";
-import {Link} from "react-router-dom";
+import {Link,useNavigate} from "react-router-dom";
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
   const { searchTerms, setSearchTerms, databaseTags, srvPort } =
     React.useContext(mslContext);
-
+  const navigate = useNavigate();
   const [open, setOpen] = useState(false);
   const [pageData, setPageData] = useState()
   
@@ -29,16 +29,22 @@ const Entries = () => {
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined) searchTerm += `&${searchTerms.tags}`;
     if (searchTerms.page !== undefined) searchTerm += `&page=${searchTerms.page}`
+    if (searchTerms.title !== undefined) searchTerm += `&title=${searchTerms.title}`
+    if (searchTerms.description !== undefined) searchTerm += `&description=${searchTerms.description}`
+    if (searchTerms.start !== undefined) searchTerm += `&start=${searchTerms.start}`
+    if (searchTerms.end !== undefined) searchTerm += `&end=${searchTerms.end}`
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
+          
           setEntries(data.data)
           setPageData(data.pagination)
         } else {
           setEntries(undefined);
         }
-      });
+      })
+      // .then(result => navigate("/home"));
   }, [searchTerms]);
 
   return (

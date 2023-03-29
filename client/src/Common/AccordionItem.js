@@ -6,7 +6,6 @@ import React from 'react'
 import { Badge } from 'flowbite-react'
 
 const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tags, user}) => {
-    console.log(tags)
     const { searchTerms } = React.useContext(mslContext);
     return (
         <div className="pt-2 shadow-md">

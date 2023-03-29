@@ -5,33 +5,37 @@ import { FaSearchengin } from "react-icons/fa";
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
+  const [advancedInputs, setAdvancedInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
   const { searchTerms, setSearchTerms, databaseTags, user } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
-    let tagsToAdd;
+    let tagsToAdd = "";
     event.preventDefault();
     if (selectedTags !== null) {
       tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
-    } else {
-      tagsToAdd = "";
-    }
+    } 
 
-    if (inputs.q === "") {
-      setSearchTerms({
+    setSearchTerms({
         q: inputs.q,
         tags: tagsToAdd,
       });
-    } else {
-      setSearchTerms({
-        q: inputs.q,
-        tags: tagsToAdd,
-      });
-    }
+    
+    
 
-    console.log(searchTerms)
-  };
+    };
+    
+    const handleAdvancedSubmit = (event) => {
+      let tagsToAdd = "";
+    event.preventDefault();
+    
+    if (selectedTags !== null) {
+      tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
+    } 
+    setSearchTerms({...advancedInputs,tags:tagsToAdd})
+    
+  }
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
@@ -41,6 +45,13 @@ const SearchBar = () => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+  };
+
+  const handleAdvancedChange = (event) => {
+    const name = event.target.name;
+    const value = event.target.value;
+    setAdvancedInputs((values) => ({ ...values, [name]: value }));
+  
     
   };
 
@@ -81,7 +92,7 @@ const SearchBar = () => {
 
         {isOpen && (
           <div >
-            <form onSubmit={handleSubmit} className="flex flex-row gap-5 justify-center ">
+            <form onSubmit={handleAdvancedSubmit} className="flex flex-row gap-5 justify-center ">
               <div><input
                 type="text"
                 name="title"
@@ -89,39 +100,38 @@ const SearchBar = () => {
                 className="text-sm rounded-md block pl-3 
               bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Title"
-                onChange={handleChange}
+                onChange={handleAdvancedChange}
                 required
               /></div>
                 <div><input
                   type="text"
-                  name="title"
+                  name="description"
                   id="advSearch-item"
                   className="text-sm rounded-md block pl-3 
                 bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
                   placeholder="Description.."
-                  onChange={handleChange}
+                  onChange={handleAdvancedChange}
                   required
                 /></div>
               <div><input
                 type="text"
-                name="title"
+                name="start"
                 id="advSearch-item"
                 className="text-sm rounded-md block pl-3 
               bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
                 placeholder="Start Date..."
-                onChange={handleChange}
-                required
+                onChange={handleAdvancedChange}
               /></div>
               <div><input
                 type="text"
-                name="title"
+                name="end"
                 id="advSearch-item"
                 className="text-sm rounded-md block pl-3 
               bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
                 placeholder="End Date..."
-                onChange={handleChange}
-                required
+                onChange={handleAdvancedChange}
               /></div>
+              <button type="submit"/>
             </form>
           </div>
         )}
