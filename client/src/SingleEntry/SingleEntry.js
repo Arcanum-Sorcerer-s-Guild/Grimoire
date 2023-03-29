@@ -204,6 +204,7 @@ const SingleEntry = () => {
                               {`${entry.created_date} at ${entry.created_time}`}
                             </div>
                             <textarea
+                              className="w-full"
                               name="description"
                               id="updatedDescription"
                               defaultValue={entry.desc}
