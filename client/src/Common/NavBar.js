@@ -97,11 +97,11 @@ const NavBar = () => {
   return (
     <>
       <div
-        className={`relative bg-slate-900 h-fit p-5 pt-8 m-5 rounded-md
+        className={`relative bg-slate-900 dark:bg-blue-900 h-fit p-5 pt-8 m-5 rounded-md
         ${open ? "w-96" : "w-20 "} duration-300`}
       >
         <MdNavigateBefore
-          className={`absolute bg-white text-2xl rounded-full -right-3 top-9
+          className={`absolute bg-white dark:text-slate-800 text-2xl rounded-full -right-3 top-9
           border border-slate-800 cursor-pointer ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
