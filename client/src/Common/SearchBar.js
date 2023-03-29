@@ -44,7 +44,7 @@ const SearchBar = () => {
     
   };
 
-  return (
+  return (<>
     <div className="col-span-2 w-full text-2xl p-7">
       {!user.username ? (
         <div className="text-sm mt-4">Log In</div>
@@ -54,6 +54,7 @@ const SearchBar = () => {
           <span className="ml-1 font-semibold">{user.username}</span>
         </div>
       )}
+      {!isOpen && (
       <form className="flex items-center mt-5" onSubmit={handleSubmit}>
         <label htmlFor="search-bar" className="sr-only">
           Search
@@ -74,6 +75,56 @@ const SearchBar = () => {
               {React.createElement(FaSearchengin, { size: "20" })}
             </div>
           </div>
+        </div>
+        <button type="submit"/>
+      </form>)}
+
+        {isOpen && (
+          <div >
+            <form onSubmit={handleSubmit} className="flex flex-row gap-5 justify-center ">
+              <div><input
+                type="text"
+                name="title"
+                id="advSearch-item"
+                className="text-sm rounded-md block pl-3 
+              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Title"
+                onChange={handleChange}
+                required
+              /></div>
+                <div><input
+                  type="text"
+                  name="title"
+                  id="advSearch-item"
+                  className="text-sm rounded-md block pl-3 
+                bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+                  placeholder="Description.."
+                  onChange={handleChange}
+                  required
+                /></div>
+              <div><input
+                type="text"
+                name="title"
+                id="advSearch-item"
+                className="text-sm rounded-md block pl-3 
+              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+                placeholder="Start Date..."
+                onChange={handleChange}
+                required
+              /></div>
+              <div><input
+                type="text"
+                name="title"
+                id="advSearch-item"
+                className="text-sm rounded-md block pl-3 
+              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+                placeholder="End Date..."
+                onChange={handleChange}
+                required
+              /></div>
+            </form>
+          </div>
+        )}
           <div className="mt-2">
             {/* TAGGED SEARCH */}
             <Select
@@ -86,36 +137,15 @@ const SearchBar = () => {
               placeholder="Search Tags..."
               loading={databaseTags === undefined}
               noOptionsMessage="No tags in system... You should make some!"
-            />
-          </div>
-        </div>
-        <button type="submit"/>
-      </form>
-      <div className="relative text-right">
-        <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
-          advanced search
-        </button>
-        {isOpen && (
-          <div className="flex justify-center">
-            <form onSubmit={handleSubmit}>
-              <input
-                type="text"
-                name="title"
-                id="advSearch-item"
-                className="text-sm rounded-md block pl-3 
-              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
-                placeholder="Search..."
-                onChange={handleChange}
-                required
               />
-              <input type="text" name="description" placeholder="description" />
-              <input type="text" name="start date" placeholder="start date" />
-            </form>
           </div>
-        )}
-      </div>
+                <div className="relative text-right">
+                <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
+                  Advanced Search
+                </button>
     </div>
-  );
+              </div>
+  </>);
 };
 
 export default SearchBar;
