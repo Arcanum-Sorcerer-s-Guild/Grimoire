@@ -80,9 +80,9 @@ const PostEntry = () => {
         <div className="px-9">
           <React.Fragment>
             <Card>
-              <h2 className="text-amber-600">New Entry</h2>
+              <h2 className="font-semibold text-2xl text-amber-600">New Entry</h2>
               <input
-                className="text-lg border border-gray-200 p-4 rounded-md"
+                className="text-lg border border-gray-200 p-4 rounded-md dark:border-none dark:text-slate-200 dark:bg-light-white"
                 placeholder="Title..."
                 name="title"
                 defaultValue = {templateValues ? templateValues.title : ""}
@@ -90,7 +90,7 @@ const PostEntry = () => {
               />
               <form onSubmit={handleSubmit}>
                 <textarea
-                  className="text-lg w-full border border-gray-200 p-4 rounded-md"
+                  className="text-lg w-full border border-gray-200 p-4 rounded-md dark:border-none dark:text-slate-200 dark:bg-light-white"
                   placeholder="Description..."
                   name="description"
                   defaultValue = {templateValues ? templateValues.description : ""}
@@ -107,9 +107,15 @@ const PostEntry = () => {
                                 placeholder="Search..."
                                 openOnFocus="true"
                                 onChange={handleSelectChange}
+
                               />
                             </div>
-                <Button onClick={() => handleSubmit()}>Add Entry</Button>
+                <Button 
+                  className="bg-slate-800 dark:bg-slate-500 float-right mt-2"
+                  onClick={() => handleSubmit()}
+                >
+                  Add Entry
+                </Button>
               </form>
             </Card>
           </React.Fragment>
