@@ -115,9 +115,12 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
-  createEntry(req.body)
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+  const entry = { ...req.body[0], user_id: req.session.user.userId };
+  createEntry(entry)
     .then((data) => {
-      console.log("dataRecieved", data);
       res.status(201).json(data);
     })
     .catch((err) =>
@@ -126,6 +129,7 @@ app.post("/entries", (req, res) => {
       })
     );
 });
+
 app.post("/entries/:id", (req, res) => {
   const id = req.params.id;
   updateEntry(req.body, id)

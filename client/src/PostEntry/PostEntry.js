@@ -39,8 +39,6 @@ const PostEntry = () => {
       tags: tagArray,
       title: inputs.title,
       description: inputs.description,
-      //TODO REMOVE THIS HARDCODE
-      user_id: 13,
     });
 
     if (inputs.title !== undefined && inputs.description !== undefined) {
@@ -56,6 +54,8 @@ const PostEntry = () => {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify([inputs]),
+        "Access-Control-Allow-Origin": "*",
+        credentials: "include",
       };
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
       .then((res) => {
@@ -110,7 +110,7 @@ const PostEntry = () => {
                   cols="50"
                 />
                 <br />
-                New Tags: (Seperate with commas)
+                New Tags: (Separate with commas)
                 <br />
                 <input
                   // classname="w-max"
