@@ -74,8 +74,13 @@ const PostEntry = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  useEffect(()=>{
+    setInputs({title:templateValues.title,description:templateValues.description})
+  },[templateValues]) 
+
   return (
     <>
+      
       <section className="col-span-2 place-items-center h-screen w-full">
         <div className="px-9">
           <React.Fragment>
