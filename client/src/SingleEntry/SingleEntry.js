@@ -45,15 +45,17 @@ const SingleEntry = () => {
     //   user_id: 108,
     //   tags: [ 'asdf' ]
     // }
-    // console.log("This!",requestOptions);
-    fetch(`http://localhost:${srvPort}/entries/`, requestOptions)
+
+
+    console.log("This!",requestOptions);
+    fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
         res.json();
       })
       .then((data) => {
         console.log(data);
-        // navigate("/home")
+        navigate(0)
 
         setShowUpdateModal(false);
       })
@@ -70,10 +72,12 @@ const SingleEntry = () => {
       credentials: "include",
     };
     console.log(requestOptions);
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
+    fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
+        alert(`{Entry ${params.id} Deleted!}`)
         console.log(data);
+        navigate("/home")
       });
   };
 
