@@ -2,7 +2,7 @@ import { Collapse } from "react-collapse";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Highlighter from "react-highlight-words";
 import { mslContext } from "../App.js";
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { Badge } from "flowbite-react";
 
 const AccordionItem = ({
@@ -15,7 +15,20 @@ const AccordionItem = ({
   tags,
   user,
 }) => {
-  const { searchTerms } = React.useContext(mslContext);
+  
+  const { searchTerms, highWords, setHighWords } = React.useContext(mslContext);
+
+  
+  useEffect(()=>{
+    if (Object.keys(searchTerms).length !== 0) {
+      setHighWords(searchTerms.q.split("%").filter(a => {return(a !== '')}))
+      console.log(searchTerms.q.split("%").filter(a => {return(a !== '')}))
+
+    } 
+    console.log('searchTerms,highwords',searchTerms,highWords)
+  },[searchTerms])
+
+
   return (
     <div className="pt-2 shadow-md">
       <div
@@ -23,17 +36,17 @@ const AccordionItem = ({
                 bg-slate-200 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400"
         onClick={toggle}
       >
-        <p className="text-xl  text-blue-800 dark:text-amber-500">
+        <p className="text-sm text-blue-800 dark:text-amber-500">
           {title}
           <span
             className={`${
               open && "hidden"
-            } text-sm m-2 text-gray-500 dark:text-gray-400`}
+            } text-xs mx-1 text-gray-500 dark:text-gray-400`}
           >{`by ${user} on`}</span>
           <span
             className={`${
               open && "hidden"
-            } text-sm text-gray-500 dark:text-gray-400`}
+            } text-xs text-gray-500 dark:text-gray-400`}
           >
             {dateCreated}
           </span>
@@ -86,7 +99,7 @@ const AccordionItem = ({
 
           <Highlighter
             highlightClassName="YourHighlightClass"
-            searchWords={searchTerms.q ? [searchTerms.q] : [""]}
+            searchWords={highWords ? highWords : [""]}
             autoEscape={true}
             textToHighlight={desc}
           ></Highlighter>

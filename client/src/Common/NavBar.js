@@ -13,6 +13,7 @@ import {
   BsMoon,
 } from "react-icons/bs";
 import { RiDashboardFill, RiComputerLine } from "react-icons/ri";
+import { ImInsertTemplate } from "react-icons/im";
 import {
   AiOutlineHome,
   AiOutlineFileText,
@@ -23,14 +24,13 @@ import {
 const NavBar = () => {
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
-  const { user } = React.useContext(mslContext);
+  const { user, setUser, srvPort } = React.useContext(mslContext);
 
   //Sidebar Nav Links
   const links = [
     { name: "Home", to: "/", icon: <AiOutlineHome /> },
     { name: "Post", to: "/", icon: <AiOutlineFileText /> },
-    { name: 'Templates', to: '/', icon: <AiOutlineHome />},
-    { name: "Login", to: "/", icon: <BsPerson />, spacing: true },
+    { name: 'Templates', to: '/', icon: <ImInsertTemplate />},
     {
       name: "Theme",
       icon: <AiOutlineSetting />,
@@ -41,8 +41,46 @@ const NavBar = () => {
         { text: "system", icon: <RiComputerLine /> },
       ],
     },
-    { name: "Logout", to: "/", icon: <AiOutlineLogout />, spacing: true },
   ];
+  let userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Login
+    </span>
+  </Link>;
+
+  if (user.username) {
+    userLink = <Link 
+      onClick={
+        () => {
+          fetch(`http://localhost:${srvPort}/logout`, {
+            method: "POST",
+            credentials: "include",
+          })
+            .then(() => setUser({}));
+        }
+      }
+      className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
+    >
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Logout
+    </span>
+  </Link>;
+  } else {
+    userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
+    <span className="text-2xk block float-left">
+      <BsPerson />
+    </span>
+    <span className={`text-base font-medium flex-1`}>
+      Login
+    </span>
+  </Link>;
+  }
 
   //Theme Setup
   const [theme, setTheme] = useState(
@@ -97,11 +135,11 @@ const NavBar = () => {
   return (
     <>
       <div
-        className={`relative bg-slate-900 h-fit p-5 pt-8 m-5 rounded-md
+        className={`relative bg-slate-900 dark:bg-blue-900 h-fit p-5 pt-8 m-5 rounded-md
         ${open ? "w-96" : "w-20 "} duration-300`}
       >
         <MdNavigateBefore
-          className={`absolute bg-white text-2xl rounded-full -right-3 top-9
+          className={`absolute bg-white dark:text-slate-800 text-2xl rounded-full -right-3 top-9
           border border-slate-800 cursor-pointer ${!open && "rotate-180"}`}
           onClick={() => setOpen(!open)}
         />
@@ -183,10 +221,11 @@ const NavBar = () => {
               )}
             </>
           ))}
+          {userLink}
         </div>
         {/* <div className={`w-full float-right text-white italic ${!open && "hidden"}`}>
           {!user.username ? (
-            <div className="text-sm mt-4">Log In</div>
+            <div className="text-sm mt-4">Not Logged In</div>
           ) : (
             <div className="text-sm mt-4">
               Currently logged in as:

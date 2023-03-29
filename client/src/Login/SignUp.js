@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const SignUp = () => {
+  const navigate = useNavigate();
   const { srvPort, user, setUser } = React.useContext(mslContext);
   const [message, setMessage] = useState("");
   //onSubmit handler for registering a new user
@@ -29,6 +30,10 @@ const SignUp = () => {
           setMessage("Login Successful");
           setUser(userData);
         }
+        navigate("/Home");
+      })
+      .catch((error) => {
+        alert("Not a valid registration");
       });
   };
 
