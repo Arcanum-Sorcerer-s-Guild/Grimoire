@@ -51,7 +51,7 @@ function App() {
     <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
       <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
-      <div className="grid grid-flow-cols w-full">
+      <div className="grid grid-flow-cols w-full h-screen">
         <Routes>
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
