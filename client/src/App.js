@@ -4,7 +4,6 @@ import Entries from "./Home/Entries.js";
 import UserAuth from './Login/UserAuth.js';
 import SignUp from './Login/SignUp.js';
 import NavBar from "./Common/NavBar.js"
-import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import SingleEntry from "./SingleEntry/SingleEntry.js"
 import './App.css';
@@ -50,10 +49,9 @@ function App() {
 
   return (
     <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
-      <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
+      <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
-      <div className="grid grid-flow-cols w-full">
-        <SearchBar />
+      <div className="grid grid-flow-cols w-full h-screen">
         <Routes>
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
@@ -61,6 +59,8 @@ function App() {
           {/* <Route path = "/templates" element={<Templates />} /> */}
           <Route path="/post" element={<PostEntry />} />
           <Route path="/login" element={<UserAuth />} />
+          <Route path="/logout" element={<UserAuth />} />
+          <Route path="/" element={<UserAuth />} />
           <Route path="/signup" element={<SignUp />} />
         </Routes>
       </div>
@@ -70,3 +70,5 @@ function App() {
 }
 
 export default App;
+
+// grid grid-flow-cols

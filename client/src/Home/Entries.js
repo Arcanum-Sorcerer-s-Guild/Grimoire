@@ -1,14 +1,19 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { mslContext } from "../App.js";
+
+//Custom Hooks
+import SearchBar from "../Common/SearchBar.js";
+
+//React Apis
 import AccordionItem from "../Common/AccordionItem";
 import DateObject from "react-date-object";
-import {Link} from "react-router-dom"
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
-  const { searchTerms, setSearchTerms, databaseTags, srvPort } =
-    React.useContext(mslContext);
+  const { searchTerms, setSearchTerms, databaseTags, srvPort } = React.useContext(mslContext);
 
+  //Accordion Setup
   const [open, setOpen] = useState(false);
 
   const toggle = (index) => {
@@ -18,6 +23,7 @@ const Entries = () => {
     setOpen(index);
   };
 
+  //Search Terms Setup
   useEffect(() => {
     let searchTerm = "";
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
@@ -27,7 +33,7 @@ const Entries = () => {
       .then((res) => res.json())
       .then((data) => {
         if (data.data !== null) {
-          setEntries(data.data)
+          setEntries(data.data);
         } else {
           setEntries(undefined);
         }
@@ -36,8 +42,9 @@ const Entries = () => {
 
   return (
     <>
-      <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
-        <div className="px-9">
+      <SearchBar />
+      <section className="col-span-2 place-items-center max-h-fit mb-5">
+        <div className="px-9 bg-slate-500 shadow-sm p-4 m-8 rounded-md">
           <div>
             {entries !== undefined ? (
               <div>
