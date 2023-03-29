@@ -42,8 +42,8 @@ const AccordionItem = ({
           <div className={`mr-5 ${open && "hidden"} flex flex-wrap gap-2`}>
             {tags ? (
               tags.map((tag, index) => {
-                if (index < 3) {
-                  return <Badge color="dark">{tag}</Badge>;
+                if (index < 3 && tag !== null) {
+                  return <Badge key={index} color="dark">{tag}</Badge>;
                 }
               })
             ) : (
@@ -91,9 +91,11 @@ const AccordionItem = ({
             textToHighlight={desc}
           ></Highlighter>
           <div className={`mt-5 ${!open && "hidden"} flex flex-wrap gap-2`}>
-            {tags ? (
-              tags.map((tag) => {
-                return <Badge color="dark">{tag}</Badge>;
+          {tags ? (
+              tags.map((tag, index) => {
+                if (tag !== null) {
+                  return <Badge key={index} color="dark">{tag}</Badge>;
+                }
               })
             ) : (
               <span></span>
