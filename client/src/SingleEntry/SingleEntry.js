@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
-import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
+import { Modal, Button, Pagination, Card, Badge } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
 import "./singleEntry.css";
 import CreatableSelect from "react-select/creatable";
@@ -27,7 +27,7 @@ const SingleEntry = () => {
     setUpdatedObj({
       ...Object.fromEntries(formData.entries()),
       tags: tagArray,
-    });;
+    });
   };
 
   useEffect(() => {
@@ -38,7 +38,7 @@ const SingleEntry = () => {
       "Access-Control-Allow-Origin": "*",
       credentials: "include",
     };
-    // TODO fix server/credentialing problems 
+    // TODO fix server/credentialing problems
     //createEntry {
     //   title: undefined,
     //   description: 'dasdfasdf',
@@ -54,7 +54,7 @@ const SingleEntry = () => {
       .then((data) => {
         console.log(data);
         // navigate("/home")
-        
+
         setShowUpdateModal(false);
       })
       .catch((err) => {
@@ -69,13 +69,13 @@ const SingleEntry = () => {
       "Access-Control-Allow-Origin": "*",
       credentials: "include",
     };
-    console.log(requestOptions)
+    console.log(requestOptions);
     // TODO fix credential issue
-    
-    // 1675:1 Access to fetch at 'http://localhost:3001/entries/id=1675' 
+
+    // 1675:1 Access to fetch at 'http://localhost:3001/entries/id=1675'
     // from origin 'http://localhost:3000' has been blocked by CORS policy:
-    //  Method DELETE is not allowed by Access-Control-Allow-Methods 
-    //  in preflight response. 
+    //  Method DELETE is not allowed by Access-Control-Allow-Methods
+    //  in preflight response.
     fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
@@ -151,14 +151,11 @@ const SingleEntry = () => {
                   <br />
                   <p>{entry.desc}</p>
                   <br />
-                  <p>
+                  <p className="flex flex-wrap gap-2">
                     {Array.isArray(entry.tags) ? (
-                      entry.tags.map((tag, index) => (
-                        <span key={index}>
-                          {tag}
-                          <br />
-                        </span>
-                      ))
+                      entry.tags.map((tag) => {
+                        return <Badge color="dark">{tag}</Badge>;
+                      })
                     ) : (
                       <span>No tags, why don't you add some!</span>
                     )}

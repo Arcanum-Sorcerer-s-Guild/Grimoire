@@ -3,8 +3,10 @@ import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
 import Highlighter from "react-highlight-words"
 import { mslContext } from "../App.js";
 import React from 'react'
+import { Badge } from 'flowbite-react'
 
 const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tags, user}) => {
+    console.log(tags)
     const { searchTerms } = React.useContext(mslContext);
     return (
         <div className="pt-2 shadow-md">
@@ -19,7 +21,11 @@ const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tag
                     <span className={`${open && "hidden"} text-sm text-gray-500 dark:text-gray-400`}>{dateCreated}</span>
                 </p>
                 <div className="flex text-sm">
-                    <div className={`mr-5 ${open && "hidden"}`}>{`${tags}`}</div>
+                    <div className={`mr-5 ${open && "hidden"} flex flex-wrap gap-2`}>{tags ? tags.map((tag,index)=>{
+                        if (index < 3) {
+                            return(<Badge color="dark">{tag}</Badge>)
+                        }
+                        }) : <></>}</div>
                     <div>
                          { open ? <AiOutlineMinus /> : <AiOutlinePlus /> }
                     </div>
@@ -41,7 +47,7 @@ const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tag
                     autoEscape={true}
                     textToHighlight={desc}
                     ></Highlighter>
-                    <div className={`mt-5 ${!open && "hidden"}`}>{`${tags}`}</div>
+                    <div className={`mt-5 ${!open && "hidden"} flex flex-wrap gap-2`}>{tags ? tags.map(tag=>{return(<Badge color="dark">{tag}</Badge>)}) : <span></span>}</div>
                 </div>
             </Collapse>
         </div>

@@ -1,5 +1,5 @@
 import React, {useState, useEffect} from 'react'
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Entries from "./Home/Entries.js";
 import UserAuth from './Login/UserAuth.js';
 import SignUp from './Login/SignUp.js';
@@ -22,6 +22,7 @@ function App() {
   const [databaseTags, setDatabaseTags] = useState();
   const [searchTerms, setSearchTerms] = useState({});
   const [user, setUser] = useState({});
+  const Navigate = useNavigate()
 
   useEffect(() => {
     fetch(`http://localhost:${srvPort}/tags`)
@@ -56,9 +57,8 @@ function App() {
       <div className="grid grid-flow-cols w-full">
         <SearchBar />
         <Routes>
-        <Route exact path="/">
+        <Route exact path="/" element={<UserAuth />}/>
             {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
-        </Route>
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
           {/* <Route path = "/" element={<Entries />} /> */}
