@@ -3,87 +3,67 @@ import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
 import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
-import Select from "react-select";
 import "./singleEntry.css";
+import CreatableSelect from "react-select/creatable";
 
 const SingleEntry = () => {
   const navigate = useNavigate();
   let params = useParams();
-  const { srvPort } = React.useContext(mslContext);
-  const [entry, setEntry] = useState({});
-  const [totalEntries, setTotalEntries] = useState();
-  const [updatedObj, setUpdatedObj] = useState();
-  const { databaseTags } = React.useContext(mslContext);
+  const { databaseTags, srvPort } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState();
-  const [readyToSend,setReadyToSend] = useState(false)
+  const [updatedObj, setUpdatedObj] = useState();
+  const [totalEntries, setTotalEntries] = useState();
+  const [entry, setEntry] = useState({});
 
-  const handleSearchTagChange = (value) => {
-    setSelectedTags(value);
+  const handleSelectChange = (selections) => {
+    setSelectedTags(selections);
   };
 
   const onClickUpdate = (e) => {
     e.preventDefault();
-    let tagArray = [];
-    console.log(selectedTags)
-
     const form = e.target;
-    const formData = new FormData(form)
-
-    if (selectedTags !== null) {
-      if (selectedTags.length > 1) {
-        console.log(1)
-        selectedTags.map((tag) => tagArray.push(tag.value));
-      } else if (selectedTags.length !== 0) {
-        console.log(2)
-        tagArray.push(selectedTags[0].value);
-      }
-    }
-    console.log(tagArray)
-
-
-      // setUpdatedObj({
-      //     ...Object.fromEntries(formData.entries()),
-      //     tags:selectedTags
-      // })    
-
-      
-    
-    console.log(updatedObj)
-    //setReadyToSend(true)
-  
+    const formData = new FormData(form);
+    let tagArray = selectedTags.map((tag) => tag.value);
+    setUpdatedObj({
+      ...Object.fromEntries(formData.entries()),
+      tags: tagArray,
+    });
+    console.log(tagArray);
+    // console.log(updatedObj);
   };
 
-  useEffect(()=>{
-    if(readyToSend) {
-      const requestOptions = {
-        method: "PUT",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({updatedObj}),
-      };
-      console.log(requestOptions.body)
-      fetch(`http://localhost:${srvPort}/entries`, requestOptions)
+  useEffect(() => {
+    const requestOptions = {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify([updatedObj]),
+      // "Access-Control-Allow-Origin": "*",
+      // credentials: "include",
+    };
+    console.log("This!",requestOptions);
+    fetch(`http://localhost:${srvPort}/entries/`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
         res.json();
-        })
-        .then((data) => {
-          console.log(data);
-          // navigate("/home")
-          setShowUpdateModal(false);
-          setReadyToSend(false)
-        })
-        .catch((err) => {
-          console.log(err);
-          alert(err)
-        })
-      }
-      },[readyToSend])
-    
+      })
+      .then((data) => {
+        console.log(data);
+        // navigate("/home")
+        setShowUpdateModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }, [updatedObj]);
 
   const onClickDelete = () => {
     setShowDeleteModal(false);
-    console.log(params.id)
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {method: "DELETE"})
+    const requestOptions = {
+      method: "DELETE",
+      "Access-Control-Allow-Origin": "*",
+      credentials: "include",
+    };
+    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         //TODO turn this into a real delete (get a returning value?)
@@ -121,13 +101,15 @@ const SingleEntry = () => {
           tags: data.data[0].tags,
         });
         if (data.data[0].tags[0] !== null) {
-          setSelectedTags(data.data[0].tags.map( tag => {
-            return({
-              value:tag,
-              label:tag
-          })
-          }))
-      } 
+          setSelectedTags(
+            data.data[0].tags.map((tag) => {
+              return {
+                value: tag,
+                label: tag,
+              };
+            })
+          );
+        }
       });
   }, [params.id]);
 
@@ -155,8 +137,20 @@ const SingleEntry = () => {
                     `Updated at ${entry.updated_time} on ${entry.updated_date}`
                   )}
                   <br />
-                  <p>{entry.desc}</p><br/>
-                  <p>{Array.isArray(entry.tags)  ?  entry.tags.map((tag,index) => <span key={index}>{tag}<br/></span>) : <span>No tags, why don't you add some!</span>}</p>
+                  <p>{entry.desc}</p>
+                  <br />
+                  <p>
+                    {Array.isArray(entry.tags) ? (
+                      entry.tags.map((tag, index) => (
+                        <span key={index}>
+                          {tag}
+                          <br />
+                        </span>
+                      ))
+                    ) : (
+                      <span>No tags, why don't you add some!</span>
+                    )}
+                  </p>
                 </div>
 
                 <div className="cardButtons">
@@ -173,44 +167,44 @@ const SingleEntry = () => {
                     >
                       <Modal.Header />
                       <Modal.Body>
-                      <form method="post" onSubmit={onClickUpdate}>
-                        <div className="h-max">
-                          <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                            Update Entry: {entry.title} 
-                          </h3>
-                          <div>User {entry.user} on {`${entry.created_date} at ${entry.created_time}`}
+                        <form method="post" onSubmit={onClickUpdate}>
+                          <div className="h-max">
+                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                              Update Entry: {entry.title}
+                            </h3>
+                            <div>
+                              User {entry.user} on{" "}
+                              {`${entry.created_date} at ${entry.created_time}`}
                             </div>
-                          <textarea
-                            name="description"
-                            id="updatedDescription"
-                            defaultValue={entry.desc}
-                            rows={10}
+                            <textarea
+                              name="description"
+                              id="updatedDescription"
+                              defaultValue={entry.desc}
+                              rows={10}
                             />
                             {/* TAGGED SEARCH */}
                             <div className="updateTaggedSearch">
-                            <Select
-                              defaultValue={selectedTags}
-                              onChange={handleSearchTagChange}
-                              options={databaseTags}
-                              isMulti="true"
-                              isSearchable="true"
-                              isClearable="true"
-                              placeholder="Search Tags..."
-                              loading={databaseTags === undefined}
-                              noOptionsMessage="No tags in system... You should make some!"
-                            />
-                                  </div>
-                          <div className="flex justify-center gap-4">
-                          <Button type="submit">Update Entry</Button>
-                          <Button
-                            color="gray"
-                            onClick={() => setShowUpdateModal(false)}
-                          >
-                            Cancel
-                          </Button>
+                              <CreatableSelect
+                                value={selectedTags}
+                                isMulti
+                                isLoading={databaseTags ? false : true}
+                                options={databaseTags}
+                                placeholder="Search..."
+                                openOnFocus="true"
+                                onChange={handleSelectChange}
+                              />
+                            </div>
+                            <div className="flex justify-center gap-4">
+                              <Button type="submit">Update Entry</Button>
+                              <Button
+                                color="gray"
+                                onClick={() => setShowUpdateModal(false)}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
                           </div>
-                        </div>
-                      </form>
+                        </form>
                       </Modal.Body>
                     </Modal>
                   </React.Fragment>

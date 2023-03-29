@@ -7,6 +7,7 @@ import NavBar from "./Common/NavBar.js"
 import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import SingleEntry from "./SingleEntry/SingleEntry.js"
+import Templates from "./Templates/Templates.js"
 import './App.css';
 
 //require("dotenv").config();
@@ -58,7 +59,7 @@ function App() {
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
           {/* <Route path = "/" element={<Entries />} /> */}
-          {/* <Route path = "/templates" element={<Templates />} /> */}
+          <Route path = "/templates" element={<Templates />} />
           <Route path="/post" element={<PostEntry />} />
           <Route path="/login" element={<UserAuth />} />
           <Route path="/signup" element={<SignUp />} />
