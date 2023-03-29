@@ -21,10 +21,14 @@ const SearchBar = () => {
         q: inputs.q,
         tags: tagsToAdd,
       });
+    };
     
+  const resetSearchTerms = (value) => {
+      setSearchTerms({})
+      alert('Search terms reset!')
+    }
     
 
-    };
     
     const handleAdvancedSubmit = (event) => {
       let tagsToAdd = "";
@@ -149,10 +153,13 @@ const SearchBar = () => {
               noOptionsMessage="No tags in system... You should make some!"
               />
           </div>
-                <div className="relative text-right">
+                <div>
                 <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
                   Advanced Search
                 </button>
+                <div>
+                 <button className="text-xs" onClick={resetSearchTerms}>Reset Search</button>
+                 </div>
     </div>
               </div>
   </>);

@@ -17,6 +17,10 @@ const Entries = () => {
     setSearchTerms({ ...searchTerms, page: value });
   };
 
+  const resetSearchTerms = (value) => {
+    setSearchTerms({})
+  }
+
   const toggle = (index) => {
     if (open === index) {
       return setOpen(false);
@@ -53,6 +57,7 @@ const Entries = () => {
   return (
     <>
       <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
+          
         <div className="px-9">
           <div>
             {entries !== undefined ? (
