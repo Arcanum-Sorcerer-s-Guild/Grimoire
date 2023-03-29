@@ -14,11 +14,7 @@ const Entries = () => {
   const [pageData, setPageData] = useState()
   
   const onPageChange = (value) => {
-    console.log(value)
-    
     setSearchTerms({...searchTerms,page:value })
-
-    console.log(pageData.currentPage,searchTerms)
   }
 
   const toggle = (index) => {
@@ -39,9 +35,7 @@ const Entries = () => {
       .then((data) => {
         if (data.data !== null) {
           setEntries(data.data)
-          console.log(data.pagination)
           setPageData(data.pagination)
-          
         } else {
           setEntries(undefined);
         }

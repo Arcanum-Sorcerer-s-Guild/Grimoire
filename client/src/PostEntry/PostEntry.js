@@ -3,6 +3,7 @@ import { mslContext } from "../App.js";
 import { Card, Button } from "flowbite-react";
 import Select from "react-select";
 import {useNavigate} from "react-router-dom"
+import CreatableSelect from "react-select/creatable";
 
 const PostEntry = () => {
   const [inputs, setInputs] = useState({ tags: [] });
@@ -11,30 +12,16 @@ const PostEntry = () => {
   const [selectedTags, setSelectedTags] = useState(null);
   const [readyToSend,setReadyToSend] = useState(false)
   const navigate = useNavigate();
-
+ 
+  const handleSelectChange = (selections) => {
+    setSelectedTags(selections);
+  };
+  
   const handleSubmit = () => {
-    let tagArray = inputs.tags;
-    if ("newTags" in inputs) {
-      if (inputs.newTags.includes(",")) {
-        tagArray = inputs.newTags.split(",");
-      } else {
-        tagArray = [inputs.newTags];
-      }
+    let tagArray = [];
+    if (Array.isArray(selectedTags)) {
+      tagArray = selectedTags.map((tag) => tag.value)
     }
-
-    if (selectedTags !== null) {
-      if (selectedTags.length > 1) {
-        selectedTags.map((tag) => tagArray.push(tag.value));
-      } else if (selectedTags.length !== 0) {
-        tagArray.push(selectedTags[0].value);
-      }
-    }
-
-    if (Array.isArray(tagArray)) {
-      tagArray = [...new Set(tagArray)];
-      tagArray.filter((tag) => tag !== "");
-    }
-
     setInputs({
       tags: tagArray,
       title: inputs.title,
@@ -57,6 +44,7 @@ const PostEntry = () => {
         "Access-Control-Allow-Origin": "*",
         credentials: "include",
       };
+      console.log(requestOptions)
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
@@ -64,7 +52,7 @@ const PostEntry = () => {
         })
         .then((data) => {
           console.log(data);
-          navigate("/home")
+          // navigate("/home")
         })
         .catch((err) => {
           console.log(err);
@@ -109,31 +97,17 @@ const PostEntry = () => {
                   rows="4"
                   cols="50"
                 />
-                <br />
-                New Tags: (Separate with commas)
-                <br />
-                <input
-                  // classname="w-max"
-                  className="text-black"
-                  placeholder="Ex: Tag 1,Tag 2,Tag 3"
-                  name="newTags"
-                  onChange={handleChange}
-                />
-                <br />
-                Existing Tags:
-                <div className="updateTaggedSearch">
-                  <Select
-                    value={selectedTags}
-                    onChange={handleSearchTagChange}
-                    options={databaseTags}
-                    isMulti="true"
-                    isSearchable="true"
-                    isClearable="true"
-                    placeholder="Add Tags..."
-                    loading={databaseTags === undefined}
-                    noOptionsMessage="No tags in system... You should make some!"
-                  />
-                </div>
+                            <div className="updateTaggedSearch">
+                              <CreatableSelect
+                                value={selectedTags}
+                                isMulti
+                                isLoading={databaseTags ? false : true}
+                                options={databaseTags}
+                                placeholder="Search..."
+                                openOnFocus="true"
+                                onChange={handleSelectChange}
+                              />
+                            </div>
                 <Button onClick={() => handleSubmit()}>Add Entry</Button>
               </form>
             </Card>
