@@ -12,7 +12,7 @@ import Marquee from "react-fast-marquee";
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
-  const { searchTerms, setSearchTerms, databaseTags, srvPort, user } = React.useContext(mslContext);
+  const { searchTerms, setSearchTerms, databaseTags, srvPort } = React.useContext(mslContext);
 
   //Accordion Setup
   const [open, setOpen] = useState(false);
@@ -43,22 +43,6 @@ const Entries = () => {
 
   return (
     <>
-      {/* <div className="mt-2 text-sm text-amber-600 overflow-hidden">
-        <Marquee 
-          pauseOnHover={true}
-          speed={2}
-        >
-        {entries.map((entry, index) => {
-          return (
-            <AccordionItem
-                      key={index}
-                      open={index === open}
-                      title={<Link to={`/Home/${entry.id}`}>{`${entry.title}`}</Link>}
-                    />
-            )
-        })}
-        </Marquee>
-      </div> */}
       <SearchBar />
       <section className="col-span-2 place-items-center max-h-fit mb-5">
         <div className="px-9 bg-slate-500 shadow-sm p-4 m-8 rounded-md">
@@ -93,14 +77,3 @@ const Entries = () => {
 };
 
 export default Entries;
-
-// {/* <div className= "col-span-2 italic text-xs text-end mr-5">
-// {!user.username ? (
-//   <div className=" mt-4">...</div>
-// ) : (
-//   <div className="mt-4">
-//     currently logged in as:
-//     <span className="ml-1 font-semibold">{user.username}</span>
-//   </div>
-// )}
-// </div> */}
