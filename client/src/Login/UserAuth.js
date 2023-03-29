@@ -1,8 +1,9 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserAuth = () => {
+  const navigate = useNavigate();
   const { srvPort, user, setUser } = React.useContext(mslContext);
 
   // onSubmit handler for logging in a user
@@ -22,8 +23,8 @@ const UserAuth = () => {
     fetch(`http://localhost:${srvPort}/login`, requestOptions)
       .then((response) => response.json())
       .then((userData) => {
-
         setUser(userData);
+        navigate("/Home");
       });
   };
 
