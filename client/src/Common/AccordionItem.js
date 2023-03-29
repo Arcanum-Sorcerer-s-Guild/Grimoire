@@ -1,7 +1,11 @@
 import { Collapse } from 'react-collapse';
 import { AiOutlineMinus, AiOutlinePlus } from 'react-icons/ai';
+import Highlighter from "react-highlight-words"
+import { mslContext } from "../App.js";
+import React from 'react'
 
 const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tags, user}) => {
+    const { searchTerms } = React.useContext(mslContext);
     return (
         <div className="pt-2 shadow-md">
             <div
@@ -28,7 +32,15 @@ const AccordionItem = ({open, toggle, title, dateCreated, dateUpdated, desc, tag
                         <span className={`${!open && "hidden"} text-sm ml-2 text-gray-500 dark:text-gray-400 `}>created: {dateCreated}</span>
                         {dateCreated !== dateUpdated ? <span className={`${!open && "hidden"} text-sm ml-2 text-gray-500 dark:text-gray-400 `}>updated: {dateUpdated}</span> : <span></span>}
                     </p>
-                    {desc}
+                    
+                    <Highlighter
+                    highlightClassName="YourHighlightClass"
+                    searchWords={searchTerms.q ? 
+                        [searchTerms.q] 
+                        : ["parse"]}
+                    autoEscape={true}
+                    textToHighlight={desc}
+                    ></Highlighter>
                     <div className={`mt-5 ${!open && "hidden"}`}>{`${tags}`}</div>
                 </div>
             </Collapse>

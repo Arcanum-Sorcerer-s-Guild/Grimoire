@@ -6,7 +6,7 @@ import { FaSearchengin } from "react-icons/fa";
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
-  const { setSearchTerms, databaseTags, user } = React.useContext(mslContext);
+  const { searchTerms, setSearchTerms, databaseTags, user } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
@@ -25,10 +25,12 @@ const SearchBar = () => {
       });
     } else {
       setSearchTerms({
-        inputs,
+        q: inputs.q,
         tags: tagsToAdd,
       });
     }
+
+    console.log(searchTerms)
   };
 
   const handleSearchTagChange = (value) => {
@@ -39,6 +41,7 @@ const SearchBar = () => {
     const name = event.target.name;
     const value = event.target.value;
     setInputs((values) => ({ ...values, [name]: value }));
+    
   };
 
   return (
