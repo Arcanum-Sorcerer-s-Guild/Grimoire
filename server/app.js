@@ -225,9 +225,10 @@ app.post("/entries", (req, res) => {
 app.post("/entries/:id", (req, res) => {
   if (!req.session.user) {
     return res.status(401).json({ message: "unauthorized" });
-  }else if (req.session.user.is_admin === false || req.session.user.userId != req.params.id) {
-    return res.status(403).json({ message: "unauthorized" });
   }
+  // else if (req.session.user.is_admin === false || req.session.user.userId != req.params.id) {
+  //   return res.status(403).json({ message: "unauthorized" });
+  // }
 
   const id = req.params.id;
   updateEntry(req.body, id, req.session.user.userId)
