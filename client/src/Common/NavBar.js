@@ -3,9 +3,10 @@ import { Link } from 'react-router-dom';
 import Theme from "./Theme";
 
 import controlImage from "../assets/control.png";
-import { FaDungeon, FaHatWizard } from 'react-icons/fa'; 
+import { FaDungeon, FaHatWizard, FaList } from 'react-icons/fa'; 
 import { GiSpellBook } from 'react-icons/gi'; 
 import { IoIosSettings } from 'react-icons/io'; 
+
 
 const NavBar = () => {
   const [ open, setOpen ] = useState(true);
@@ -13,6 +14,7 @@ const NavBar = () => {
   const links = [
     { name: 'Home', to: '/', icon: FaDungeon },
     { name: 'Post', to: '/', icon: GiSpellBook },
+    { name: 'Templates', to: '/', icon: FaList},
     { name: 'Login', to: '/', icon: FaHatWizard, margin: true },
     { name: 'Theme', to: '/', icon: IoIosSettings },
   ];
