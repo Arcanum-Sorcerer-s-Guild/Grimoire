@@ -28,8 +28,8 @@ const Entries = () => {
     let searchTerm = "";
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;
     if (searchTerms.tags !== undefined) searchTerm += `&${searchTerms.tags}`;
-    if (searchTerms.page !== undefined) searchTerm = `&page=${searchTerms.page}`
-    console.log(searchTerm)
+    if (searchTerms.page !== undefined) searchTerm += `&page=${searchTerms.page}`
+    console.log('Search term',searchTerm)
     fetch(`http://localhost:${srvPort}/entries?${searchTerm}`)
       .then((res) => res.json())
       .then((data) => {
