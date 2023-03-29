@@ -23,6 +23,8 @@ const SignUp = () => {
       .then((response) => response.json())
       .then((userData) => {
         setUser(userData);
+      .catch((error) => {
+        alert("Not a valid registration");
       });
   };
 
