@@ -103,9 +103,10 @@ const Entries = () => {
                 totalPages={parseInt(pageData.lastPage)}
                 previousLabel="Go back"
                 nextLabel="Go forward"
+                className="mt-4"
               />
             ) : (
-              <Spinner aria-label="Extra large spinner example" size="xl" />
+              <></>
             )}
           </div>
         </div>
