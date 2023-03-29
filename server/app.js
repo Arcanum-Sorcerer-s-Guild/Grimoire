@@ -39,6 +39,7 @@ const store = new KnexSessionStore({
 app.use(
   session({
     store: store,
+    name: "connect.sid",
     secret: process.env.SESSION_SECRET || "6f646a6c6e6775306d7a68686d64637",
     saveUninitialized: false,
     resave: false,
@@ -120,16 +121,20 @@ app.post("/register", async (req, res) => {
   const { username, password, isAdmin } = req.body;
 
   // reject missing username or missing password
-  if (username === undefined || password === undefined) {
+  if (username === "" || password === "") {
     console.log("undefined user or pass");
-    return res.sendStatus(403);
+    return res.status(401).json({
+      error: "undefined user or pass",
+    });
   }
 
   // reject duplicate username
   const duplicate = await getUserByUsername(username);
   if (duplicate.length > 0) {
     console.log("duplicate username of id:", duplicate[0].id);
-    return res.sendStatus(403);
+    return res.status(401).json({
+      error: "Username already taken...",
+    });
   }
 
   try {
@@ -150,7 +155,9 @@ app.post("/register", async (req, res) => {
     return res.json(req.session.user);
   } catch (err) {
     console.log(err);
-    return res.sendStatus(403);
+    return res.status(403).json({
+      error: err,
+    });
   }
 });
 
@@ -161,7 +168,9 @@ app.post("/login", async (req, res) => {
   // reject missing username or missing password
   if (username == undefined || password == undefined) {
     console.log("undefined user or pass");
-    return res.sendStatus(403);
+    return res.status(401).json({
+      error: "Missing Username or Password",
+    });
   }
 
   try {
@@ -171,7 +180,9 @@ app.post("/login", async (req, res) => {
     // reject if user not found
     if (data.length === 0) {
       console.log("user not found");
-      return res.sendStatus(403);
+      return res.status(401).json({
+        error: "User not found",
+      });
     }
     const user = data[0];
     console.log("user:", user);
@@ -179,8 +190,10 @@ app.post("/login", async (req, res) => {
     // compare password hashes and reject if incorrect
     const matches = bcrypt.compareSync(password, user.password);
     if (!matches) {
-      console.log("incorrect password");
-      return res.sendStatus(403);
+      console.log("incorrect username or password");
+      return res.status(401).json({
+        error: "Incorrect username or password",
+      });
     }
 
     // create session cookie
@@ -195,7 +208,9 @@ app.post("/login", async (req, res) => {
     return res.json(req.session.user);
   } catch (err) {
     console.error(err);
-    return res.sendStatus(403);
+    return res.status(401).json({
+      error: err,
+    });
   }
 });
 
@@ -205,7 +220,9 @@ app.post("/logout", async (req, res) => {
     await req.session.destroy();
     console.log("logout successful");
     res.clearCookie("connect.sid");
-    return res.sendStatus(200);
+    return res.status(401).json({
+      error: "logout successful",
+    });
   } catch (err) {
     console.error(err);
     return res.sendStatus(500);
@@ -347,7 +364,7 @@ app.get("/templates", (req, res) => {
 });
 
 app.get("/templates/:id", (req, res) => {
-  console.log(req.params.id)
+  console.log(req.params.id);
   getTemplates(req.params.id)
     .then((data) => res.status(200).json(data))
     .catch((err) =>

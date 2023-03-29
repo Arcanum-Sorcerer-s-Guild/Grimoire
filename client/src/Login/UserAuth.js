@@ -1,10 +1,11 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 const UserAuth = () => {
+  const navigate = useNavigate();
   const { srvPort, user, setUser } = React.useContext(mslContext);
-
+  const [message, setMessage] = useState("");
   // onSubmit handler for logging in a user
   const handleLogin = (e) => {
     e.preventDefault(); // prevent page reload
@@ -22,20 +23,25 @@ const UserAuth = () => {
     fetch(`http://localhost:${srvPort}/login`, requestOptions)
       .then((response) => response.json())
       .then((userData) => {
-
-        setUser(userData);
+        if ("error" in userData) {
+          setMessage(userData.error);
+        } else {
+          setMessage("Login Successful");
+          setUser(userData);
+          navigate("/Home");
+        }
       });
   };
 
   // onClick handler for logging out a user
-  const handleLogout = () => {
-    fetch(`http://localhost:${srvPort}/logout`, {
-      method: "POST",
-      credentials: "include",
-    }).then(() => {
-      setUser({});
-    });
-  };
+  // const handleLogout = () => {
+  //   fetch(`http://localhost:${srvPort}/logout`, {
+  //     method: "POST",
+  //     credentials: "include",
+  //   }).then(() => {
+  //     setUser({});
+  //   });
+  // };
 
   // onClick handler for retrieving a user's data
   // response is:
@@ -76,6 +82,9 @@ const UserAuth = () => {
               >
                 Signup
               </Link>
+            </p>
+            <p className="mt-5 text-center text-sm text-red-600 dark:text-red-200">
+              {message}
             </p>
             <form
               method="post"
@@ -132,21 +141,12 @@ const UserAuth = () => {
                   </div>
                 </div>
                 <div>
-                  {!user.username ? (
-                    <button
-                      type="submit"
-                      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
-                    >
-                      Login
-                    </button>
-                  ) : (
-                    <button
-                      onClick={handleLogout}
-                      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
-                    >
-                      Logout
-                    </button>
-                  )}
+                  <button
+                    type="submit"
+                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
+                  >
+                    Login
+                  </button>
                 </div>
               </div>
             </form>

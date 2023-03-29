@@ -46,14 +46,12 @@ const SingleEntry = () => {
     //   tags: [ 'asdf' ]
     // }
 
-    console.log("This!", requestOptions);
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
         res.json();
       })
       .then((data) => {
-        console.log(data);
         navigate(0);
 
         setShowUpdateModal(false);
@@ -70,12 +68,10 @@ const SingleEntry = () => {
       "Access-Control-Allow-Origin": "*",
       credentials: "include",
     };
-    console.log(requestOptions);
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
         alert(`{Entry ${params.id} Deleted!}`);
-        console.log(data);
         navigate("/home");
       });
   };
@@ -140,7 +136,6 @@ const SingleEntry = () => {
   return (
     <section className="col-span-2 place-items-center h-screen w-full mt-10">
       <div className="px-9">
-        {console.log(entry.title)}
         {entry ? (
           <>
             <Card>
