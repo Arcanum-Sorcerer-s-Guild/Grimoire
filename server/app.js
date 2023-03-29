@@ -9,17 +9,17 @@ const app = express();
 
 const {
   getUsers,
-  getTags,
-  getEntries,
-  deleteEntry,
-  createEntry,
   getUserByUsername,
   createUser,
+  getEntries,
+  createEntry,
   updateEntry,
+  deleteEntry,
   countEntries,
+  getTags,
   getTemplates,
-  deleteTemplate,
   updateTemplates,
+  deleteTemplate,
 } = require("./db/controllers");
 
 app.use(morgan("tiny"));
@@ -58,95 +58,8 @@ app.get("/", (req, res) => {
   res.status(200).json("server running");
 });
 
-app.get("/entries", (req, res) => {
-  getEntries(req.query)
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-        err,
-      })
-    );
-});
-app.get("/entries/:id", (req, res) => {
-  getEntries({ id: req.params.id })
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-        err,
-      })
-    );
-});
-
-app.use("/users", (req, res) => {
-  res.status(200).json(getUsers());
-});
-app.use("/getTags", (req, res) => {
-  res.status(200).json(getTags(req.params.id));
-});
-
-app.get("/tags", (req, res) => {
-  getTags()
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-      })
-    );
-});
-
 app.get("/users", (req, res) => {
   getUsers()
-    .then((data) => {
-      res.status(200).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-      })
-    );
-});
-
-app.post("/entries", (req, res) => {
-  if (!req.session.user) {
-    return res.status(401).json({ message: "unauthorized" });
-  }
-  const entry = { ...req.body[0], user_id: req.session.user.userId };
-  createEntry(entry)
-    .then((data) => {
-      res.status(201).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-      })
-    );
-});
-
-app.post("/entries/:id", (req, res) => {
-  const id = req.params.id;
-  updateEntry(req.body, id)
-    .then((data) => {
-      console.log(data);
-      res.status(200).json(data);
-    })
-    .catch((err) =>
-      res.status(404).json({
-        message: errorMessage,
-      })
-    );
-});
-
-app.delete("/entries/:id", (req, res) => {
-  // console.log(req.body);
-  deleteEntry(req.params.id)
     .then((data) => {
       res.status(200).json(data);
     })
@@ -263,13 +176,90 @@ app.post("/fetch-user", async (req, res) => {
   return res.sendStatus(403);
 });
 
-// Post a new Template to the DB
-// app.post("/templates", (req, res) => {
-//   res.status(200).json({
-//     message: "Post Request Sent! Server Running Successfully",
-//   });
-// });
-//Count Entries
+app.get("/users", (req, res) => {
+  res.status(200).json(getUsers());
+});
+
+// Entries
+app.get("/entries", (req, res) => {
+  getEntries(req.query)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+        err,
+      })
+    );
+});
+app.get("/entries/:id", (req, res) => {
+  getEntries({ id: req.params.id })
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+        err,
+      })
+    );
+});
+
+app.post("/entries", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+  const entry = { ...req.body[0], user_id: req.session.user.userId };
+  createEntry(entry)
+    .then((data) => {
+      res.status(201).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.post("/entries/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }else if (req.session.user.is_admin === false || req.session.user.userId != req.params.id) {
+    return res.status(403).json({ message: "unauthorized" });
+  }
+
+  const id = req.params.id;
+  updateEntry(req.body, id, req.session.user.userId)
+    .then((data) => {
+      console.log(data);
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.delete("/entries/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  } else if (req.session.user.is_admin === false) {
+    return res.status(403).json({ message: "unauthorized" });
+  }
+  // console.log(req.body);
+  deleteEntry(req.params.id)
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
 app.get("/countentries", (req, res) => {
   const create = countEntries(req.body)
     .then((data) => {
@@ -282,7 +272,24 @@ app.get("/countentries", (req, res) => {
     );
 });
 
-//Templates
+// app.use("/getTags", (req, res) => {
+//   res.status(200).json(getTags(req.params.id));
+// });
+
+// Tags
+app.get("/tags", (req, res) => {
+  getTags()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+// Templates
 app.get("/templates", (req, res) => {
   getTemplates()
     .then((data) => res.status(204).json(data))
@@ -304,6 +311,10 @@ app.get("/templates/:id", (req, res) => {
 });
 
 app.post("/templates/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+
   updateTemplates(req.body, req.params.id)
     .then((data) => res.status(200).json(data))
     .catch((err) =>
@@ -312,7 +323,12 @@ app.post("/templates/:id", (req, res) => {
       })
     );
 });
+
 app.post("/templates", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+
   updateTemplates(req.body)
     .then((data) => res.status(200).json(data))
     .catch((err) =>
@@ -322,6 +338,11 @@ app.post("/templates", (req, res) => {
     );
 });
 app.delete("/templates/:id", (req, res) => {
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  } else if (req.session.user.is_admin === false) {
+    return res.status(403).json({ message: "unauthorized" });
+  }
   deleteTemplate(req.params.id)
     .then((data) => res.status(200).json(data))
     .catch((err) =>
