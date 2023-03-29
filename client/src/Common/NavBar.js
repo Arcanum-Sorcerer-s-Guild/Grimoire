@@ -13,11 +13,12 @@ import { MdOutlineKeyboardArrowDown } from "react-icons/md";
 const NavBar = () => {
   const [open, setOpen] = useState(true);
   const [subMenuOpen, setSubMenuOpen] = useState(true);
+  const { user } = React.useContext(mslContext);
 
   const links = [
     { name: "Home", to: "/", icon: FaDungeon },
     { name: "Post", to: "/", icon: GiSpellBook },
-    { name: "Login", to: "/", icon: FaHatWizard },
+    { name: "Login", to: "/", icon: FaHatWizard, margin: true },
     {
       name: "Theme",
       icon: IoIosSettings,
@@ -110,6 +111,16 @@ const NavBar = () => {
           </h1>
         </div>
         <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
+        <div className={`${!open && "hidden"} text-white italic text-xs`}>
+          {!user.username ? (
+            <div className=" mt-4">...</div>
+          ) : (
+            <div className="mt-4">
+              currently logged in as:
+              <span className="ml-1 font-semibold">{user.username}</span>
+            </div>
+          )}
+        </div>
         <div className="flex flex-col relative text-white mt-4">
           {links?.map((link, index) => (
             <>

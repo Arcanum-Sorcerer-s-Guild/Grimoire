@@ -65,7 +65,7 @@ const SearchBar = () => {
               {React.createElement(FaSearchengin, { size: "20" })}
             </div>
           </div>
-          <div className="mt-2">
+          <div className="mt-2 bg-slate-500">
             {/* TAGGED SEARCH */}
             <Select
               value={selectedTags}
