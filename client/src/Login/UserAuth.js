@@ -123,27 +123,30 @@ const UserAuth = () => {
                   </div>
 
                   <div className="text-sm mt-3">
-                    <a
-                      href="#"
-                      className="font-medium text-amber-600 hover:text-amber-400"
+                    <Link
+                      to={"/SignUp"}
+                      className="font-medium text-amber-600 hover:text-amber-400 ml-2"
                     >
                       Forgot your password?
-                    </a>
+                    </Link>
                   </div>
                 </div>
                 <div>
-                  <button
-                    type="submit"
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
-                  >
-                    Login
-                  </button>
-                  <button
-                    onClick={handleLogout}
-                    className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
-                  >
-                    Logout
-                  </button>
+                  {!user.username ? (
+                    <button
+                      type="submit"
+                      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
+                    >
+                      Login
+                    </button>
+                  ) : (
+                    <button
+                      onClick={handleLogout}
+                      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-amber-600 hover:bg-amber-400 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-amber-400 mt-5"
+                    >
+                      Logout
+                    </button>
+                  )}
                 </div>
               </div>
             </form>

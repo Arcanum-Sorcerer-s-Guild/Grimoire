@@ -10,7 +10,7 @@ const PostEntry = () => {
   const [tagsToAdd, setTagsToAdd] = useState([]);
   const { srvPort, databaseTags, templateValues,setTemplateValues } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState(null);
-  const [readyToSend,setReadyToSend] = useState(false)
+  const [readyToSend, setReadyToSend] = useState(false);
   const navigate = useNavigate();
  
   const handleSelectChange = (selections) => {
@@ -29,15 +29,15 @@ const PostEntry = () => {
     });
 
     if (inputs.title !== undefined && inputs.description !== undefined) {
-      setReadyToSend(true)
+      setReadyToSend(true);
     } else {
       alert("Please input Title and Description before submitting!");
     }
     setTemplateValues({title:"",description:""})
   };
 
-  useEffect(()=> {     
-    if(readyToSend) {
+  useEffect(() => {
+    if (readyToSend) {
       const requestOptions = {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -47,22 +47,20 @@ const PostEntry = () => {
       };
       console.log(requestOptions)
       fetch(`http://localhost:${srvPort}/entries`, requestOptions)
-      .then((res) => {
-        if (!res.ok) throw new Error(res.statusText);
-        res.json();
+        .then((res) => {
+          if (!res.ok) throw new Error(res.statusText);
+          res.json();
         })
         .then((data) => {
           console.log(data);
-          navigate("/home")
+          navigate("/home");
         })
         .catch((err) => {
           console.log(err);
-          alert(err)
-        })
-      }
-      
-      },[readyToSend])
-      
+          alert(err);
+        });
+    }
+  }, [readyToSend]);
 
   const handleSearchTagChange = (value) => {
     setSelectedTags(value);
@@ -80,25 +78,22 @@ const PostEntry = () => {
 
   return (
     <>
-      
-      <section className="col-span-2 place-items-center h-screen w-full">
+      <section className="col-span-2 place-items-center h-screen w-full mt-10">
         <div className="px-9">
           <React.Fragment>
             <Card>
-              Title:{" "}
+              <h2 className="text-amber-600">New Entry</h2>
               <input
-                className="text-black"
-                placeholder="title"
+                className="text-lg border border-gray-200 p-4 rounded-md"
+                placeholder="Title..."
                 name="title"
                 defaultValue = {templateValues ? templateValues.title : ""}
                 onChange={handleChange}
               />
               <form onSubmit={handleSubmit}>
-                Description:
-                <br />
                 <textarea
-                  className="text-black"
-                  placeholder="description"
+                  className="text-lg w-full border border-gray-200 p-4 rounded-md"
+                  placeholder="Description..."
                   name="description"
                   defaultValue = {templateValues ? templateValues.description : ""}
                   onChange={handleChange}

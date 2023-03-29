@@ -116,6 +116,15 @@ const SingleEntry = () => {
             })
           );
         }
+          setSelectedTags(
+            data.data[0].tags.map((tag) => {
+              return {
+                value: tag,
+                label: tag,
+              };
+            })
+          );
+        }
       });
   }, [params.id]);
 
@@ -127,46 +136,62 @@ const SingleEntry = () => {
   const [showUpdateModal, setShowUpdateModal] = useState(false);
 
   return (
-    <section className="col-span-2 place-items-center h-screen w-full">
+    <section className="col-span-2 place-items-center h-screen w-full mt-10">
       <div className="px-9">
         {console.log(entry.title)}
         {entry ? (
           
           <>
             <Card>
-              <div className="cardBox">
+              <div className="p-2">
+                <div className="text-3xl font-semibold p-2 text-amber-600">
+                  {entry.title}
+                <hr className="mt-2" />
+                </div>
                 {/* ENTRY DISPLAY */}
-                <div className="decriptionBox">
-                  {`${entry.title} by ${entry.user} created at ${entry.created_time} on ${entry.created_date} `}
-                  <br />
+                <div className="flex justify-between text-sm my-2">
+                  <div className="p-2">
+                    {`by ${entry.user}`}
+                  </div>
+                  <div className="p-2">
+                    {`created ${entry.created_date} |  ${entry.created_time}z `}
+                  </div>
+                </div>
+                <div className="bg-slate-200 text-slate-800 rounded-md">
                   {entry.unmodified === true ? (
-                    <div></div>
+                    <div className="m-4"></div>
                   ) : (
                     `Updated at ${entry.updated_time} on ${entry.updated_date}`
                   )}
-                  <br />
-                  <p>{entry.desc}</p>
-                  <br />
-                  <p className="flex flex-wrap gap-2">
-                    {Array.isArray(entry.tags) ? (
-                      entry.tags.map((tag) => {
-                        return <Badge color="dark">{tag}</Badge>;
-                      })
-                    ) : (
-                      <span>No tags, why don't you add some!</span>
-                    )}
-                  </p>
+                  <p className="mx-4 py-5">{entry.desc}</p>
+                  </div>
+                  <div>
+                  <div className="bg-slate-200 text-slate-800 rounded-md mt-2">
+                    <p className="flex flex-wrap gap-2">
+                      {Array.isArray(entry.tags) ? (
+                        entry.tags.map((tag, index) => (
+                          //<span key={index}>{tag}</span>
+                          return <Badge key={index} color="dark">{tag}</Badge>;
+                        ))
+                      ) : (
+                        <span>No tags, why don't you add some!</span>
+                      )}
+                    </p>
+                  </div>
                 </div>
-
-                <div className="cardButtons">
-                  {/* UPDATE BUTTON */}
+                <hr className="mt-10" />
+                {/* UPDATE BUTTON */}
+                <div className="cardButtons mt-10">
                   <React.Fragment>
-                    <Button onClick={() => setShowUpdateModal(true)}>
+                    <Button 
+                      className="bg-slate-700"
+                      onClick={() => setShowUpdateModal(true)}
+                    >
                       Update Entry
                     </Button>
                     <Modal
                       show={showUpdateModal}
-                      size="md"
+                      size="5xl"
                       popup={true}
                       onClose={() => setShowUpdateModal(false)}
                     >
@@ -216,7 +241,7 @@ const SingleEntry = () => {
                   {/* DELETE BUTTON */}
                   <React.Fragment>
                     <Button
-                      color="failure"
+                      className="bg-slate-700"
                       onClick={() => setShowDeleteModal(true)}
                     >
                       Delete Entry
@@ -252,7 +277,6 @@ const SingleEntry = () => {
                 </div>
               </div>
             </Card>
-
             <div className="flex items-center justify-center text-center">
               {totalEntries ? (
                 <Pagination

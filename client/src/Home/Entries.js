@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { mslContext } from "../App.js";
+
+//Custom Hooks
+import SearchBar from "../Common/SearchBar.js";
+
+//React Apis
 import AccordionItem from "../Common/AccordionItem";
 import { Pagination, Spinner } from "flowbite-react";
 import DateObject from "react-date-object";
@@ -25,6 +31,7 @@ const Entries = () => {
     setOpen(index);
   };
 
+  //Search Terms Setup
   useEffect(() => {
     let searchTerm = "";
     if (searchTerms.q !== undefined) searchTerm += `q=${searchTerms.q}`;

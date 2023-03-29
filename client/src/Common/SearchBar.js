@@ -1,7 +1,13 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
-import Select, { components, MultiValueGenericProps } from "react-select";
-import { FaSearchengin } from "react-icons/fa";
+import "./common.css";
+
+//Icons
+import { BsSearch } from "react-icons/bs";
+
+//React Api
+import Select from "react-select";
+
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});

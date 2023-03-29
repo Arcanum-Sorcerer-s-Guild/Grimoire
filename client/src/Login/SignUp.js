@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 const SignUp = () => {
   const { srvPort, user, setUser } = React.useContext(mslContext);
 
-  // onSubmit handler for registering a new user
+  //onSubmit handler for registering a new user
   const handleRegister = (e) => {
     e.preventDefault(); // prevent page reload
 
@@ -97,10 +97,5 @@ const SignUp = () => {
     </div>
   );
 
-  //   {/* Form for registering a user */}
-  //   Register
-
-  //   <br />
-  // </>
 };
 export default SignUp;
