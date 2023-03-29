@@ -184,7 +184,7 @@ const NavBar = () => {
             </>
           ))}
         </div>
-        <div className={`w-full float-right text-white italic ${!open && "hidden"}`}>
+        {/* <div className={`w-full float-right text-white italic ${!open && "hidden"}`}>
           {!user.username ? (
             <div className="text-sm mt-4">Log In</div>
           ) : (
@@ -193,7 +193,7 @@ const NavBar = () => {
               <span className="ml-1 font-semibold">{user.username}</span>
             </div>
           )}
-        </div>
+        </div> */}
       </div>
     </>
   );

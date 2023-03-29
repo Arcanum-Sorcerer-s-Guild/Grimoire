@@ -46,8 +46,7 @@ const SingleEntry = () => {
     //   tags: [ 'asdf' ]
     // }
 
-
-    console.log("This!",requestOptions);
+    console.log("This!", requestOptions);
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
@@ -55,7 +54,7 @@ const SingleEntry = () => {
       })
       .then((data) => {
         console.log(data);
-        navigate(0)
+        navigate(0);
 
         setShowUpdateModal(false);
       })
@@ -75,9 +74,9 @@ const SingleEntry = () => {
     fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        alert(`{Entry ${params.id} Deleted!}`)
+        alert(`{Entry ${params.id} Deleted!}`);
         console.log(data);
-        navigate("/home")
+        navigate("/home");
       });
   };
 
@@ -120,16 +119,16 @@ const SingleEntry = () => {
             })
           );
         }
-          setSelectedTags(
-            data.data[0].tags.map((tag) => {
-              return {
-                value: tag,
-                label: tag,
-              };
-            })
-          );
+        setSelectedTags(
+          data.data[0].tags.map((tag) => {
+            return {
+              value: tag,
+              label: tag,
+            };
           })
-      }, [params.id]);
+        );
+      });
+  }, [params.id]);
 
   const onPageChange = (value) => {
     navigate(`/home/${value}`);
@@ -143,19 +142,16 @@ const SingleEntry = () => {
       <div className="px-9">
         {console.log(entry.title)}
         {entry ? (
-          
           <>
             <Card>
               <div className="p-2">
                 <div className="text-3xl font-semibold p-2 text-amber-600">
                   {entry.title}
-                <hr className="mt-2" />
+                  <hr className="mt-2" />
                 </div>
                 {/* ENTRY DISPLAY */}
                 <div className="flex justify-between text-sm my-2">
-                  <div className="p-2">
-                    {`by ${entry.user}`}
-                  </div>
+                  <div className="p-2">{`by ${entry.user}`}</div>
                   <div className="p-2">
                     {`created ${entry.created_date} |  ${entry.created_time}z `}
                   </div>
@@ -167,15 +163,22 @@ const SingleEntry = () => {
                     `Updated at ${entry.updated_time} on ${entry.updated_date}`
                   )}
                   <p className="mx-4 py-5">{entry.desc}</p>
-                  </div>
-                  <div>
-                  <div className="bg-slate-200 text-slate-800 rounded-md mt-2">
+                </div>
+                <div>
+                  <div className="text-slate-800 rounded-md mt-2">
                     <p className="flex flex-wrap gap-2">
                       {Array.isArray(entry.tags) ? (
                         entry.tags.map((tag, index) => {
-                        return(<Badge key={index} color="dark">{tag}</Badge>)})
+                          if (tag !== null) {
+                            return (
+                              <Badge key={index} color="dark">
+                                {tag}
+                              </Badge>
+                            );
+                          }
+                        })
                       ) : (
-                        <span>No tags, why don't you add some!</span>
+                        <></>
                       )}
                     </p>
                   </div>
@@ -184,8 +187,8 @@ const SingleEntry = () => {
                 {/* UPDATE BUTTON */}
                 <div className="cardButtons mt-10">
                   <React.Fragment>
-                    <Button 
-                      className="bg-slate-700"
+                    <Button
+                      className="bg-slate-700 dark:bg-slate-500"
                       onClick={() => setShowUpdateModal(true)}
                     >
                       Update Entry
@@ -200,15 +203,18 @@ const SingleEntry = () => {
                       <Modal.Body>
                         <form method="post" onSubmit={onClickUpdate}>
                           <div className="h-max">
-                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
-                              Update Entry: {entry.title}
+                            <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
+                              Update Entry: <span className=" text-xl text-amber-600">{entry.title}</span>
                             </h3>
-                            <div>
-                              User {entry.user} on{" "}
-                              {`${entry.created_date} at ${entry.created_time}`}
+                            <hr />
+                            <div className="flex justify-between my-4 text-sm">
+                              <span className="text-blue-900">
+                                 by {entry.user}
+                              </span>
+                              {`created: ${entry.created_date} | ${entry.created_time}z`}
                             </div>
                             <textarea
-                              className="w-full"
+                              className="w-full rounded-md bg-slate-200 border-none"
                               name="description"
                               id="updatedDescription"
                               defaultValue={entry.desc}
@@ -227,13 +233,18 @@ const SingleEntry = () => {
                               />
                             </div>
                             <div className="flex justify-center gap-4">
-                              <Button type="submit">Update Entry</Button>
-                              <Button
+                              <Button 
+                                type="submit"
+                                className="bg-slate-800 dark:bg-slate-500"
+                              >
+                                Update Entry
+                              </Button>
+                              {/* <Button
                                 color="gray"
                                 onClick={() => setShowUpdateModal(false)}
                               >
                                 Cancel
-                              </Button>
+                              </Button> */}
                             </div>
                           </div>
                         </form>
@@ -243,7 +254,7 @@ const SingleEntry = () => {
                   {/* DELETE BUTTON */}
                   <React.Fragment>
                     <Button
-                      className="bg-slate-700"
+                      className="bg-slate-700 dark:bg-slate-500"
                       onClick={() => setShowDeleteModal(true)}
                     >
                       Delete Entry
