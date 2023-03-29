@@ -6,7 +6,7 @@ const getTemplates = async (id) => {
   if (id) {
     return await knex("templates").select("*").where("id", "=", id);
   } else {
-    return await knex("templates").select("*");
+    return await knex("templates").select("*").where("id", ">", 0);
   }
 };
 
@@ -15,11 +15,9 @@ const deleteTemplate = (id) => {
 };
 
 const updateTemplates = async ([template], id) => {
-  // console.log(id);
   if (id) {
     return await knex("templates").where("id", "=", id).update(template, "*");
   } else {
-    // console.log(template);
     return await knex("templates").insert(template, "*");
   }
 };
@@ -64,6 +62,7 @@ const getEntries = async (search) => {
     )
     .where(function () {
       if ("q" in search) {
+        // q = q.replace(' ', "&");
         // console.log(search.q);
         this.whereRaw(
           `to_tsvector(entries::text) @@ to_tsquery('${search.q}:*')`
@@ -79,7 +78,6 @@ const getEntries = async (search) => {
         // .orWhere("entries.description", "ilike", `%${search.q}%`)
         // .orWhere("users.username", "ilike", `%${search.q}%`);
       } else {
-        // console.log("search");
         this.where("entries.id", `${id === 0 ? ">" : "="}`, `${id}`)
           .andWhere("entries.title", "ilike", `%${title}%`)
           .andWhere("entries.description", "ilike", `%${desc}%`)
@@ -90,7 +88,6 @@ const getEntries = async (search) => {
     })
     .groupBy("entries.id", "users.id")
     .orderBy("entries.created", "desc")
-    // .havingRaw('entries.id IS NOT NULL')
     .havingRaw(
       search.tags
         ? `(
@@ -107,12 +104,10 @@ const getEntries = async (search) => {
 };
 
 const createTag = async (name) => {
-  // console.log("inserting Name");
   return await knex("tags").insert({ name: name }, "id");
 };
 
 const createEntryTagMiddle = async (tagId, entryId) => {
-  // console.log("createEntryTagMiddle", "entryID", entryId, "tag ID", tagId);
   return await knex("entry_tag").insert(
     {
       entry_id: entryId,
@@ -130,7 +125,6 @@ const deleteEntryTagMiddle = async (entryTagId) => {
 };
 
 const createEntry = async ({ title, description, user_id, tags }) => {
-  console.log("createEntry", { title, description, user_id, tags });
   return await knex("entries")
     .insert(
       {
@@ -141,10 +135,8 @@ const createEntry = async ({ title, description, user_id, tags }) => {
       "*"
     )
     .then(async ([entryCreated]) => {
-      // console.log("test", entryCreated);
       await tags.map(async (tag, index) => {
         await getTags(tag).then(async ([data]) => {
-          // console.log(tags);
           if (data === undefined) {
             await createTag(tag).then(async ([createTagItem]) => {
               createEntryTagMiddle(createTagItem.id, entryCreated.id);
@@ -158,8 +150,7 @@ const createEntry = async ({ title, description, user_id, tags }) => {
     });
 };
 
-const updateEntry = async ([{ description, tags }], id) => {
-  // console.log(id);
+const updateEntry = async ([{ description, tags }], id, currID) => {
   const test = await knex("entries")
     .where("id", "=", id)
     .update(
@@ -171,11 +162,9 @@ const updateEntry = async ([{ description, tags }], id) => {
     )
     .then(async (entryCreated) => {
       await deleteEntryTagMiddle(id);
-      // console.log(entryCreated);
       return entryCreated;
     })
     .then(async ([entryCreated]) => {
-      // console.log(entryCreated);
       await tags.map(async (tag, index) => {
         await getTags(tag).then(async ([data]) => {
           if (data === undefined) {
@@ -189,8 +178,6 @@ const updateEntry = async ([{ description, tags }], id) => {
       });
       return [{ ...entryCreated, tags }];
     });
-
-  // console.log(test);
   return test;
 };
 
@@ -223,17 +210,17 @@ const createUser = async (username, hashedPassword, isAdmin) => {
 
 module.exports = {
   getUsers,
-  getTags,
-  getEntries,
-  deleteEntry,
-  createTag,
-  createEntryTagMiddle,
-  createEntry,
-  updateEntry,
-  countEntries,
-  getTemplates,
-  deleteTemplate,
-  updateTemplates,
   getUserByUsername,
   createUser,
+  createEntryTagMiddle,
+  getEntries,
+  createEntry,
+  updateEntry,
+  deleteEntry,
+  countEntries,
+  getTags,
+  createTag,
+  getTemplates,
+  updateTemplates,
+  deleteTemplate,
 };
