@@ -39,6 +39,7 @@ const store = new KnexSessionStore({
 app.use(
   session({
     store: store,
+    name: "connect.sid",
     secret: process.env.SESSION_SECRET || "6f646a6c6e6775306d7a68686d64637",
     saveUninitialized: false,
     resave: false,
