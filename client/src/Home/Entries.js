@@ -8,7 +8,6 @@ import SearchBar from "../Common/SearchBar.js";
 //React Apis
 import AccordionItem from "../Common/AccordionItem";
 import DateObject from "react-date-object";
-import Marquee from "react-fast-marquee";
 
 const Entries = () => {
   const [entries, setEntries] = useState([]);
