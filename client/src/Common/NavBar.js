@@ -29,6 +29,7 @@ const NavBar = () => {
   const links = [
     { name: "Home", to: "/", icon: <AiOutlineHome /> },
     { name: "Post", to: "/", icon: <AiOutlineFileText /> },
+    { name: 'Templates', to: '/', icon: <AiOutlineHome />},
     { name: "Login", to: "/", icon: <BsPerson />, spacing: true },
     {
       name: "Theme",

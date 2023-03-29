@@ -1,51 +1,83 @@
 import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import { useParams, useNavigate } from "react-router-dom";
-import { Modal, Button, Textarea, Pagination, Card } from "flowbite-react";
+import { Modal, Button, Pagination, Card, Badge } from "flowbite-react";
 import { HiOutlineExclamationCircle } from "react-icons/hi2";
-import Select from "react-select";
 import "./singleEntry.css";
+import CreatableSelect from "react-select/creatable";
 
 const SingleEntry = () => {
   const navigate = useNavigate();
   let params = useParams();
-  const { srvPort } = React.useContext(mslContext);
-  const [entry, setEntry] = useState({});
+  const { databaseTags, srvPort } = React.useContext(mslContext);
+  const [selectedTags, setSelectedTags] = useState();
+  const [updatedObj, setUpdatedObj] = useState();
   const [totalEntries, setTotalEntries] = useState();
-  const [updatedDesc, setUpdatedDesc] = useState();
-  const { databaseTags } = React.useContext(mslContext);
-  const [selectedTags, setSelectedTags] = useState(null);
+  const [entry, setEntry] = useState({});
 
-  const handleSearchTagChange = (value) => {
-    setSelectedTags(value);
+  const handleSelectChange = (selections) => {
+    setSelectedTags(selections);
   };
 
-  const onClickUpdate = () => {
-    setShowUpdateModal(false);
+  const onClickUpdate = (e) => {
+    e.preventDefault();
+    const form = e.target;
+    const formData = new FormData(form);
+    let tagArray = selectedTags.map((tag) => tag.value);
+    setUpdatedObj({
+      ...Object.fromEntries(formData.entries()),
+      tags: tagArray,
+    });
+  };
+
+  useEffect(() => {
     const requestOptions = {
-      method: "PUT",
+      method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(),
+      body: JSON.stringify([updatedObj]),
+      "Access-Control-Allow-Origin": "*",
+      credentials: "include",
     };
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
-      .then((res) => res.json())
+    // TODO fix server/credentialing problems
+    //createEntry {
+    //   title: undefined,
+    //   description: 'dasdfasdf',
+    //   user_id: 108,
+    //   tags: [ 'asdf' ]
+    // }
+
+
+    console.log("This!",requestOptions);
+    fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
+      .then((res) => {
+        if (!res.ok) throw new Error(res.statusText);
+        res.json();
+      })
       .then((data) => {
-        //TODO turn this into a real update (get a returning value?)
         console.log(data);
+        navigate(0)
+
+        setShowUpdateModal(false);
+      })
+      .catch((err) => {
+        console.log(err);
       });
-    console.log(selectedTags);
-    console.log(updatedDesc);
-  };
+  }, [updatedObj]);
 
   const onClickDelete = () => {
     setShowDeleteModal(false);
-    fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, {
+    const requestOptions = {
       method: "DELETE",
-    })
+      "Access-Control-Allow-Origin": "*",
+      credentials: "include",
+    };
+    console.log(requestOptions);
+    fetch(`http://localhost:${srvPort}/entries/${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        //TODO turn this into a real delete (get a returning value?)
+        alert(`{Entry ${params.id} Deleted!}`)
         console.log(data);
+        navigate("/home")
       });
   };
 
@@ -88,16 +120,19 @@ const SingleEntry = () => {
             })
           );
         }
-      });
-  }, [params.id]);
+          setSelectedTags(
+            data.data[0].tags.map((tag) => {
+              return {
+                value: tag,
+                label: tag,
+              };
+            })
+          );
+          })
+      }, [params.id]);
 
   const onPageChange = (value) => {
     navigate(`/home/${value}`);
-  };
-
-  const handleChange = (event) => {
-    const value = event.target.value;
-    setUpdatedDesc({ description: value });
   };
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -106,7 +141,9 @@ const SingleEntry = () => {
   return (
     <section className="col-span-2 place-items-center h-screen w-full mt-10">
       <div className="px-9">
+        {console.log(entry.title)}
         {entry ? (
+          
           <>
             <Card>
               <div className="p-2">
@@ -133,11 +170,10 @@ const SingleEntry = () => {
                   </div>
                   <div>
                   <div className="bg-slate-200 text-slate-800 rounded-md mt-2">
-                    <p className="mx-4 py-2">
+                    <p className="flex flex-wrap gap-2">
                       {Array.isArray(entry.tags) ? (
-                        entry.tags.map((tag, index) => (
-                          <span key={index}>{tag}</span>
-                        ))
+                        entry.tags.map((tag, index) => {
+                        return(<Badge key={index} color="dark">{tag}</Badge>)})
                       ) : (
                         <span>No tags, why don't you add some!</span>
                       )}
@@ -162,60 +198,45 @@ const SingleEntry = () => {
                     >
                       <Modal.Header />
                       <Modal.Body>
-                        <div>
-                          <h3 className="text-lg font-medium text-gray-900 dark:text-white mb-2">
-                            Update Entry: 
-                          <span className="text-xl font-medium text-amber-600 my-2 mx-2">
-                            {entry.title}
-                          </span>
-                          </h3>
-                          <hr />
-                          <div className="flex justify-between mx-2 my-2">
-                            <div className="text-sm ">
-                              {`by ${entry.user}`}
+                        <form method="post" onSubmit={onClickUpdate}>
+                          <div className="h-max">
+                            <h3 className="text-xl font-medium text-gray-900 dark:text-white">
+                              Update Entry: {entry.title}
+                            </h3>
+                            <div>
+                              User {entry.user} on{" "}
+                              {`${entry.created_date} at ${entry.created_time}`}
                             </div>
-                            <div className="text-sm ">
-                              {`created: ${entry.created_date} | ${entry.created_time}z`}
-                            </div>
-                          </div>
-                          <div className="mt-4">
-                            <Textarea
+                            <textarea
+                              className="w-full"
+                              name="description"
                               id="updatedDescription"
                               defaultValue={entry.desc}
                               rows={10}
-                              onChange={(event) => handleChange}
-                              className="text-sm px-4"
                             />
+                            {/* TAGGED SEARCH */}
+                            <div className="updateTaggedSearch">
+                              <CreatableSelect
+                                value={selectedTags}
+                                isMulti
+                                isLoading={databaseTags ? false : true}
+                                options={databaseTags}
+                                placeholder="Search..."
+                                openOnFocus="true"
+                                onChange={handleSelectChange}
+                              />
+                            </div>
+                            <div className="flex justify-center gap-4">
+                              <Button type="submit">Update Entry</Button>
+                              <Button
+                                color="gray"
+                                onClick={() => setShowUpdateModal(false)}
+                              >
+                                Cancel
+                              </Button>
+                            </div>
                           </div>
-                          {/* TAGGED SEARCH */}
-                          <div className="updateTaggedSearch">
-                            <Select
-                              value={selectedTags}
-                              onChange={handleSearchTagChange}
-                              options={databaseTags}
-                              isMulti="true"
-                              isSearchable="true"
-                              isClearable="true"
-                              placeholder="Add Tags..."
-                              loading={databaseTags === undefined}
-                              noOptionsMessage="No tags in system... You should make some!"
-                            />
-                          </div>
-                          <div className="flex justify-center gap-4">
-                            <Button 
-                              className="bg-slate-700 w-50"
-                              onClick={onClickUpdate}
-                            >
-                              Update Entry
-                            </Button>
-                            {/* <Button
-                              className="bg-slate-700 w-50"
-                              onClick={() => setShowUpdateModal(false)}
-                            >
-                              Cancel
-                            </Button> */}
-                          </div>
-                        </div>
+                        </form>
                       </Modal.Body>
                     </Modal>
                   </React.Fragment>

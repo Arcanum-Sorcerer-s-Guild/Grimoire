@@ -2,39 +2,26 @@ import React, { useState, useEffect } from "react";
 import { mslContext } from "../App.js";
 import { Card, Button } from "flowbite-react";
 import Select from "react-select";
-import { useNavigate } from "react-router-dom";
+import {useNavigate} from "react-router-dom"
+import CreatableSelect from "react-select/creatable";
 
 const PostEntry = () => {
   const [inputs, setInputs] = useState({ tags: [] });
   const [tagsToAdd, setTagsToAdd] = useState([]);
-  const { srvPort, databaseTags } = React.useContext(mslContext);
+  const { srvPort, databaseTags, templateValues,setTemplateValues,newTag,setNewTag } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState(null);
   const [readyToSend, setReadyToSend] = useState(false);
   const navigate = useNavigate();
-
+ 
+  const handleSelectChange = (selections) => {
+    setSelectedTags(selections);
+  };
+  
   const handleSubmit = () => {
-    let tagArray = inputs.tags;
-    if ("newTags" in inputs) {
-      if (inputs.newTags.includes(",")) {
-        tagArray = inputs.newTags.split(",");
-      } else {
-        tagArray = [inputs.newTags];
-      }
+    let tagArray = [];
+    if (Array.isArray(selectedTags)) {
+      tagArray = selectedTags.map((tag) => tag.value)
     }
-
-    if (selectedTags !== null) {
-      if (selectedTags.length > 1) {
-        selectedTags.map((tag) => tagArray.push(tag.value));
-      } else if (selectedTags.length !== 0) {
-        tagArray.push(selectedTags[0].value);
-      }
-    }
-
-    if (Array.isArray(tagArray)) {
-      tagArray = [...new Set(tagArray)];
-      tagArray.filter((tag) => tag !== "");
-    }
-
     setInputs({
       tags: tagArray,
       title: inputs.title,
@@ -43,9 +30,11 @@ const PostEntry = () => {
 
     if (inputs.title !== undefined && inputs.description !== undefined) {
       setReadyToSend(true);
+      setNewTag(!newTag)
     } else {
       alert("Please input Title and Description before submitting!");
     }
+    setTemplateValues({title:"",description:""})
   };
 
   useEffect(() => {
@@ -63,11 +52,9 @@ const PostEntry = () => {
           res.json();
         })
         .then((data) => {
-          console.log(data);
           navigate("/home");
         })
         .catch((err) => {
-          console.log(err);
           alert(err);
         });
     }
@@ -83,6 +70,10 @@ const PostEntry = () => {
     setInputs((values) => ({ ...values, [name]: value }));
   };
 
+  useEffect(()=>{
+    setInputs({title:templateValues.title,description:templateValues.description})
+  },[templateValues]) 
+
   return (
     <>
       <section className="col-span-2 place-items-center h-screen w-full mt-10">
@@ -94,6 +85,7 @@ const PostEntry = () => {
                 className="text-lg border border-gray-200 p-4 rounded-md"
                 placeholder="Title..."
                 name="title"
+                defaultValue = {templateValues ? templateValues.title : ""}
                 onChange={handleChange}
               />
               <form onSubmit={handleSubmit}>
@@ -101,53 +93,23 @@ const PostEntry = () => {
                   className="text-lg w-full border border-gray-200 p-4 rounded-md"
                   placeholder="Description..."
                   name="description"
+                  defaultValue = {templateValues ? templateValues.description : ""}
                   onChange={handleChange}
                   rows="4"
                   cols="50"
                 />
-                <hr className="m-5" />
-                <div>
-                  <h2 className="text-amber-800">Tags</h2>
-
-                  <div className="updateTaggedSearch mt-5">
-                    <Select
-                      value={selectedTags}
-                      onChange={handleSearchTagChange}
-                      options={databaseTags}
-                      isMulti="true"
-                      isSearchable="true"
-                      isClearable="true"
-                      placeholder="Add Tags..."
-                      loading={databaseTags === undefined}
-                      noOptionsMessage="No tags in system... You should make some!"
-                    />
-                  </div>
-                  <div className="px-4">
-                    <h3 className="px-4 mt-2 text-gray-600 italic">
-                      Create New Tag{" "}
-                      <span className="text-xs">
-                        (separate tags with comas)
-                      </span>
-                    </h3>
-                    <input
-                      className="text-md w-full min-h-fit p-2 mt-5 border border-gray-200 rounded-md"
-                      placeholder="New Tags..."
-                      name="newTags"
-                      onChange={handleChange}
-                    />
-                    <p className="text-gray-500 mt-2 ml-4">
-                      Ex: Tag 1,Tag 2,Tag 3
-                    </p>
-                  </div>
-                  <div className="mt-4 float-right">
-                    <Button
-                      className="bg-slate-900"
-                      onClick={() => handleSubmit()}
-                    >
-                      Add Entry
-                    </Button>
-                  </div>
-                </div>
+                            <div className="updateTaggedSearch">
+                              <CreatableSelect
+                                value={selectedTags}
+                                isMulti
+                                isLoading={databaseTags ? false : true}
+                                options={databaseTags}
+                                placeholder="Search..."
+                                openOnFocus="true"
+                                onChange={handleSelectChange}
+                              />
+                            </div>
+                <Button onClick={() => handleSubmit()}>Add Entry</Button>
               </form>
             </Card>
           </React.Fragment>

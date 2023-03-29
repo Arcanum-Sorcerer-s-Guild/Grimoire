@@ -28,7 +28,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(
   cors({
     origin: "http://localhost:3000",
-    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD"],
+    methods: ["POST", "PUT", "GET", "OPTIONS", "HEAD", "DELETE"],
     credentials: true,
   })
 );
@@ -60,6 +60,51 @@ app.get("/", (req, res) => {
 
 app.get("/users", (req, res) => {
   getUsers()
+    .then((data) => {
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.post("/entries", (req, res) => {
+  //I think something weird is happening around here (title:undefined)?
+  console.log(req.body);
+  if (!req.session.user) {
+    return res.status(401).json({ message: "unauthorized" });
+  }
+  const entry = { ...req.body[0], user_id: req.session.user.userId };
+  createEntry(entry)
+    .then((data) => {
+      res.status(201).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.post("/entries/:id", (req, res) => {
+  const id = req.params.id;
+  updateEntry(req.body, id)
+    .then((data) => {
+      console.log(data);
+      res.status(200).json(data);
+    })
+    .catch((err) =>
+      res.status(404).json({
+        message: errorMessage,
+      })
+    );
+});
+
+app.delete("/entries/:id", (req, res) => {
+  // console.log(req.body);
+  deleteEntry(req.params.id)
     .then((data) => {
       res.status(200).json(data);
     })
@@ -302,6 +347,7 @@ app.get("/templates", (req, res) => {
 });
 
 app.get("/templates/:id", (req, res) => {
+  console.log(req.params.id)
   getTemplates(req.params.id)
     .then((data) => res.status(200).json(data))
     .catch((err) =>

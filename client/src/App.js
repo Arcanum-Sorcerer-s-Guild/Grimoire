@@ -1,11 +1,14 @@
 import React, {useState, useEffect} from 'react'
-import { Routes, Route } from "react-router-dom";
+import { Routes, Route, useNavigate } from "react-router-dom";
 import Entries from "./Home/Entries.js";
 import UserAuth from './Login/UserAuth.js';
 import SignUp from './Login/SignUp.js';
 import NavBar from "./Common/NavBar.js"
+import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import SingleEntry from "./SingleEntry/SingleEntry.js"
+import Templates from "./Templates/Templates.js"
+import SingleTemplate from "./Templates/SingleTemplate.js"
 import './App.css';
 
 //require("dotenv").config();
@@ -20,6 +23,9 @@ function App() {
   const [databaseTags, setDatabaseTags] = useState();
   const [searchTerms, setSearchTerms] = useState({});
   const [user, setUser] = useState({});
+  const [templateValues, setTemplateValues] = useState({})
+  const [newTag,setNewTag] = useState(false)
+  const Navigate = useNavigate()
 
   useEffect(() => {
     fetch(`http://localhost:${srvPort}/tags`)
@@ -34,7 +40,7 @@ function App() {
         )
       }))
     })   
-  },[])
+  },[newTag])
 
   // Check if session already exists
   useEffect(() => {
@@ -48,15 +54,18 @@ function App() {
   }, [])
 
   return (
-    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
+    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser, templateValues, setTemplateValues, newTag,setNewTag} }>
       <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full h-screen">
+      <SearchBar />
         <Routes>
+        <Route exact path="/" element={<UserAuth />}/>
+            {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
           <Route path = "/home" element = {<Entries />} />
           <Route path = "/home/:id" element = {<SingleEntry />} />
-          {/* <Route path = "/" element={<Entries />} /> */}
-          {/* <Route path = "/templates" element={<Templates />} /> */}
+          <Route path = "/templates" element={<Templates />} />
+          <Route path = "/templates/:id" element={<SingleTemplate />} />
           <Route path="/post" element={<PostEntry />} />
           <Route path="/login" element={<UserAuth />} />
           <Route path="/logout" element={<UserAuth />} />
