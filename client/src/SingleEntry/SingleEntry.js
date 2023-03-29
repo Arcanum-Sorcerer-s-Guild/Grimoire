@@ -52,7 +52,6 @@ const SingleEntry = () => {
         res.json();
       })
       .then((data) => {
-        console.log(data);
         navigate(0);
 
         setShowUpdateModal(false);
@@ -73,7 +72,6 @@ const SingleEntry = () => {
       .then((res) => res.json())
       .then((data) => {
         alert(`{Entry ${params.id} Deleted!}`);
-        console.log(data);
         navigate("/home");
       });
   };

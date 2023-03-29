@@ -13,7 +13,7 @@ const SearchBar = () => {
   const [inputs, setInputs] = useState({});
   const [advancedInputs, setAdvancedInputs] = useState({});
   const [selectedTags, setSelectedTags] = useState(null);
-  const { searchTerms, setSearchTerms, databaseTags, user } = React.useContext(mslContext);
+  const { searchTerms, setSearchTerms, databaseTags, user, setHighWords } = React.useContext(mslContext);
   const [isOpen, setIsOpen] = useState(false);
 
   const handleSubmit = (event) => {
@@ -23,16 +23,19 @@ const SearchBar = () => {
       tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
     } 
 
-    setSearchTerms({
-        q: `%${inputs.q.split(' ').join('%')}%`,
-        tags: tagsToAdd,
-      });
-    };
+
+      setSearchTerms({
+          q: `%${inputs.q.split(' ').join('%')}%`,
+          tags: tagsToAdd,
+        });
+      };
+    
     
     
   const resetSearchTerms = (value) => {
       setInputs()
       setSearchTerms({})
+      setHighWords()
       alert('Search terms reset!')
     }
     

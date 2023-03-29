@@ -15,15 +15,17 @@ const AccordionItem = ({
   tags,
   user,
 }) => {
-  const [highWords,setHighWords] = useState();
-  const { searchTerms } = React.useContext(mslContext);
+  
+  const { searchTerms, highWords, setHighWords } = React.useContext(mslContext);
 
+  
   useEffect(()=>{
-    console.log('SearchTerms',searchTerms)
     if (Object.keys(searchTerms).length !== 0) {
-      setHighWords(searchTerms.q.split("%").filter(a => a != ''))
-      console.log("highWords",highWords)
-    }
+      setHighWords(searchTerms.q.split("%").filter(a => {return(a !== '')}))
+      console.log(searchTerms.q.split("%").filter(a => {return(a !== '')}))
+
+    } 
+    console.log('searchTerms,highwords',searchTerms,highWords)
   },[searchTerms])
 
 
