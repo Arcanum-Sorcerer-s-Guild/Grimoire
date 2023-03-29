@@ -13,6 +13,7 @@ import {
   BsMoon,
 } from "react-icons/bs";
 import { RiDashboardFill, RiComputerLine } from "react-icons/ri";
+import { ImInsertTemplate } from "react-icons/im";
 import {
   AiOutlineHome,
   AiOutlineFileText,
@@ -29,7 +30,7 @@ const NavBar = () => {
   const links = [
     { name: "Home", to: "/", icon: <AiOutlineHome /> },
     { name: "Post", to: "/", icon: <AiOutlineFileText /> },
-    { name: 'Templates', to: '/', icon: <AiOutlineHome />},
+    { name: 'Templates', to: '/', icon: <ImInsertTemplate />},
     {
       name: "Theme",
       icon: <AiOutlineSetting />,

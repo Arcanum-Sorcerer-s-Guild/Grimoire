@@ -29,7 +29,11 @@ const Templates = () => {
 
   return(<>
     <section className="col-span-2 place-items-center max-h-fit w-full mb-5">  
-      <div className="px-9">
+      <div className="px-9 mt-5">
+        <h1 className="text-2xl text-amber-600 font-semibold my-2">
+          Entry Templates
+        </h1>
+        <hr className="my-2"/>
         {templates 
         ? <div>
                 {templates.map((entry, index) => {
