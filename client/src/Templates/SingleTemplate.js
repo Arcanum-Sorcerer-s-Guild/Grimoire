@@ -24,7 +24,6 @@ const SingleTemplate = () => {
     fetch(`http://localhost:${srvPort}/templates/${params.id}`)
       .then((res) => res.json())
       .then((data) => {
-        console.log(data);
         setTemplate(data[0]);
       });
   }, []);

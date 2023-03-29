@@ -22,7 +22,6 @@ const Templates = () => {
     fetch(`http://localhost:${srvPort}/templates`)
     .then(res=>res.json())
     .then(data=>{
-      console.log(data)
       setTemplates(data)
     })
   },[])
