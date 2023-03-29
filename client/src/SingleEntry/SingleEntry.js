@@ -27,9 +27,7 @@ const SingleEntry = () => {
     setUpdatedObj({
       ...Object.fromEntries(formData.entries()),
       tags: tagArray,
-    });
-    console.log(tagArray);
-    // console.log(updatedObj);
+    });;
   };
 
   useEffect(() => {
@@ -37,10 +35,17 @@ const SingleEntry = () => {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify([updatedObj]),
-      // "Access-Control-Allow-Origin": "*",
-      // credentials: "include",
+      "Access-Control-Allow-Origin": "*",
+      credentials: "include",
     };
-    console.log("This!",requestOptions);
+    // TODO fix server/credentialing problems 
+    //createEntry {
+    //   title: undefined,
+    //   description: 'dasdfasdf',
+    //   user_id: 108,
+    //   tags: [ 'asdf' ]
+    // }
+    // console.log("This!",requestOptions);
     fetch(`http://localhost:${srvPort}/entries/`, requestOptions)
       .then((res) => {
         if (!res.ok) throw new Error(res.statusText);
@@ -49,6 +54,7 @@ const SingleEntry = () => {
       .then((data) => {
         console.log(data);
         // navigate("/home")
+        
         setShowUpdateModal(false);
       })
       .catch((err) => {
@@ -63,10 +69,16 @@ const SingleEntry = () => {
       "Access-Control-Allow-Origin": "*",
       credentials: "include",
     };
+    console.log(requestOptions)
+    // TODO fix credential issue
+    
+    // 1675:1 Access to fetch at 'http://localhost:3001/entries/id=1675' 
+    // from origin 'http://localhost:3000' has been blocked by CORS policy:
+    //  Method DELETE is not allowed by Access-Control-Allow-Methods 
+    //  in preflight response. 
     fetch(`http://localhost:${srvPort}/entries/id=${params.id}`, requestOptions)
       .then((res) => res.json())
       .then((data) => {
-        //TODO turn this into a real delete (get a returning value?)
         console.log(data);
       });
   };

@@ -115,6 +115,7 @@ app.get("/users", (req, res) => {
 });
 
 app.post("/entries", (req, res) => {
+  console.log(req.body)
   if (!req.session.user) {
     return res.status(401).json({ message: "unauthorized" });
   }
