@@ -65,7 +65,7 @@ const SignUp = () => {
                     name="username"
                     type="text"
                     placeholder="Username"
-                    className="rounded-md border-gray-300 w-full"
+                    className="rounded-md border-gray-300 w-full dark:border-none dark:text-slate-200 dark:bg-light-white"
                   />
                 </div>
                 <div className="my-5">
@@ -76,7 +76,7 @@ const SignUp = () => {
                     name="password"
                     type="password"
                     placeholder="Password"
-                    className="rounded-md border-gray-300 w-full"
+                    className="rounded-md border-gray-300 w-full dark:border-none dark:text-slate-200 dark:bg-light-white"
                   />
                 </div>
                 <div className="flex items-center">
@@ -87,10 +87,7 @@ const SignUp = () => {
                     value="true"
                     className="h-4 w-4 text-amber-600 focus:ring-amber-400 border-gray-300 rounded mt-3"
                   />
-                  <label
-                    htmlFor="isAdmin"
-                    className="ml-2 block text-sm text-gray-900 mt-3"
-                  >
+                  <label htmlFor="isAdmin" className="ml-2 block text-sm text-gray-900 dark:text-gray-200 mt-3">
                     Register as an Administrator
                   </label>
                 </div>

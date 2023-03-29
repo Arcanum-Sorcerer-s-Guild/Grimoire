@@ -136,6 +136,10 @@ const NavBar = () => {
     }
   });
 
+  const easterEgg = () => {
+    <a href={"https://arcanum.jacobsteward.com/"} target="blank"></a>
+  }
+
   return (
     <>
       <div
@@ -148,12 +152,16 @@ const NavBar = () => {
           onClick={() => setOpen(!open)}
         />
         <div className="inline-flex">
-          <i
+          <a
+            href={"https://arcanum.jacobsteward.com/"} target="blank"
+            onClick={easterEgg}
             className={`brand ss ss-parl3 text-white bg-amber-500 text-4xl rounded-full
           cursor-pointer block float-left mr-1 ${
             !open && "rotate-[360deg]"
           } duration-300`}
-          />
+          ></a>
+            
+
           <h1
             className={`text-white origin-left font-medium text-4xl px-2 ${
               !open && "scale-0"
