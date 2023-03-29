@@ -80,7 +80,7 @@ const NavBar = () => {
   return (
     <>
       <div 
-        className={`relative bg-slate-900 h-fit p-5 pt-8 m-5 rounded-md w-
+        className={`relative bg-slate-900 h-fit p-5 pt-8 m-5 rounded-md
         ${open ? "w-96" : "w-20 "} duration-300`}
       >
         <MdNavigateBefore 
@@ -100,7 +100,7 @@ const NavBar = () => {
         
           <hr className="my-4 bg-gray-200 border-1 dark:bg-gray-700" />
 
-        <div className={`flex items-center rounded-md mt-6 ${!open ? "px-2.5" : "px-4"} py-2 bg-light-white`}>
+        {/* <div className={`flex items-center rounded-md mt-6 ${!open ? "px-2.5" : "px-4"} py-2 bg-light-white`}>
           <BsSearch 
             className={`text-white text-lg block float-left cursor-pointer ${!open && "mr-2"}`}
           />
@@ -111,7 +111,7 @@ const NavBar = () => {
               ${!open && "hidden"}`}
 
             />
-        </div>
+        </div> */}
         <div className="pt-2">
           {links.map((link, i) =>(
             <>

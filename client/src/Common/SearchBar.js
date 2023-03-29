@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { mslContext } from "../App.js";
 import Select from "react-select";
-import { FaSearchengin } from "react-icons/fa";
-import './common.css';
+import "./common.css";
+
+//Icons
+import { BsSearch } from "react-icons/bs";
 
 const SearchBar = () => {
   const [inputs, setInputs] = useState({});
@@ -43,67 +45,79 @@ const SearchBar = () => {
   };
 
   return (
-    <div className="col-span-2 w-full text-2xl p-7">
-      <form className="flex items-center mt-2" onSubmit={handleSubmit}>
-        <label htmlFor="search-bar" className="sr-only">
-          Search
-        </label>
-        <div className="relative w-full">
-          <div className="flex">
-            {/* BASIC SEARCH */}
+    <div className="flex mt-4 p-2 max-w-5xl mx-auto gap-4 bg-slate-700 rounded-md">
+      <div className="w-1/2">
+        <div className="rounded-md p-2">
+          <Select
+            value={selectedTags}
+            onChange={handleSearchTagChange}
+            options={databaseTags}
+            isMulti="true"
+            isSearchable="true"
+            isClearable="true"
+            placeholder="Search Tags..."
+            loading={databaseTags === undefined}
+            noOptionsMessage="No tags in system... You should make some!"
+            className="select text-sm"
+          />
+        </div>
+      </div>
+      <div className="w-1/2">
+        <div className="rounded-md p-2">
+          <form className="flex relative">
             <input
               type="text"
               name="q"
               id="search-bar"
-              className="text-sm rounded-md block w-full pl-3 
-              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
+              className="grow rounded-md border-gray-300 text-sm"
               placeholder="Search..."
               onChange={handleChange}
               required
             />
-            <div className="absolute top-2 right-4 text-sm rounded-md">
-              {React.createElement(FaSearchengin, { size: "20" })}
-            </div>
-          </div>
-          <div className="mt-2 bg-slate-500">
-            {/* TAGGED SEARCH */}
-            <Select
-              value={selectedTags}
-              onChange={handleSearchTagChange}
-              options={databaseTags}
-              isMulti="true"
-              isSearchable="true"
-              isClearable="true"
-              placeholder="Search Tags..."
-              loading={databaseTags === undefined}
-              noOptionsMessage="No tags in system... You should make some!"
-              className="select text-sm"
-            />
-          </div>
+            <BsSearch className="absolute top-3 right-3 dark:text-slate-800" />
+          </form>
         </div>
-      </form>
-      <div className="relative text-right">
-        <button className="text-xs" onClick={() => setIsOpen(!isOpen)}>
-          advanced search
-        </button>
-        {isOpen && (
-          <div className="flex justify-center">
-            <form onSubmit={handleSubmit}>
+      </div>
+      <div className="w-1/4">
+        <div className="rounded-md p-2">
+          <button
+            className="text-sm p-2 px-8 relative text-white"
+            onClick={() => setIsOpen(!isOpen)}
+          >
+            advanced search
+          </button>
+          {isOpen && (
+            <form>
               <input
                 type="text"
                 name="title"
-                id="advSearch-item"
-                className="text-sm rounded-md block pl-3 
-              bg-gray-50 border border-gray-300 text-gray-900 dark:bg-gray-700 dark:border-gray-600"
-                placeholder="Search..."
+                id="search-bar"
+                className="grow rounded-md border-gray-300 text-sm mb-2"
+                placeholder="Title..."
                 onChange={handleChange}
                 required
               />
-              <input type="text" name="description" placeholder="description" />
-              <input type="text" name="start date" placeholder="start date" />
+              <input
+                type="text"
+                name="description"
+                id="search-bar"
+                className="grow rounded-md border-gray-300 text-sm mb-2"
+                placeholder="Description..."
+                onChange={handleChange}
+                required
+              />
+              <input
+                type="text"
+                name="start-date"
+                id="search-bar"
+                className="grow rounded-md border-gray-300 text-sm mb-2"
+                placeholder="Start Date..."
+                onChange={handleChange}
+                required
+              />
             </form>
-          </div>
-        )}
+          )}
+        </div>
       </div>
     </div>
   );

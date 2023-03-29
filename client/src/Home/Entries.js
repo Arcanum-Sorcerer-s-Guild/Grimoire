@@ -39,7 +39,7 @@ const Entries = () => {
   return (
     <>
       <div className="mt-2 text-sm text-amber-600 overflow-hidden">
-        <Marquee 
+        {/* <Marquee 
           pauseOnHover={true}
           speed={2}
         >
@@ -52,10 +52,9 @@ const Entries = () => {
                     />
             )
         })}
-        </Marquee>
+        </Marquee> */}
       </div>
       <SearchBar />
-      <div className="text-sm font-semibold ml-5">Total Entries: </div>
       <section className="col-span-2 place-items-center max-h-fit mb-5">
         <div className="px-9 bg-slate-500 shadow-sm p-4 m-8 rounded-md">
           <div>
