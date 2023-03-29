@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { mslContext } from "../App.js";
 import AccordionItem from "../Common/AccordionItem";
-import { Pagination } from "flowbite-react";
+import { Pagination,Spinner } from "flowbite-react";
 import DateObject from "react-date-object";
 import {Link} from "react-router-dom";
 
@@ -69,7 +69,10 @@ const Entries = () => {
                 })}{" "}
               </div>
             ) : (
-              <div>Loading</div>
+              <Spinner
+              aria-label="Extra large spinner example"
+              size="xl"
+            />
             )}
           </div>
           <div className="flex items-center justify-center text-center">
@@ -81,7 +84,10 @@ const Entries = () => {
                     totalPages={parseInt(pageData.lastPage)}
                     previousLabel="Go back"
                     nextLabel="Go forward"
-                  /> : <div>Loading</div>}
+                  /> :   <Spinner
+                  aria-label="Extra large spinner example"
+                  size="xl"
+                />}
             </div>
         </div>
       </section>
