@@ -29,8 +29,8 @@ const SignUp = () => {
         } else {
           setMessage("Login Successful");
           setUser(userData);
+          navigate("/Home");
         }
-        navigate("/Home");
       })
       .catch((error) => {
         alert("Not a valid registration");
