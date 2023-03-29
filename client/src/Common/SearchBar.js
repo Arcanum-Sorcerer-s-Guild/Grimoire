@@ -23,12 +23,14 @@ const SearchBar = () => {
       tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
     } 
 
-
+      console.log("inputs.q replace",`%${inputs.q.replace(' ','%')}%`)
+      console.log("inputs.q split",`%${inputs.q.split(' ').join('%')}%`)
     setSearchTerms({
-        q: `%${inputs.q.replace(' ','%')}%`,
+        q: `%${inputs.q.split(' ').join('%')}%`,
         tags: tagsToAdd,
       });
     };
+    
     
   const resetSearchTerms = (value) => {
       setInputs()

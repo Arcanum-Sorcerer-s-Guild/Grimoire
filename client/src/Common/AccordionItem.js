@@ -2,7 +2,7 @@ import { Collapse } from "react-collapse";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Highlighter from "react-highlight-words";
 import { mslContext } from "../App.js";
-import React from "react";
+import React, {useState,useEffect} from "react";
 import { Badge } from "flowbite-react";
 
 const AccordionItem = ({
@@ -15,7 +15,18 @@ const AccordionItem = ({
   tags,
   user,
 }) => {
+  const [highWords,setHighWords] = useState();
   const { searchTerms } = React.useContext(mslContext);
+
+  useEffect(()=>{
+    console.log('SearchTerms',searchTerms)
+    if (Object.keys(searchTerms).length !== 0) {
+      setHighWords(searchTerms.q.split("%").filter(a => a != ''))
+      console.log("highWords",highWords)
+    }
+  },[searchTerms])
+
+
   return (
     <div className="pt-2 shadow-md">
       <div
@@ -86,7 +97,7 @@ const AccordionItem = ({
 
           <Highlighter
             highlightClassName="YourHighlightClass"
-            searchWords={searchTerms.q ? [searchTerms.q] : ["parse"]}
+            searchWords={highWords ? highWords : [""]}
             autoEscape={true}
             textToHighlight={desc}
           ></Highlighter>
