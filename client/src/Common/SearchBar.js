@@ -92,7 +92,7 @@ const SearchBar = () => {
               onChange={handleChange}
             />
             <div className="absolute top-2 right-4 text-sm rounded-md">
-              {React.createElement(FaSearchengin, { size: "20" })}
+              <BsSearch/>
             </div>
           </div>
         </div>

@@ -8,7 +8,7 @@ import CreatableSelect from "react-select/creatable";
 const PostEntry = () => {
   const [inputs, setInputs] = useState({ tags: [] });
   const [tagsToAdd, setTagsToAdd] = useState([]);
-  const { srvPort, databaseTags, templateValues,setTemplateValues } = React.useContext(mslContext);
+  const { srvPort, databaseTags, templateValues,setTemplateValues,newTag,setNewTag } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState(null);
   const [readyToSend, setReadyToSend] = useState(false);
   const navigate = useNavigate();
@@ -30,6 +30,7 @@ const PostEntry = () => {
 
     if (inputs.title !== undefined && inputs.description !== undefined) {
       setReadyToSend(true);
+      setNewTag(!newTag)
     } else {
       alert("Please input Title and Description before submitting!");
     }

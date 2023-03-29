@@ -124,9 +124,8 @@ const SingleEntry = () => {
               };
             })
           );
-        }
-      });
-  }, [params.id]);
+          })
+      }, [params.id]);
 
   const onPageChange = (value) => {
     navigate(`/home/${value}`);
@@ -169,10 +168,8 @@ const SingleEntry = () => {
                   <div className="bg-slate-200 text-slate-800 rounded-md mt-2">
                     <p className="flex flex-wrap gap-2">
                       {Array.isArray(entry.tags) ? (
-                        entry.tags.map((tag, index) => (
-                          //<span key={index}>{tag}</span>
-                          return <Badge key={index} color="dark">{tag}</Badge>;
-                        ))
+                        entry.tags.map((tag, index) => {
+                        return(<Badge key={index} color="dark">{tag}</Badge>)})
                       ) : (
                         <span>No tags, why don't you add some!</span>
                       )}

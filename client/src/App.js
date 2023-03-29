@@ -4,6 +4,7 @@ import Entries from "./Home/Entries.js";
 import UserAuth from './Login/UserAuth.js';
 import SignUp from './Login/SignUp.js';
 import NavBar from "./Common/NavBar.js"
+import SearchBar from "./Common/SearchBar.js"
 import PostEntry from "./PostEntry/PostEntry.js"
 import SingleEntry from "./SingleEntry/SingleEntry.js"
 import Templates from "./Templates/Templates.js"
@@ -23,6 +24,7 @@ function App() {
   const [searchTerms, setSearchTerms] = useState({});
   const [user, setUser] = useState({});
   const [templateValues, setTemplateValues] = useState({})
+  const [newTag,setNewTag] = useState(false)
   const Navigate = useNavigate()
 
   useEffect(() => {
@@ -38,7 +40,7 @@ function App() {
         )
       }))
     })   
-  },[])
+  },[newTag])
 
   // Check if session already exists
   useEffect(() => {
@@ -52,10 +54,11 @@ function App() {
   }, [])
 
   return (
-    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser, templateValues, setTemplateValues} }>
+    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser, templateValues, setTemplateValues, newTag,setNewTag} }>
       <section className="flex duration-300 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full h-screen">
+      <SearchBar />
         <Routes>
         <Route exact path="/" element={<UserAuth />}/>
             {/* {loggedIn ? <Redirect to="/dashboard" /> : <PublicHomePage />} */}
