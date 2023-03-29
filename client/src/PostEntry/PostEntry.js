@@ -8,7 +8,7 @@ import CreatableSelect from "react-select/creatable";
 const PostEntry = () => {
   const [inputs, setInputs] = useState({ tags: [] });
   const [tagsToAdd, setTagsToAdd] = useState([]);
-  const { srvPort, databaseTags } = React.useContext(mslContext);
+  const { srvPort, databaseTags, templateValues,setTemplateValues } = React.useContext(mslContext);
   const [selectedTags, setSelectedTags] = useState(null);
   const [readyToSend,setReadyToSend] = useState(false)
   const navigate = useNavigate();
@@ -33,6 +33,7 @@ const PostEntry = () => {
     } else {
       alert("Please input Title and Description before submitting!");
     }
+    setTemplateValues({title:"",description:""})
   };
 
   useEffect(()=> {     
@@ -84,6 +85,7 @@ const PostEntry = () => {
                 className="text-black"
                 placeholder="title"
                 name="title"
+                defaultValue = {templateValues ? templateValues.title : ""}
                 onChange={handleChange}
               />
               <form onSubmit={handleSubmit}>
@@ -93,6 +95,7 @@ const PostEntry = () => {
                   className="text-black"
                   placeholder="description"
                   name="description"
+                  defaultValue = {templateValues ? templateValues.description : ""}
                   onChange={handleChange}
                   rows="4"
                   cols="50"

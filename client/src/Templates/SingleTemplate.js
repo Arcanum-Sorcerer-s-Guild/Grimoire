@@ -1,11 +1,23 @@
 import React, {useEffect, useState} from 'react'
-import { Spinner } from "flowbite-react";
+import { Spinner, Button } from "flowbite-react";
+import { useParams, useNavigate } from "react-router-dom";
 import { mslContext } from "../App.js";
 
 
 const SingleTemplate = () => {
-  const { srvPort } = React.useContext(mslContext);
+  const { srvPort, templateValues, setTemplateValues } = React.useContext(mslContext);
   const [template, setTemplate] = useState();
+  const navigate = useNavigate();
+
+  const selectTemplate = () => {
+    let description1 = "SLKDJfsjd"
+    let title1 = "laksjdfls"
+    setTemplateValues( {
+      description: description1,
+      title: title1
+    })
+    navigate('/post')
+  }
 
   useEffect(()=>{
     fetch(`http://localhost:${srvPort}/templates`)
@@ -24,7 +36,8 @@ const SingleTemplate = () => {
         : <Spinner aria-label="Extra large spinner example" size="xl" /> }
         <div>Single Entry</div>
 
-
+        <Button onClick={() => selectTemplate()}>Use Template</Button>
+        
 
     
     </div>

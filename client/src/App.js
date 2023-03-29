@@ -23,6 +23,7 @@ function App() {
   const [databaseTags, setDatabaseTags] = useState();
   const [searchTerms, setSearchTerms] = useState({});
   const [user, setUser] = useState({});
+  const [templateValues, setTemplateValues] = useState({})
   const Navigate = useNavigate()
 
   useEffect(() => {
@@ -52,7 +53,7 @@ function App() {
   }, [])
 
   return (
-    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser} }>
+    <mslContext.Provider value={ {srvPort, databaseTags, searchTerms, setSearchTerms, user, setUser, templateValues, setTemplateValues} }>
       <section className="flex min-h-screen duration-100 dark:text-gray-100 dark:bg-slate-900">
       <NavBar />
       <div className="grid grid-flow-cols w-full">
