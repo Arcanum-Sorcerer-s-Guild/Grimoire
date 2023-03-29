@@ -86,7 +86,7 @@ const AccordionItem = ({
 
           <Highlighter
             highlightClassName="YourHighlightClass"
-            searchWords={searchTerms.q ? [searchTerms.q] : ["parse"]}
+            searchWords={searchTerms.q ? [searchTerms.q] : [""]}
             autoEscape={true}
             textToHighlight={desc}
           ></Highlighter>

@@ -91,7 +91,7 @@ const UserAuth = () => {
                     name="username"
                     type="text"
                     placeholder="Username"
-                    className="rounded-md border-gray-300 w-full"
+                    className="rounded-md border-gray-300 dark:border-none w-full dark:text-slate-200 dark:bg-light-white"
                   />
                 </div>
                 <div className="my-5">
@@ -102,7 +102,7 @@ const UserAuth = () => {
                     name="password"
                     type="password"
                     placeholder="Password"
-                    className="rounded-md border-gray-300 w-full"
+                    className="rounded-md border-gray-300 w-full dark:border-none dark:text-slate-200 dark:bg-light-white"
                   />
                 </div>
                 <div className="flex items-center justify-between">
@@ -111,11 +111,12 @@ const UserAuth = () => {
                       id="remember-me"
                       name="remember-me"
                       type="checkbox"
-                      className="h-4 w-4 text-amber-600 focus:ring-amber-400 border-gray-300 rounded mt-3"
+                      className="h-4 w-4 text-amber-600 focus:ring-amber-400 border-gray-300 rounded mt-3 "
                     />
                     <label
                       htmlFor="remember-me"
-                      className="ml-2 block text-sm text-gray-900 mt-3"
+                      className="ml-2 block text-sm text-gray-900 mt-3
+                      dark:text-white"
                     >
                       Remember me
                     </label>

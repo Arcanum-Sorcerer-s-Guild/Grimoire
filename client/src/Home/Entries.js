@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react";
-
 import { mslContext } from "../App.js";
 
 //Custom Hooks
@@ -61,7 +60,7 @@ const Entries = () => {
   return (
     <>
       <section className="col-span-2 place-items-center max-h-fit w-full mb-5">
-          
+      <SearchBar />
         <div className="px-9">
           <div>
             {entries !== undefined ? (
