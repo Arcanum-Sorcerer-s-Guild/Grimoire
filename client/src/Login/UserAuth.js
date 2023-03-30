@@ -83,7 +83,7 @@ const UserAuth = () => {
                 Signup
               </Link>
             </p>
-            <p className="mt-5 text-center text-sm text-red-600 dark:text-red-200">
+            <p className="mt-5 text-center text-sm text-red-600 dark:text-red-600">
               {message}
             </p>
             <form
@@ -115,7 +115,7 @@ const UserAuth = () => {
                   />
                 </div>
                 <div className="flex items-center justify-between">
-                  <div className="flex items-center">
+                  {/* <div className="flex items-center">
                     <input
                       id="remember-me"
                       name="remember-me"
@@ -129,7 +129,7 @@ const UserAuth = () => {
                     >
                       Remember me
                     </label>
-                  </div>
+                  </div> */}
 
                   <div className="text-sm mt-3">
                     <Link

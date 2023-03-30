@@ -32,9 +32,6 @@ const SignUp = () => {
           navigate("/Home");
         }
       })
-      .catch((error) => {
-        alert("Not a valid registration");
-      });
   };
 
   return (

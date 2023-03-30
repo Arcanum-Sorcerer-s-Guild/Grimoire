@@ -31,7 +31,7 @@ const NavBar = () => {
   const links = [
     { name: "Home", to: "/", icon: <AiOutlineHome /> },
     { name: "Post", to: "/", icon: <AiOutlineFileText /> },
-    { name: 'Templates', to: '/', icon: <ImInsertTemplate />},
+    { name: "Templates", to: "/", icon: <ImInsertTemplate /> },
     {
       name: "Theme",
       icon: <AiOutlineSetting />,
@@ -43,47 +43,62 @@ const NavBar = () => {
       ],
     },
   ];
-  let userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
-    <span className="text-2xk block float-left">
-      <BsPerson />
-    </span>
-    <span className={`text-base font-medium flex-1`}>
-      Login
-    </span>
-  </Link>;
+  let userLink = (
+    <Link
+      to="Login"
+      className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
+    >
+      <span className="text-2xk block float-left">
+        <BsPerson />
+      </span>
+      <span className={`text-base font-medium flex-1`}>Login</span>
+    </Link>
+  );
 
   if (user.username) {
-    userLink = <Link 
-      onClick={
-        () => {
+    userLink = (
+      <Link
+        onClick={() => {
           fetch(`http://localhost:${srvPort}/logout`, {
             method: "POST",
             credentials: "include",
-          })
-            .then(() => {
-              setUser({})
-              navigate('/Login')
-           });
-        }
-      }
-      className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
-    >
-    <span className="text-2xk block float-left">
-      <BsPerson />
-    </span>
-    <span className={`text-base font-medium flex-1`}>
-      Logout
-    </span>
-  </Link>;
+          }).then(() => {
+            setUser({});
+            navigate("/Login");
+          });
+        }}
+        className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
+      >
+        <span className="text-2xk block float-left">
+          <BsPerson />
+        </span>
+        <span
+          className={`text-base font-medium flex-1 ${
+            !open && "hidden"
+          } duration-300`}
+        >
+          Logout
+        </span>
+      </Link>
+    );
   } else {
-    userLink = <Link to="Login" className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}>
-    <span className="text-2xk block float-left">
-      <BsPerson />
-    </span>
-    <span className={`text-base font-medium flex-1`}>
-      Login
-    </span>
-  </Link>;
+    userLink = (
+      <Link
+        to="Login"
+        className={`text-gray-300 text-sm flex items-center gap-x-4 cursor-pointer p-2 hover:bg-light-white rounded-md mt-9`}
+      >
+        <span className="text-2xk block float-left">
+          <BsPerson />
+        </span>
+        <span
+          className={`text-base font-medium flex-1 ${
+            !open && "hidden"
+          } duration-300`}
+        >
+          Login
+        </span>
+      </Link>
+    );
   }
 
   //Theme Setup
@@ -137,8 +152,8 @@ const NavBar = () => {
   });
 
   const easterEgg = () => {
-    <a href={"https://arcanum.jacobsteward.com/"} target="blank"></a>
-  }
+    <a href={"https://arcanum.jacobsteward.com/"} target="blank"></a>;
+  };
 
   return (
     <>
@@ -153,14 +168,14 @@ const NavBar = () => {
         />
         <div className="inline-flex">
           <a
-            href={"https://arcanum.jacobsteward.com/"} target="blank"
+            href={"https://arcanum.jacobsteward.com/"}
+            target="blank"
             onClick={easterEgg}
             className={`brand ss ss-parl3 text-white bg-amber-500 text-4xl rounded-full
           cursor-pointer block float-left mr-1 ${
             !open && "rotate-[360deg]"
           } duration-300`}
           ></a>
-            
 
           <h1
             className={`text-white origin-left font-medium text-4xl px-2 ${
