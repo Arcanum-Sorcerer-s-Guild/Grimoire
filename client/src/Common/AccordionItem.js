@@ -2,7 +2,7 @@ import { Collapse } from "react-collapse";
 import { AiOutlineMinus, AiOutlinePlus } from "react-icons/ai";
 import Highlighter from "react-highlight-words";
 import { mslContext } from "../App.js";
-import React, {useState,useEffect} from "react";
+import React, { useState, useEffect } from "react";
 import { Badge } from "flowbite-react";
 
 const AccordionItem = ({
@@ -15,19 +15,19 @@ const AccordionItem = ({
   tags,
   user,
 }) => {
-  
   const { searchTerms, highWords, setHighWords } = React.useContext(mslContext);
 
-  
-  useEffect(()=>{
-    if (Object.keys(searchTerms).length !== 0) {
-      setHighWords(searchTerms.q.split("%").filter(a => {return(a !== '')}))
-      console.log(searchTerms.q.split("%").filter(a => {return(a !== '')}))
-
-    } 
-    console.log('searchTerms,highwords',searchTerms,highWords)
-  },[searchTerms])
-
+  useEffect(() => {
+    if (Object.keys(searchTerms).length > 1) {
+      setHighWords(
+        searchTerms.q.split("%").filter((a) => {
+          return a !== "";
+        })
+      );
+      // console.log(searchTerms.q.split("%").filter(a => {return(a !== '')}))
+    }
+    // console.log('searchTerms,highwords',searchTerms,highWords)
+  }, [searchTerms]);
 
   return (
     <div className="pt-2 shadow-md">
@@ -42,13 +42,15 @@ const AccordionItem = ({
             className={`${
               open && "hidden"
             } text-xs mx-1 text-gray-500 dark:text-gray-400`}
-          >{`by ${user} on`}</span>
+          >
+            {user != undefined ? <>by {user}</> : <></>}
+          </span>
           <span
             className={`${
               open && "hidden"
             } text-xs text-gray-500 dark:text-gray-400`}
           >
-            {dateCreated}
+            {dateCreated != undefined ? <>on {dateCreated}</> : <></>}
           </span>
         </p>
         <div className="flex text-sm">
@@ -56,7 +58,11 @@ const AccordionItem = ({
             {tags ? (
               tags.map((tag, index) => {
                 if (index < 3 && tag !== null) {
-                  return <Badge key={index} color="dark">{tag}</Badge>;
+                  return (
+                    <Badge key={index} color="dark">
+                      {tag}
+                    </Badge>
+                  );
                 }
               })
             ) : (
@@ -76,13 +82,13 @@ const AccordionItem = ({
               !open && "hidden"
             } text-sm mb-2 text-gray-500 dark:text-gray-400`}
           >
-            {`by ${user}`}
+            {user != undefined ? <>by {user}</> : <></>}
             <span
               className={`${
                 !open && "hidden"
               } text-sm ml-2 text-gray-500 dark:text-gray-400 `}
             >
-              created: {dateCreated}
+              {dateCreated != undefined ? <>created: {dateCreated}</> : <></>}
             </span>
             {dateCreated !== dateUpdated ? (
               <span
@@ -104,10 +110,14 @@ const AccordionItem = ({
             textToHighlight={desc}
           ></Highlighter>
           <div className={`mt-5 ${!open && "hidden"} flex flex-wrap gap-2`}>
-          {tags ? (
+            {tags ? (
               tags.map((tag, index) => {
                 if (tag !== null) {
-                  return <Badge key={index} color="dark">{tag}</Badge>;
+                  return (
+                    <Badge key={index} color="dark">
+                      {tag}
+                    </Badge>
+                  );
                 }
               })
             ) : (

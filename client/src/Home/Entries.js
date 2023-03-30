@@ -19,7 +19,6 @@ const Entries = () => {
 
   const onPageChange = (value) => {
     setSearchTerms({ ...searchTerms, page: value });
-
   };
 
   const toggle = (index) => {
