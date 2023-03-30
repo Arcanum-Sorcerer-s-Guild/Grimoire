@@ -69,7 +69,7 @@ Master Incident Log is brought to you by The Sorcerer's Guild, where you too can
 * **Arcanum** @ https://github.com/Harkerfield/sdi-blended-project2-scaffold
 
 ### Code Authors
-
+To see more paragons of programming, check out the project contributors:
 * **David Bonilla** @ https://github.com/ddbonilla
 * **Jacob Steward** @ https://github.com/JacobTheEldest
 * **Jason Martin** @ https://github.com/JasonMartin85
