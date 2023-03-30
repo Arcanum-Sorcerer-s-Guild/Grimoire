@@ -22,26 +22,20 @@ const SearchBar = () => {
     if (selectedTags !== null) {
       tagsToAdd = selectedTags.map((tag) => `tags=${tag.value}`).join("&");
     }
-
-      setSearchTerms({
-          q: `%${inputs.q.split(' ').join('%')}%`,
-          tags: tagsToAdd,
-        });
-      };
-    
-    
-    
+    setSearchTerms({
+      q: `%${inputs.q.split(" ").join("%")}%`,
+      tags: tagsToAdd,
+    });
+  };
   const resetSearchTerms = (value) => {
-      setInputs()
-      setSearchTerms({})
-      setHighWords()
-      alert('Search terms reset!')
-    }
-    
+    setInputs();
+    setSearchTerms({});
+    setHighWords();
+    alert("Search terms reset!");
+  };
 
-    
-    const handleAdvancedSubmit = (event) => {
-      let tagsToAdd = "";
+  const handleAdvancedSubmit = (event) => {
+    let tagsToAdd = "";
     event.preventDefault();
 
     if (selectedTags !== null) {
@@ -110,7 +104,9 @@ const SearchBar = () => {
               onSubmit={handleAdvancedSubmit}
               className="flex flex-row gap-5 justify-center "
             >
-              <span className="text-sm py-3 font-semibold text-blue-900 dark:text-blue-300">Advanced Fields</span>
+              <span className="text-sm py-3 font-semibold text-blue-900 dark:text-blue-300">
+                Advanced Fields
+              </span>
               <div>
                 <input
                   type="text"
@@ -181,13 +177,9 @@ const SearchBar = () => {
           />
         </div>
         <div className="flex text-xs mt-4 ml-3 gap-4">
-          <button onClick={() => setIsOpen(!isOpen)}>
-            Advanced Search
-          </button>
+          <button onClick={() => setIsOpen(!isOpen)}>Advanced Search</button>
           <div>
-            <button onClick={resetSearchTerms}>
-              Reset Search
-            </button>
+            <button onClick={resetSearchTerms}>Reset Search</button>
           </div>
         </div>
       </div>

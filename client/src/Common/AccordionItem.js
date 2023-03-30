@@ -18,7 +18,7 @@ const AccordionItem = ({
   const { searchTerms, highWords, setHighWords } = React.useContext(mslContext);
 
   useEffect(() => {
-    if (Object.keys(searchTerms).length !== 0) {
+    if (Object.keys(searchTerms).length > 1) {
       setHighWords(
         searchTerms.q.split("%").filter((a) => {
           return a !== "";

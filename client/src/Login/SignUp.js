@@ -25,13 +25,12 @@ const SignUp = () => {
       .then((userData) => {
         if ("error" in userData) {
           setMessage(userData.error);
-          console.log("error", userData);
         } else {
           setMessage("Login Successful");
           setUser(userData);
           navigate("/Home");
         }
-      })
+      });
   };
 
   return (
@@ -84,7 +83,10 @@ const SignUp = () => {
                     value="true"
                     className="h-4 w-4 text-amber-600 focus:ring-amber-400 border-gray-300 rounded mt-3"
                   />
-                  <label htmlFor="isAdmin" className="ml-2 block text-sm text-gray-900 dark:text-gray-200 mt-3">
+                  <label
+                    htmlFor="isAdmin"
+                    className="ml-2 block text-sm text-gray-900 dark:text-gray-200 mt-3"
+                  >
                     Register as an Administrator
                   </label>
                 </div>
