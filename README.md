@@ -7,10 +7,10 @@
 4. [Contributions](#contributions)
 
 ## Usage
-The Master Incident Log is an event tracker using JavaScript. It allows users to communicate important events, search for trends, and maintain communication between team members of different shifts. Team blockers can be identified quickly by reading the current day's events.
+The Grimoire is an event tracker, also known as a Master Station Log (MSL) using JavaScript. It allows users to communicate important events, search for trends, and maintain communication between team members of different shifts. Team blockers can be identified quickly by reading the current day's events.
 
 ## Installation
-In order to get started, fork this scaffold repository in Github and clone it locally onto your machine.
+In order to get started, fork this repository in Github and clone it locally onto your machine.
 
 ### To use with docker
 * clone the repo
@@ -71,11 +71,9 @@ Search capabilities allow the database of posts to be filtered by inclusion or e
 ## Contributions
 
 ### Sponsor
-Master Incident Log is brought to you by The Sorcerer's Guild, where you too can learn to wield the wonders of magic:
-* **Arcanum** @ https://github.com/Harkerfield/sdi-blended-project2-scaffold
+The Grimoire is brought to you by The Sorcerer's Guild, where you too can learn to wield the wonders of magic:
 
 ### Code Authors
-
 * **David Bonilla** @ https://github.com/ddbonilla
 * **Jacob Steward** @ https://github.com/JacobTheEldest
 * **Jason Martin** @ https://github.com/JasonMartin85
