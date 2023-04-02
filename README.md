@@ -12,12 +12,18 @@ The Master Incident Log is an event tracker using JavaScript. It allows users to
 ## Installation
 In order to get started, fork this scaffold repository in Github and clone it locally onto your machine.
 
+### To use with docker
+* clone the repo
+* navigate to the local directory housing your repo
+* modify the .env.example file from the server folder with your 
+* docker compose --env-file ./server/.env up -d
+
 ### The Local Setup
 * **OPTIONAL:** fork your own copy of the main repo
 * clone the repo
 * navigate to the local directory housing your repo
 ```
-$ git repo clone Harkerfield/sdi-blended-full-stack-project-scaffold
+$ git repo clone Arcanum-Sorcerer-s-Guild/Grimoire
 $ cd ../path/to/the/local/repo
 ```
 

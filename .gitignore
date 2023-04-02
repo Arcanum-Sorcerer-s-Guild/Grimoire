@@ -1,3 +1,5 @@
+my_data_directory/*
+
 # Logs
 logs
 *.log
